@@ -1,6 +1,6 @@
 <?php
     class ErrorURL{
-        function display(){
+        function View(){
             echo 'This is a view error';
         }
     }

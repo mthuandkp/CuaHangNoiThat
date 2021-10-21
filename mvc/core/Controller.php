@@ -6,8 +6,7 @@
         }
 
         public function View($view,$data=array()){
-            require_once('./mvc/model/'.$model.'.php');
+            require_once('./mvc/view/'.$view.'.php');
         }
     }
-
 ?>

@@ -1,12 +1,12 @@
 <?php
     class App{
         protected $controller = 'ErrorURL';
-        protected $method = 'View';
+        protected $method = 'display';
         protected $params = array();
 
         function __construct(){
             $url = $this->parseURL();
-
+            
             if(file_exists('./mvc/controller/'.$url[0].'.php')){
                 $this->controller = $url[0];
                 unset($url[0]);
@@ -30,8 +30,8 @@
         }
 
         function parseURL(){
-            if(isset($_POST['url'])){
-                return explode('/',trim($_POST['url']));
+            if(isset($_GET['url'])){
+                return explode('/',trim($_GET['url']));
             }
         }
     }
