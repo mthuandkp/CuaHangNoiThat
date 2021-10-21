@@ -4,5 +4,4 @@
             $this->View('SanPham');
         }
     }
-
 ?>
