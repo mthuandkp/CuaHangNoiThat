@@ -1,3 +1,5 @@
+<!-- http://127.0.0.1/CuaHangNoiThat/GioHang -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
