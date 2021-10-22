@@ -3,7 +3,7 @@
     class HoaDon extends ConnectionDB{
         //Lay hoa don
         function getBillById($billId){
-            
+            return array('1','Hello');
         }
         //Lay chi tiet hoa don
         function getBillDetailById($billId){

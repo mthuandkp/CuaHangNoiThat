@@ -3,6 +3,8 @@
         function display(){
             $this->View('DangKy');
         }
+
+        
     }
 
 ?>
