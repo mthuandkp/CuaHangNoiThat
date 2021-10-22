@@ -1,8 +1,1 @@
-<?php
-    class ErrorURL{
-        function View(){
-            echo 'This is a view error';
-        }
-    }
-
-?>
+<p>Thong bao loi khi sai duong dan 404</Tr></p>
