@@ -33,20 +33,5 @@
         function AddReceiptAndDetail($receipt,$detail){
             
         }
-        //Thong ke so luong san pham da nhap vao kho trong thang 
-        function statisticalReceipt($month){
-
-            /*return aray(
-                array(
-                    'IdProduct' => ?,
-                    'Number' => ?
-                )
-                .....
-                array(
-                    'IdProduct' => ?,
-                    'Number' => ?
-                )
-            );*/
-        }
     }
 ?>

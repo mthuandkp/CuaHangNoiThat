@@ -3,7 +3,7 @@
     class HoaDon extends ConnectionDB{
         //Lay hoa don
         function getBillById($billId){
-            return array('1','Hello');
+            return array('1','HD1');
         }
         //Lay chi tiet hoa don
         function getBillDetailById($billId){
@@ -32,25 +32,6 @@
         //Them hoa don
         function AddBillAndDetail($bill,$detail){
             
-        }
-        //Thong ke so luong san pham da ban trong thang 
-        function statisticalBill($month){
-            
-            
-            
-            
-            
-            /*return aray(
-                array(
-                    'IdProduct' => ?,
-                    'Number' => ?
-                )
-                .....
-                array(
-                    'IdProduct' => ?,
-                    'Number' => ?
-                )
-            );*/
         }
     }
 ?>
