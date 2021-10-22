@@ -3,6 +3,10 @@
         function display(){
             $this->View('DangNhap');
         }
+
+        function checkLogin(){
+            return true;
+        }
     }
 
 ?>

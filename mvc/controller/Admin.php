@@ -27,9 +27,6 @@
         function SanPham(){
             $this->View('AdminSanPham');
         }
-        function ThongKe(){
-            $this->View('AdminQuyen');
-        }
     }
 
 ?>

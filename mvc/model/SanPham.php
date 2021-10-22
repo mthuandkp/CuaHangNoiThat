@@ -6,7 +6,7 @@
             
         }
         //Lay tat ca sanpham
-        function getAllProduct(){
+        function getAllProduct($isDisable = false){
 
         }
         //Tao ma sanpham tiep theo

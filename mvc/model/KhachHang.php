@@ -5,7 +5,7 @@
 
         }
         //Lay tat ca khach hang
-        function getAllCustomer(){
+        function getAllCustomer($isDisable = false){
 
         }
         //Cap nhat thong tin khach hang

@@ -5,7 +5,7 @@
 
         }
         //Lay tat ca nhan vien
-        function getAllStaff(){
+        function getAllStaff($isDisable = false){
 
         }
         //Cap nhat thong tin nhanvien
