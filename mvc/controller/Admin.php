@@ -1,5 +1,9 @@
 <?php
     class Admin extends Controller{
+        function __construct()
+        {
+            include_once('./menuadmin.php');
+        }
         function display(){
             $this->View('AdminTrangChu');
         }
@@ -25,7 +29,14 @@
             $this->View('AdminPhieuNhap');
         }
         function SanPham(){
-            $this->View('AdminSanPham');
+            $this->View('AdminSanPham','Admin San Pham');
+        }
+
+        function ThongKe(){
+            $this->View('AdminThongKe');
+        }
+        function DangNhap(){
+            $this->View('DangNhap');
         }
     }
 

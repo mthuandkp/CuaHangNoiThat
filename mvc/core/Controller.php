@@ -5,7 +5,7 @@
             return new $model;
         }
 
-        public function View($view,$data=array()){
+        public function View($view,$title = 'title',$data=array()){
             require_once('./mvc/view/'.$view.'.php');
         }
     }
