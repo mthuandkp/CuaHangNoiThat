@@ -11,9 +11,9 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
-<body style="background-image: radial-gradient(#0066cc, #50A7C2);">
-  <h2 style="width: 100%;text-align: center;color: #ffffff;margin-top: 3rem;font-weight: 600;">Sửa Sản Phẩm</h2>
-  <div style="width: 30%;margin-left: 35%;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc">
+<body style="background-image: radial-gradient(#b3b3b3, #ffffff);">
+  <div style="width: 30%;margin-left: 35%;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;margin-bottom: 2rem;">
+  <h2 style="width: 100%;text-align: center;color: #0066cc;font-weight: 600;">Sửa Sản Phẩm</h2>
     <div class="form-group">
       <label for="exampleInputEmail1">Mã sản phẩm</label>
       <input type="text" class="form-control" id="exampleInputEmail1" readonly>
