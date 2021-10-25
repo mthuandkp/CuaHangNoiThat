@@ -5,7 +5,7 @@
             include_once('./menuadmin.php');
         }
         function display(){
-            $this->View('AdminTrangChu');
+            $this->View('AdminTrangChu','Trang Chủ');
         }
         function HoaDon(){
             $this->View('AdminHoaDon');
@@ -28,8 +28,18 @@
         function PhieuNhap(){
             $this->View('AdminPhieuNhap');
         }
+
         function SanPham(){
             $this->View('AdminSanPham','Admin San Pham');
+        }
+        function ThemSanPham(){
+            $this->View('AdminThemSanPham','Admin Thêm Sản Phẩm');
+        }
+        function TimKiemSanPham(){
+            $this->View('AdminTimKiemSanPham','Admin Tìm Kiếm Sản Phẩm');
+        }
+        function SuaSanPham(){
+            $this->View('AdminSuaSanPham','Admin Sửa Sản Phẩm');
         }
 
         function ThongKe(){

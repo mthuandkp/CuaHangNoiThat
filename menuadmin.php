@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0099ff;">
     <a class="navbar-brand" href="/CuaHangNoiThat/Admin">MILD STORE ADMIN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -28,9 +28,14 @@
       </ul>
     </div>
     <div>
-      <a class="dropdown-item" href="/CuaHangNoiThat/Admin/DangNhap" style="float: right;">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Đăng Nhập</button>
+      
+      <a href="/CuaHangNoiThat/Admin/DangNhap" style="float: right;">
+        <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: green;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Nhập</button>
       </a>
+      <a href="/CuaHangNoiThat/Admin/DangNhap" style="float: right;">
+        <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: red;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Xuất</button>
+      </a>
+      <h4 style="float: right;margin-right: 1rem;color:white">Hello Admin</h4>
     </div>
 
   </nav>
@@ -39,7 +44,6 @@
 
   <!doctype html>
   <html lang="en">
-
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">

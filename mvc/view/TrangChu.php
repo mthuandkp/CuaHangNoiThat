@@ -8,5 +8,6 @@
 </head>
 <body>
     <p>trang chu</p>
+    <img src="/CuaHangNoiThat/public/image/Empty.jpg" alt="empty" srcset="">
 </body>
 </html>
