@@ -57,11 +57,11 @@
                 <td><img src="/CuaHangNoiThat/public/image/Empty.jpg" alt="empty_Image" style="width: 10rem;"></td>
                 <td></td>
                 <td>
-                    <form action="/CuaHangNoiThat/Admin/SuaSanPham" method="post">
-                        <input type="text" name="id" value="1" hidden>
+                    <a href="/CuaHangNoiThat/Admin/SuaSanPham?id=1">
                         <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button>
-                    </form>
-                    <button class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xóa Sản phẩm</button>
+                    </a>
+                    
+                    <button class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button>
                 </td>
 
             </tr>

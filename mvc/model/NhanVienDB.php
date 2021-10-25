@@ -1,5 +1,5 @@
 <?php
-    class NhanVien extends ConnectionDB{
+    class NhanVienDB extends ConnectionDB{
         //Lay nhan vien
         function getStaffById($staffId){
 

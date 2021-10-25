@@ -1,5 +1,5 @@
 <?php
-    class KhuyenMai extends ConnectionDB{
+    class KhuyenMaiDB extends ConnectionDB{
         //Lay khuyen mai
         function getSaleById($saleId){
 

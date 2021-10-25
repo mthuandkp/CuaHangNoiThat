@@ -1,6 +1,6 @@
 <?php
     //Model
-    class SanPham extends ConnectionDB{
+    class SanPhamDB extends ConnectionDB{
         //Lay sanpham
         function getProductById($productId){
             

@@ -1,5 +1,5 @@
 <?php
-    class LoaiSanPham extends ConnectionDB{
+    class LoaiSanPhamDB extends ConnectionDB{
         //Lay loai san pham
         function getProductTypeById($typeId){
 

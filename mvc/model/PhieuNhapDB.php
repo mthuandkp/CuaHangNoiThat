@@ -1,6 +1,6 @@
 <?php
     //Model
-    class PhieuNhap extends ConnectionDB{
+    class PhieuNhapDB extends ConnectionDB{
         //Lay phieu nhap
         function getReceiptById($receiptId){
             

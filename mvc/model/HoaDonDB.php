@@ -1,6 +1,6 @@
 <?php
     //Model
-    class HoaDon extends ConnectionDB{
+    class HoaDonDB extends ConnectionDB{
         //Lay hoa don
         function getBillById($billId){
             return array('1','HD1');

@@ -1,5 +1,5 @@
 <?php
-    class KhachHang extends ConnectionDB{
+    class KhachHangDB extends ConnectionDB{
         //Lay khachhang bang maKH
         function getCutomerById($customerId){
 

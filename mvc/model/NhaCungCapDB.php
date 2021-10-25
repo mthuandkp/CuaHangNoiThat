@@ -1,5 +1,5 @@
 <?php
-    class NhaCungCap extends ConnectionDB{
+    class NhaCungCapDB extends ConnectionDB{
         //Lay nha cung cap
         function getSupplierById($supplierId){
 
