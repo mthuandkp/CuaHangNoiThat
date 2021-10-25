@@ -1,3 +1,5 @@
+
+
 <?php
 class ConnectionDB
 {
@@ -10,6 +12,7 @@ class ConnectionDB
     function __construct()
     {
         $this->conn = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->db) or die("Connect failed: %s\n" . $this->conn->error);
+        mysqli_query($this->conn, "SET NAMES 'utf8'");
     }
 
     function getDataFromResultSet($rs)
@@ -20,6 +23,9 @@ class ConnectionDB
             while ($row = mysqli_fetch_assoc($rs)) {
                 $data[] = $row;
             }
+        }
+        if(count($data) == 1){
+            return $data[0];
         }
         return $data;
     }
