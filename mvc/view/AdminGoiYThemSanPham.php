@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <h2 style="margin-top: 4rem;text-align: center;">Gợi ý sản phẩm cần thêm</h2>
+    <h2 style="margin-top: 4rem;text-align: center;"><?php echo $title;?></h2>
     <div>
     <a href="/CuaHangNoiThat/Admin/SanPham">
       <button type="submit" class="btn btn-primary" style="background-color: white;color: #0066cc;margin-left: 10%;">Trở về </button>

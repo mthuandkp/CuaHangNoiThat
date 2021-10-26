@@ -22,9 +22,9 @@
 </head>
 
 <body>
-    <h1 style="margin-top: 5rem;margin-left: 10%;">Chi Tiết Hóa Đơn <?php echo $data;?></h1>
+    <h1 style="margin-top: 5rem;margin-left: 10%;">Chi Tiết Phiếu Nhập <?php echo $data;?></h1>
     <div>
-        <a href="/CuaHangNoiThat/Admin/HoaDon">
+        <a href="/CuaHangNoiThat/Admin/PhieuNhap">
         <button type="submit" class="btn btn-primary" style="background-color: white;color: #0066cc;margin-left: 10%;">Trở về </button>
         </a>
     </div>

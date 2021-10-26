@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <h1 style="margin-top: 5rem;margin-left: 10%;">Admin Hóa Đơn</h1>
+<h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
         <a href="/CuaHangNoiThat/Admin/TimKiemHoaDon"><button type="button" class="btn btn-primary btn-lg optionButton">Tìm kiếm hóa đơn</button></a>
         <a href="#"><button type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button></a>
@@ -55,9 +55,10 @@
                 <td></td>
                 <td></td>
                 <td>
-                    <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Xác nhận hóa đơn</button>
+                    <button class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xác nhận hóa đơn</button>
+                    <button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>
                     <a href="/CuaHangNoiThat/Admin/XemChiTietHD/1">
-                        <button class="btn btn-primary btnControl" type="submit" style="background-color: #0b7dd4;margin-top: 1rem;">Xem chi tiết</button>
+                        <button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>
                     </a>
                 </td>
 

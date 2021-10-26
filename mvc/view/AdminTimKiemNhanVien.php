@@ -25,69 +25,54 @@
 
 <body>
     <div style="width: 60%;margin-left: 20%;margin-top: 1rem;">
-        <h2>Tìm kiếm hóa đơn nâng cao</h2>
+    <h2><?php echo $title;?></h2>
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã hóa đơn</label>
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã nhân viên</label>
                 </div>
                 <input type="text" class="form-control" id="inputAddress">
             </div>
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên khách hàng</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="autoSizingCheck">
                     <label class="form-check-label" for="autoSizingCheck">Tìm theo tên nhân viên</label>
                 </div>
                 <input type="text" class="form-control" id="inputAddress">
             </div>
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-4">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Ngày</label>
-                </div>
-                <select class="form-control">
-                    <?php
-                    for ($i = 1; $i <= 31; $i++) {
-                        $value = strlen((string)$i) > 1 ? $i : '0' . $i;
-                        echo '<option value="' . $i . '">' . $value . '</option>';
-                    }
-                    ?>
-
-                </select>
-            </div>
-            <div class="form-group col-md-1">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tháng</label>
-                </div>
-                <select class="form-control">
-                    <?php
-                    for ($i = 1; $i <= 12; $i++) {
-                        $value = strlen((string)$i) > 1 ? $i : '0' . $i;
-                        echo '<option value="' . $i . '">' . $value . '</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="form-group col-md-1">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Năm</label>
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo năm sinh</label>
                 </div>
                 <input type="text" class="form-control" id="inputAddress">
             </div>
         </div>
-        <a href="/CuaHangNoiThat/Admin/HoaDon">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo địa chỉ</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào địa chỉ">
+            </div>
+            <div class="form-group col-md-4">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo SĐT</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào SĐT">
+            </div>
+            <div class="form-group col-md-4">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo Username</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào Username">
+            </div>
+        </div>
+        <a href="/CuaHangNoiThat/Admin/NhanVien">
             <button type="submit" class="btn btn-primary" style="background-color: white;color: #007bff;">Trở về </button>
         </a>
         <button type="submit" class="btn btn-primary">Tìm kiếm </button>
@@ -98,12 +83,15 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Mã Hóa Đơn</th>
+                <th scope="col">Mã Nhân Viên</th>
                 <th scope="col">Tên Nhân Viên</th>
-                <th scope="col">Tên Khách Hàng</th>
-                <th scope="col">Ngày Lập</th>
-                <th scope="col">Giờ Lập</th>
-                <th scope="col" style="width: 10rem;">Tổng</th>
+                <th scope="col">Ngày Sinh</th>
+                <th scope="col">Giới Tính</th>
+                <th scope="col">Địa Chỉ</th>
+                <th scope="col">SĐT</th>
+                <th scope="col">Quyền</th>
+                <th scope="col">Tên Đăng Nhập</th>
+                <th scope="col">Mật Khẩu</th>
                 <th scope="col">Trạng Thái</th>
                 <th scope="col" style="width: 15rem;">Chức Năng</th>
             </tr>
@@ -118,11 +106,15 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
-                    <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Xác nhận hóa đơn</button>
-                    <a href="/CuaHangNoiThat/Admin/XemChiTietHD/1">
-                        <button class="btn btn-primary btnControl" type="submit" style="background-color: #0b7dd4;margin-top: 1rem;">Xem chi tiết</button>
+                <a href="/CuaHangNoiThat/Admin/SuaNhanVien/1">
+                        <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa Nhân Viên</button>
                     </a>
+                    
+                        <button class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Khóa Nhân Viên</button>
                 </td>
 
             </tr>

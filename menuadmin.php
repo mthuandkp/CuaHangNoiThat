@@ -15,6 +15,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="/CuaHangNoiThat/Admin/SanPham">Quản lý Sản Phẩm</a>
             <a class="dropdown-item" href="/CuaHangNoiThat/Admin/HoaDon">Quản lý Hóa Đơn</a>
+            <a class="dropdown-item" href="/CuaHangNoiThat/Admin/PhieuNhap">Quản lý Phiếu Nhập</a>
             <a class="dropdown-item" href="/CuaHangNoiThat/Admin/NhanVien">Quản lý Nhân Viên</a>
             <a class="dropdown-item" href="/CuaHangNoiThat/Admin/KhachHang">Quản lý Khách Hàng </a>
             <a class="dropdown-item" href="/CuaHangNoiThat/Admin/KhuyenMai">Quản lý Khuyến Mãi</a>

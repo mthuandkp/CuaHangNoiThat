@@ -25,19 +25,19 @@
 
 <body>
     <div style="width: 60%;margin-left: 20%;margin-top: 1rem;">
-        <h2>Tìm kiếm hóa đơn nâng cao</h2>
+        <h2><?php echo $title;?></h2>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã hóa đơn</label>
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã phiếu nhập</label>
                 </div>
                 <input type="text" class="form-control" id="inputAddress">
             </div>
             <div class="form-group col-md-4">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên khách hàng</label>
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên nhà cung cấp</label>
                 </div>
                 <input type="text" class="form-control" id="inputAddress">
             </div>
@@ -87,7 +87,7 @@
                 <input type="text" class="form-control" id="inputAddress">
             </div>
         </div>
-        <a href="/CuaHangNoiThat/Admin/HoaDon">
+        <a href="/CuaHangNoiThat/Admin/PhieuNhap">
             <button type="submit" class="btn btn-primary" style="background-color: white;color: #007bff;">Trở về </button>
         </a>
         <button type="submit" class="btn btn-primary">Tìm kiếm </button>
@@ -100,11 +100,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Mã Hóa Đơn</th>
                 <th scope="col">Tên Nhân Viên</th>
-                <th scope="col">Tên Khách Hàng</th>
+                <th scope="col">Tên Nhà Cung Cấp</th>
                 <th scope="col">Ngày Lập</th>
                 <th scope="col">Giờ Lập</th>
                 <th scope="col" style="width: 10rem;">Tổng</th>
-                <th scope="col">Trạng Thái</th>
                 <th scope="col" style="width: 15rem;">Chức Năng</th>
             </tr>
         </thead>
@@ -117,11 +116,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 <td>
-                    <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Xác nhận hóa đơn</button>
-                    <a href="/CuaHangNoiThat/Admin/XemChiTietHD/1">
-                        <button class="btn btn-primary btnControl" type="submit" style="background-color: #0b7dd4;margin-top: 1rem;">Xem chi tiết</button>
+                    <button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>
+                    <a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">
+                        <button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>
                     </a>
                 </td>
 

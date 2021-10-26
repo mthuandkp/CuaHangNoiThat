@@ -22,9 +22,8 @@
 </head>
 
 <body>
-    <h1 style="margin-top: 5rem;margin-left: 10%;">Admin Sản Phẩm</h1>
+<h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <a href="/CuaHangNoiThat/Admin/ThemSanPham"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm sản phẩm</button></a>
         <a href="/CuaHangNoiThat/Admin/TimKiemSanPham"><button type="button" class="btn btn-primary btn-lg optionButton">Tìm kiếm sản phẩm</button></a>
         <a href="/CuaHangNoiThat/Admin/GoiYThemSP"><button type="button" class="btn btn-primary btn-lg optionButton">Gợi ý thêm sản phẩm</button></a>
         <a href="#"><button type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button></a>
@@ -44,6 +43,7 @@
                 <th scope="col">Số Lượng</th>
                 <th scope="col" style="width: 10rem;">Hình Ảnh</th>
                 <th scope="col">Trạng Thái</th>
+                <th scope="col">% Giảm</th>
                 <th scope="col" style="width: 15rem;">Chức Năng</th>
             </tr>
         </thead>
@@ -56,6 +56,7 @@
                 <td></td>
                 <td></td>
                 <td><img src="/CuaHangNoiThat/public/image/Empty.jpg" alt="empty_Image" style="width: 10rem;"></td>
+                <td></td>
                 <td></td>
                 <td>
                     <a href="/CuaHangNoiThat/Admin/SuaSanPham/1">

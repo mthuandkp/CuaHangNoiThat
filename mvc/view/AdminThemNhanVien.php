@@ -12,9 +12,10 @@
 </head>
 
 <body style="background-image: radial-gradient(#b3b3b3, #ffffff);">
-  
+
   <div style="width: 30%;margin-left: 35%;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;">
-  <h2 style="width: 100%;text-align: center;color: #0066cc;font-weight: 600;">Thêm Nhân Viên</h2>
+  <button type="button" class="btn btn-primary btn-lg optionButton" style="float: right;">Đọc File</button>  
+  <h2 style="width: 100%;color: #0066cc;font-weight: 600;">Thêm Nhân Viên</h2>
     <div class="form-group">
       <label for="exampleInputEmail1">Tên nhân viên</label>
       <input type="text" class="form-control" id="exampleInputEmail1">
@@ -26,8 +27,8 @@
     <div class="form-group">
       <label for="exampleInputEmail1">Giới Tính</label>
       <select class="form-control">
-      <option></option>
-    </select>
+        <option></option>
+      </select>
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Địa Chỉ</label>
@@ -40,8 +41,8 @@
     <div class="form-group">
       <label for="exampleInputEmail1">Quyền</label>
       <select class="form-control">
-      <option></option>
-    </select>
+        <option></option>
+      </select>
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Tên đăng nhập</label>
@@ -51,8 +52,8 @@
       <label for="exampleInputEmail1">Mật khẩu</label>
       <input type="text" class="form-control" id="exampleInputEmail1">
     </div>
-       
-    <a href="/CuaHangNoiThat/Admin/SanPham">
+
+    <a href="/CuaHangNoiThat/Admin/NhanVien">
       <button type="submit" class="btn btn-primary" style="background-color: white;color: #0066cc;font-size: 1.5rem;margin-top: 2rem;">Trở về </button>
     </a>
     <button type="submit" class="btn btn-primary" style="background-color: #0066cc;color: white;font-size: 1.5rem;margin-top: 2rem;float: right;">Thêm Nhân Viên</button>

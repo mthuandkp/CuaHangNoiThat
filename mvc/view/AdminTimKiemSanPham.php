@@ -15,7 +15,7 @@
 
 <body>
     <div style="width: 60%;margin-left: 20%;margin-top: 1rem;">
-        <h2>Tìm kiếm Sản phẩm nâng cao</h2>
+        <h2><?php echo $title;?></h2>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <div class="form-check mb-2">
