@@ -3,10 +3,9 @@
     class Run extends Controller{
         function display(){
             //model cần chạy
-            $obj = $this->getModel('QuyenDB');
+            $obj = $this->getModel('KhachHangDB');
             //Hàm cần chạy 
-            $data = $obj->getAllRight();
-
+            $data = $obj->getCutomerById(1);
             print_r($data);
         }
     }

@@ -92,7 +92,7 @@
     </div>
 
 
-    <table id="tableContent" class="table" style="width: 90%;margin-left: 5%;background-color: white;margin-top: 2rem;float: left;">
+    <table id="tableContent" class="table" style="width: 90%;margin-left: 5%;background-color: white;margin-top: 2odeoderem;float: left;">
         <thead>
             <tr>
                 <th scope="col">#</th>

@@ -87,7 +87,10 @@ class Admin extends Controller
         $this->View('AdminNhanVien','Admin nhân viên');
     }
     function ThemNhanVien(){
-        $this->View('AdminThemNhanVien','Admin Thêm Nhân Viên');
+        $data = array();
+        $obj = $this->getModel('QuyenDB');
+        $data['Right'] = $obj->getAllRight();
+        $this->View('AdminThemNhanVien','Admin Thêm Nhân Viên',$data);
     }
     function TimKiemNhanVien(){
         $this->View('AdminTimKiemNhanVien','Admin Tìm kiếm nhân viên');

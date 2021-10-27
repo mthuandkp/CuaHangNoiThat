@@ -13,9 +13,9 @@
 
 <body style="background-image: radial-gradient(#b3b3b3, #ffffff);">
 
-  <div style="width: 30%;margin-left: 35%;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;">
-  <button type="button" class="btn btn-primary btn-lg optionButton" style="float: right;">Đọc File</button>  
-  <h2 style="width: 100%;color: #0066cc;font-weight: 600;">Thêm Nhân Viên</h2>
+  <div style="width: 30%;margin-left: 35%;font-size: 1.2rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;">
+    <button type="button" class="btn btn-primary btn-lg optionButton" style="float: right;">Đọc File</button>
+    <h2 style="width: 100%;color: #0066cc;font-weight: 600;">Thêm Nhân Viên</h2>
     <div class="form-group">
       <label for="exampleInputEmail1">Tên nhân viên</label>
       <input type="text" class="form-control" id="exampleInputEmail1">
@@ -27,7 +27,8 @@
     <div class="form-group">
       <label for="exampleInputEmail1">Giới Tính</label>
       <select class="form-control">
-        <option></option>
+        <option value="0">Nam</option>
+        <option value="1">Nữ</option>
       </select>
     </div>
     <div class="form-group">
@@ -41,7 +42,13 @@
     <div class="form-group">
       <label for="exampleInputEmail1">Quyền</label>
       <select class="form-control">
-        <option></option>
+        <?php
+        foreach ($data['Right'] as $value) {
+          echo '<option value="' . $value['MAQUYEN'] . '">' . $value['TENQUYEN'] . ' - ' . $value['MOTA'] . '</option>';
+        }
+
+        ?>
+
       </select>
     </div>
     <div class="form-group">

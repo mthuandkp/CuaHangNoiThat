@@ -2,7 +2,7 @@
     class KhachHangDB extends ConnectionDB{
         //Lay khachhang bang maKH
         function getCutomerById($customerId){
-
+            return array('1','KH01');
         }
         //Lay tat ca khach hang
         function getAllCustomer($isDisable = false){
