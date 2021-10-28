@@ -20,7 +20,7 @@
 
         }
         //Lay tat ca phieunhap
-        function getAllReceipt($receiptId){
+        function getAllReceipt(){
             $query = "SELECT * FROM phieunhap";
             $rs=mysqli_query($this->conn,$query);
             while($row=mysqli_fetch_array($rs))
@@ -29,7 +29,7 @@
             }
             return $data;
         }
-        //Tao ma phieunhap tiep theo
+        //Tao maphieunhap tiep theo
         function createNextReceiptId($receipt){
             $query1="INSERT INTO `phieunhap` (`MAPN`, `MANV`, `MANCC`, `NGAYLAP`, `GIOLAP`, `TONG`) VALUES
              ('$receipt[0]', '$receipt[1]', '$receipt[2]', '$receipt[3]', '$receipt[4]', '$receipt[5]')";
@@ -112,7 +112,7 @@
                 }	
 
            $kq1 = ($rs1) ? "Thêm hóa đơn thành công!!" : "Thêm hóa đơn thất bại";
-           $kq2= ($rs2) ? "Thêm chi tiết hóa đơn thành công với mã hóa đơn là $bill[0]" : "Thêm chi tiết hóa đơn thất bại";
+           $kq2= ($rs2) ? "Thêm chi tiết hóa đơn thành công với mã hóa đơn là $receipt[0]" : "Thêm chi tiết hóa đơn thất bại";
            return $kq1 ." & ". $kq2;
         }
     }

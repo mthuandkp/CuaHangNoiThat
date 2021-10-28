@@ -1,5 +1,5 @@
 <?php
-   <?php
+
    //Model
    require_once("../core/ConnectionDB.php");
    class HoaDonDB extends ConnectionDB{
