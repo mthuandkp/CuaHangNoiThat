@@ -2,7 +2,8 @@
     class KhachHangDB extends ConnectionDB{
         //Lay khachhang bang maKH
         function getCutomerById($customerId){
-            return array('1','KH01');
+            $qry = "SELECT * FROM `khachhang` WHERE `MAKH` ='$customerId';";
+            return mysqli_fetch_assoc(mysqli_query($this->conn,$qry));
         }
         //Lay tat ca khach hang
         function getAllCustomer($isDisable = false){

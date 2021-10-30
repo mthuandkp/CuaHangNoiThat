@@ -1,10 +1,5 @@
 <?php
-class Admin extends Controller
-{
-    function __construct()
-    {
-        include_once('./menuadmin.php');
-    }
+class Admin extends Controller{
     function display()
     {
         $this->View('AdminTrangChu', 'Trang Chủ');
@@ -16,10 +11,87 @@ class Admin extends Controller
     }
     function XemChiTietHD($id)
     {
-        $this->View('AdminChiTietHoaDon', 'Admin Chi Tiết HĐ', $id);
+        $objBillDetail = $this->getModel('HoaDonDB');
+        $objProduct = $this->getModel('SanPhamDB');
+        $data = $objBillDetail->getBillDetailById($id);
+        foreach($data as $key => $value){
+            $product = $objProduct->getProductById($value['MASP']);
+            $data[$key]['TENSP'] = $product['TENSP'];
+            $data[$key]['HINHANH'] = $product['HINHANH'];
+        }
+
+        $this->View('AdminChiTietHoaDon', 'Admin Chi Tiết HĐ', $data);
     }
     function TimKiemHoaDon(){
         $this->View('AdminTimKiemHoaDon','Tìm kiếm hóa đơn');
+    }
+    function getAllBill(){
+        $obj = $this->getModel('HoaDonDB');
+        $objStatus = $this->getModel('TrangThaiDB');
+        $objStaff = $this->getModel('NhanVienDB');
+        $objCustomer = $this->getModel('KhachHangDB');
+        $objSale = $this->getModel('KhuyenMaiDB');
+
+        $data = $obj->getAllBIll();
+        foreach($data as $key=>$value){
+            $staff = $objStaff->getStaffById($value['MANV']);
+            $status = $value['MATRANGTHAI'];
+            $customer = $objCustomer->getCutomerById($value['MAKH']);
+            $data[$key]['MOTATRANGTHAI'] = $objStatus->getStatusNameById($status)['MOTATRANGTHAI'];
+            $data[$key]['TENNV'] = $staff['TENNV'];
+            $data[$key]['TENKH'] = $customer['TENKH'];
+            $data[$key]['PHANTRAMGIAM'] = $objSale->getSaleById($value['MAKM'])['PHANTRAMGIAM'];
+        }
+        
+        echo json_encode($data);
+    }
+
+    function getBillAndDetail(){
+        if(!isset($_POST['id'])){
+            echo -1;
+            return;
+        }
+        $id = $_POST['id'];
+        $objBill = $this->getModel("HoaDonDB");
+        $objStaff = $this->getModel('NhanVienDB');
+        $objCustomer = $this->getModel('KhachHangDB');
+        $objProduct = $this->getModel('SanPhamDB');
+        $objSale = $this->getModel('KhuyenMaiDB');
+
+
+        $data = array();
+        $data['bill'] = $objBill->getBillById($id)[0];
+        $data['bill']['TENNV'] = $objStaff->getStaffById($data['bill']['MANV'])['TENNV'];
+        $data['bill']['TENKH'] = $objCustomer->getCutomerById($data['bill']['MAKH'])['TENKH'];
+        $data['bill']['SALE'] = $objSale->getSaleById($data['bill']['MAKM']);
+        $data['detail'] = $objBill->getBillDetailById($id);
+        foreach($data['detail'] as $key => $value){
+            $product = $objProduct->getProductById($value['MASP']);
+            $data['detail'][$key]['TENSP'] = $product['TENSP'];
+            
+        }
+        echo json_encode($data);
+    }
+
+    function updateBillStatus(){
+        
+        if(!isset($_POST['id'])){
+            echo -1;
+            return;
+        }
+        $id = $_POST['id'];
+        $objBill = $this->getModel("HoaDonDB");
+        if($objBill->updateBillStatus($id)){
+            echo 0;
+            return;
+        }
+        echo -1;
+    }
+
+    function exportBillToExcel(){
+        $objBill = $this->getModel('HoaDonDB');
+        $data = $objBill->exportExcel();
+        echo json_encode($data);
     }
     /*===================================================================== */
     /* ===========================KHACH HANG================================ */
@@ -139,6 +211,9 @@ class Admin extends Controller
         $this->View('AdminGoiYThemSanPham', 'Admin Gợi ý thêm sản phẩm');
     }
     /* ============================================================== */
+    /* =====================TRANG THAI GIAO HANG ====================*/
+    /* ============================================================== */
+
 
     function ThongKe()
     {

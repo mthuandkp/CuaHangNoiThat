@@ -3,7 +3,8 @@
     class SanPhamDB extends ConnectionDB{
         //Lay sanpham
         function getProductById($productId){
-            
+            $qry = "SELECT * FROM `sanpham` WHERE `MASP`='$productId';";
+            return mysqli_fetch_assoc(mysqli_query($this->conn,$qry));
         }
         //Lay tat ca sanpham
         function getAllProduct($isDisable = false){

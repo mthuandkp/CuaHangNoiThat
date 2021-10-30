@@ -5,7 +5,7 @@
         function getProductTypeById($typeId){
             $sql="SELECT * FROM `loaisanpham` WHERE MALOAI = '$typeId'";
             $query=mysqli_query($this->conn,$sql);
-            $row=mysqli_fetch_array($query);            
+            $row=mysqli_fetch_assoc($query);            
             return $row;
         }
         //Lay tat ca loai san pham
@@ -13,7 +13,7 @@
             $sql="SELECT * FROM `loaisanpham`";
             $query=mysqli_query($this->conn,$sql);       
             $arr = array();
-            while ($row=mysqli_fetch_array($query))
+            while ($row=mysqli_fetch_assoc($query))
                 array_push($arr, $row);           
             return $arr;
         }
