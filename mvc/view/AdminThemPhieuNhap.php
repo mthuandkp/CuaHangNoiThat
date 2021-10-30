@@ -32,13 +32,22 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Tên Nhà Cung Cấp</label>
-            <input type="text" class="form-control" id="exampleInputEmail1">
+            <select class="form-control">
+                <?php
+                    
+                    foreach($data['NCC'] as $value){
+                        echo "<option value='$value[MANCC]'>$value[TENNCC]</option>";
+                    }
+                ?>
+            </select>
+
         </div>
 
         <a href="/CuaHangNoiThat/Admin/PhieuNhap">
             <button type="submit" class="btn btn-primary" style="background-color: white;color: #0066cc;font-size: 1.5rem;margin-top: 2rem;">Trở về </button>
         </a>
         <button type="submit" class="btn btn-primary" style="background-color: #0066cc;color: white;font-size: 1.5rem;margin-top: 2rem;float: right;">Thêm Phiếu Nhập</button>
+        
     </div>
 
     <div style="width: 64%;margin-left: 1rem;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;float: left;height: 30rem;">
@@ -119,3 +128,4 @@
 </body>
 
 </html>
+

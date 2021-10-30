@@ -3,6 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 //Model
 class HoaDonDB extends ConnectionDB
 {
@@ -142,7 +145,7 @@ class HoaDonDB extends ConnectionDB
             $bill = $this->getAllBill();
             $bilDetail = $this->getAllBillDetail();
             //First sheet
-            $objPHPExcel = new PHPEXCEL();
+            $objPHPExcel = new Spreadsheet();
             
              // Add new sheet
             $objWorkSheet = $objPHPExcel->createSheet(0); //Setting index when creating
@@ -194,7 +197,7 @@ class HoaDonDB extends ConnectionDB
             }
 
             $objPHPExcel->setActiveSheetIndex(0);
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter = new Xlsx($objPHPExcel);
             $filename = 'Bill'.date("dmY_His").'.xlsx';
             $objWriter->save('./public/excel/'.$filename);
             $result['NAME'] = '/CuaHangNoiThat/public/excel/'.$filename;

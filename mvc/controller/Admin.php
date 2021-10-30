@@ -176,9 +176,11 @@ class Admin extends Controller{
     {
         $this->View('AdminPhieuNhap','Admin Phiếu Nhập');
     }
-    function ThemPhieuNhap()
-    {
-        $this->View('AdminThemPhieuNhap','Admin Thêm Phiếu Nhập');
+    function ThemPhieuNhap(){
+        $data = array();
+        $objSupplier = $this->getModel('NhaCungCapDB');
+        $data['NCC'] = $objSupplier->getAllSupplier();
+        $this->View('AdminThemPhieuNhap','Admin Thêm Phiếu Nhập',$data);
     }
     function TimKiemPhieuNhap()
     {
