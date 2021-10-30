@@ -55,7 +55,6 @@ function convertStringToEnglish(dataString) {
             }
         }
     }
-    console.log(dataString);
     return dataString.replace(/\s/g, '');
 }
 

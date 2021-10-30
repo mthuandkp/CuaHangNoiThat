@@ -55,6 +55,19 @@
                 </div>
                 <input type="text" class="form-control" id="inputNameCus">
             </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="checkBillStatus">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo trạng thái hóa đơn</label>
+                </div>
+                <select class="form-control" id="inputBillStatus">
+                    <option value="TT01">CHỜ XÁC NHẬN</option>
+                    <option value="TT02">ĐÃ XÁC NHẬN</option>
+                    <option value="TT03">ĐANG GIAO HÀNG</option>
+                    <option value="TT04">ĐÃ GIAO HÀNG</option>
+                    <option value="TT05">ĐÃ NHẬN</option>
+                </select>
+            </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
@@ -375,6 +388,7 @@
             $day = "@";
             $month = "@";
             $year = "@";
+            $statusId = '@';
 
             if ($("#checkIdBill").is(":checked")) {
                 $billId = convertStringToEnglish($("#inputIdBil").val());
@@ -393,6 +407,10 @@
             }
             if ($("#checkYear").is(":checked")) {
                 $year = convertStringToEnglish($("#inputYear").val());
+            }
+            //inputBillStatus
+            if ($("#checkBillStatus").is(":checked")) {
+                $statusId = $("#inputBillStatus").val();
             }
 
             $.ajax({
@@ -416,9 +434,9 @@
                         '</thead><tbody>';
 
                     for (var i = 0; i < data.length; i++) {
-                        $dayBill = data[i].NGAYLAP.substring(8);
-                        $monthBill = data[i].NGAYLAP.substring(5, 7);
-                        $yearBill = data[i].NGAYLAP.substring(0, 4);
+                        $dayBill = parseInt(data[i].NGAYLAP.substring(8));
+                        $monthBill = parseInt(data[i].NGAYLAP.substring(5, 7));
+                        $yearBill = parseInt(data[i].NGAYLAP.substring(0, 4));
 
 
                         if ($billId != '@' && !convertStringToEnglish(data[i].MAHD).includes($billId)) {
@@ -437,6 +455,9 @@
                             continue;
                         }
                         if ($year != '@' && $year != $yearBill) {
+                            continue;
+                        }
+                        if ($statusId != '@' && $statusId != data[i].MATRANGTHAI) {
                             continue;
                         }
 

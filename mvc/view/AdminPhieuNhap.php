@@ -91,30 +91,11 @@
                 </div>
                 <input type="text" class="form-control" id="inputYear">
             </div>
-            <button type="submit" class="btn btn-primary">Tìm kiếm </button>
+            <button onclick="searchReceipt();" type="submit" class="btn btn-primary">Tìm kiếm </button>
         </div>
-        
+
     </div>
-    <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;">
-        <!-- <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Mã Hóa Đơn</th>
-                <th scope="col">Tên Nhân Viên</th>
-                <th scope="col">Tên Nhà Cung Cấp</th>
-                <th scope="col">Ngày Lập</th>
-                <th scope="col">Giờ Lập</th>
-                <th scope="col" style="width: 10rem;">Tổng</th>
-                <th scope="col" style="width: 15rem;">Chức Năng</th>
-            </tr>
-        </thead>
-        <tbody> -->
-        <tr>
-
-
-        </tr>
-        </tbody>
-    </table>
+    <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;"></table>
     <script>
         loadTable();
 
@@ -140,13 +121,13 @@
                             '</thead>' +
                             '<tbody>';
                         for ($i = 0; $i < data.length; $i++) {
-                            $xhtml += '<tr><th scope="row">'+($i+1)+'</th>' +
-                                '<td>'+data[$i].MAPN+'</td>' +
-                                '<td>'+data[$i].TENNV+'</td>' +
-                                '<td>'+data[$i].TENNCC+'</td>' +
-                                '<td>'+data[$i].NGAYLAP+'</td>' +
-                                '<td>'+data[$i].GIOLAP+'</td>' +
-                                '<th scope="col">'+formatter.format(data[$i].TONG)+'</th>' +
+                            $xhtml += '<tr><th scope="row">' + ($i + 1) + '</th>' +
+                                '<td>' + data[$i].MAPN + '</td>' +
+                                '<td>' + data[$i].TENNV + '</td>' +
+                                '<td>' + data[$i].TENNCC + '</td>' +
+                                '<td>' + data[$i].NGAYLAP + '</td>' +
+                                '<td>' + data[$i].GIOLAP + '</td>' +
+                                '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                                 '<td>' +
                                 '<button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
                                 '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
@@ -164,13 +145,13 @@
         }
 
         //Bat su kien nhap vao o tim kiem
-        $(document).ready(function(){
-            $("#searchReceipt").keyup(function(){
+        $(document).ready(function() {
+            $("#searchReceipt").keyup(function() {
                 $value = convertStringToEnglish(this.value);
-                console.log($value);
+
                 $.ajax({
-                    url:'/CuaHangNoiThat/Admin/getAllReceipt',
-                    success : function(data){
+                    url: '/CuaHangNoiThat/Admin/getAllReceipt',
+                    success: function(data) {
                         var data = JSON.parse(data);
                         //console.log(data);
                         $xhtml = '<thead>' +
@@ -188,30 +169,30 @@
                             '<tbody>';
                         for ($i = 0; $i < data.length; $i++) {
                             $check = false;
-                            if(convertStringToEnglish(data[$i].MAPN).includes($value)){
+                            if (convertStringToEnglish(data[$i].MAPN).includes($value)) {
                                 $check = true;
                             }
-                            if(convertStringToEnglish(data[$i].TENNV).includes($value)){
+                            if (convertStringToEnglish(data[$i].TENNV).includes($value)) {
                                 $check = true;
                             }
-                            /*
-                            if(convertStringToEnglish(data[$i].TENNCC).includes($value)){
-                                $check = true;
-                            }
-                            if(convertStringToEnglish(data[$i].NGAYLAP).includes($value)){
-                                $check = true;
-                            }*/
 
-                            if(!$check){
+                            if (convertStringToEnglish(data[$i].TENNCC).includes($value)) {
+                                $check = true;
+                            }
+                            if (convertStringToEnglish(data[$i].NGAYLAP).includes($value)) {
+                                $check = true;
+                            }
+
+                            if (!$check) {
                                 continue;
                             }
-                            $xhtml += '<tr><th scope="row">'+($i+1)+'</th>' +
-                                '<td>'+data[$i].MAPN+'</td>' +
-                                '<td>'+data[$i].TENNV+'</td>' +
-                                '<td>'+data[$i].TENNCC+'</td>' +
-                                '<td>'+data[$i].NGAYLAP+'</td>' +
-                                '<td>'+data[$i].GIOLAP+'</td>' +
-                                '<th scope="col">'+formatter.format(data[$i].TONG)+'</th>' +
+                            $xhtml += '<tr><th scope="row">' + ($i + 1) + '</th>' +
+                                '<td>' + data[$i].MAPN + '</td>' +
+                                '<td>' + data[$i].TENNV + '</td>' +
+                                '<td>' + data[$i].TENNCC + '</td>' +
+                                '<td>' + data[$i].NGAYLAP + '</td>' +
+                                '<td>' + data[$i].GIOLAP + '</td>' +
+                                '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                                 '<td>' +
                                 '<button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
                                 '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
@@ -228,6 +209,100 @@
 
             });
         });
+
+        function searchReceipt() {
+            $receiptId = "@";
+            $nameSupplier = "@";
+            $nameStaff = "@";
+            $day = "@";
+            $month = "@";
+            $year = "@";
+
+            if ($("#checkReceiptId").is(":checked")) {
+                $receiptId = convertStringToEnglish($("#inputReceiptId").val());
+            }
+            if ($("#checkNameSupplier").is(":checked")) {
+                $nameSupplier = convertStringToEnglish($("#inputNameSupplier").val());
+            }
+            if ($("#checkNameStaff").is(":checked")) {
+                $nameStaff = convertStringToEnglish($("#inputNameStaff").val());
+            }
+            if ($("#checkDay").is(":checked")) {
+                $day = convertStringToEnglish($("#inputDay").val());
+            }
+            if ($("#checkMonth").is(":checked")) {
+                $month = convertStringToEnglish($("#inputMonth").val());
+            }
+            if ($("#checkYear").is(":checked")) {
+                $year = convertStringToEnglish($("#inputYear").val());
+            }
+
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/getAllReceipt',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    //console.log(data);
+                    $xhtml = '<thead>' +
+                        '<tr>' +
+                        '<th scope="col">#</th>' +
+                        '<th scope="col">Mã Hóa Đơn</th>' +
+                        '<th scope="col">Tên Nhân Viên</th>' +
+                        '<th scope="col">Tên Nhà Cung Cấp</th>' +
+                        '<th scope="col">Ngày Lập</th>' +
+                        '<th scope="col">Giờ Lập</th>' +
+                        '<th scope="col" style="width: 10rem;">Tổng</th>' +
+                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
+                    for ($i = 0; $i < data.length; $i++) {
+                        $dayReceipt = parseInt(data[$i].NGAYLAP.substring(8));
+                        $monthReceipt = parseInt(data[$i].NGAYLAP.substring(5, 7));
+                        $yearReceipt = parseInt(data[$i].NGAYLAP.substring(0, 4));
+
+
+                        if ($receiptId != '@' && !convertStringToEnglish(data[$i].MAPN).includes($receiptId)) {
+                            continue;
+                        }
+                        if ($nameStaff != '@' && !convertStringToEnglish(data[$i].TENNV).includes($nameStaff)) {
+                            continue;
+                        }
+                        if ($nameSupplier != '@' && !convertStringToEnglish(data[$i].TENNCC).includes($nameSupplier)) {
+                            continue;
+                        }
+                        if ($day != '@' && $day != $dayReceipt) {
+                            continue;
+                        }
+                        if ($month != '@' && $month != $monthReceipt) {
+                            continue;
+                        }
+                        if ($year != '@' && $year != $yearReceipt) {
+                            continue;
+                        }
+
+
+
+                        $xhtml += '<tr><th scope="row">' + ($i + 1) + '</th>' +
+                            '<td>' + data[$i].MAPN + '</td>' +
+                            '<td>' + data[$i].TENNV + '</td>' +
+                            '<td>' + data[$i].TENNCC + '</td>' +
+                            '<td>' + data[$i].NGAYLAP + '</td>' +
+                            '<td>' + data[$i].GIOLAP + '</td>' +
+                            '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
+                            '<td>' +
+                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
+                            '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
+                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
+                            '</a>' +
+                            '</td></tr>';
+                    }
+
+
+                    $xhtml += '</tbody></table>';
+                    $('#tableContent').html($xhtml);
+                }
+            });
+        }
     </script>
 </body>
 
