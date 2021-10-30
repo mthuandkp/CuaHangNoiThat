@@ -1,11 +1,10 @@
 <?php
-    include('../core/ConnectionDB.php');
-    class NhaCungCap extends ConnectionDB{
+    class NhaCungCapDB extends ConnectionDB{
         //Lay nha cung cap
         function getSupplierById($supplierId){
             $sql="SELECT * FROM `nhacungcap` WHERE MANCC = '$supplierId'";
             $query=mysqli_query($this->conn,$sql);
-            $row=mysqli_fetch_array($query);            
+            $row=mysqli_fetch_assoc($query);            
             return $row;
         }
         //Lay tat ca loai san pham
@@ -13,7 +12,7 @@
             $sql="SELECT * FROM `nhacungcap`";
             $query=mysqli_query($this->conn,$sql);
             $arr = array();
-            while ($row=mysqli_fetch_array($query))
+            while ($row=mysqli_fetch_assoc($query))
                 array_push($arr, $row);           
             return $arr;
         }

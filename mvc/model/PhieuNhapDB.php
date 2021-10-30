@@ -5,14 +5,14 @@
         function getReceiptById($receiptId){
             $query = "SELECT * FROM phieunhap WHERE MAPN = '".$receiptId."'";
             $rs=mysqli_query($this->conn,$query);
-            $data[]=mysqli_fetch_array($rs);
+            $data[]=mysqli_fetch_assoc($rs);
             return $data;
         }
         //Lay chi tiet phieu nhap
         function getReceiptDetailById($receiptId){
             $query="SELECT * FROM ct_phieunhap WHERE MAPH = '".$receiptId."'";
             $rs=mysqli_query($this->conn,$query);
-            while($row=mysqli_fetch_array($rs))
+            while($row=mysqli_fetch_assoc($rs))
             {
                 $data[]=$row;
             }
@@ -21,9 +21,10 @@
         }
         //Lay tat ca phieunhap
         function getAllReceipt(){
+            $data = array();
             $query = "SELECT * FROM phieunhap";
             $rs=mysqli_query($this->conn,$query);
-            while($row=mysqli_fetch_array($rs))
+            while($row=mysqli_fetch_assoc($rs))
             {
                 $data[]=$row;
             }
@@ -41,7 +42,7 @@
         function getBilByStaffId($staffId){
             $query="SELECT * FROM phieunhap WHERE MANV = '".$staffId."'";
             $rs=mysqli_query($this->conn,$query);
-            while($row=mysqli_fetch_array($rs))
+            while($row=mysqli_fetch_assoc($rs))
             {
                 $data[]=$row;
             }
@@ -52,7 +53,7 @@
         function getBilBySupplierId($supplierId){
             $query="SELECT * FROM phieunhap WHERE MANCC = '".$supplierId."'";
             $rs=mysqli_query($this->conn,$query);
-            while($row=mysqli_fetch_array($rs))
+            while($row=mysqli_fetch_assoc($rs))
             {
                 $data[]=$row;
             }
@@ -62,7 +63,7 @@
         function getPriceInReceiptDetail($detailId){
             $query="SELECT SUM(GIA) FROM `ct_phieunhap` WHERE MAPH = '".$detailId."'";
             $rs=mysqli_query($this->conn,$query);
-            while($row=mysqli_fetch_array($rs))
+            while($row=mysqli_fetch_assoc($rs))
             {
                 $data[0]=$row;
             }

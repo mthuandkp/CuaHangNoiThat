@@ -188,6 +188,20 @@ class Admin extends Controller{
     {
         $this->View('AdminChiTietPhieuNhap','Admin Chi Tiết Phiếu Nhập',$id);
     }
+
+    function getAllReceipt(){
+        $objReceipt = $this->getModel('PhieuNhapDB');
+        $objStaff = $this->getModel('NhanVienDB');
+        $objSupplier = $this->getModel('NhaCungCapDB');
+
+        $data = $objReceipt->getAllReceipt();
+        foreach($data as $key=>$value){
+            $data[$key]['TENNV'] = $objStaff->getStaffById($value['MANV'])['TENNV'];
+            $data[$key]['TENNCC'] = $objSupplier->getSupplierById($value['MANCC'])['TENNCC'];
+        }
+        
+        echo json_encode($data);
+    }
     /* ============================================================*/
     /* =========================SAN PHAM===================================*/
     function SanPham()
