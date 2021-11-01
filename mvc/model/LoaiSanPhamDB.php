@@ -1,10 +1,10 @@
 <?php
-    include('../core/ConnectionDB.php');
-    class LoaiSanPham extends ConnectionDB{
+    class LoaiSanPhamDB extends ConnectionDB{
         //Lay loai san pham
         function getProductTypeById($typeId){
             $sql="SELECT * FROM `loaisanpham` WHERE MALOAI = '$typeId'";
             $query=mysqli_query($this->conn,$sql);
+            $row = array();
             $row=mysqli_fetch_assoc($query);            
             return $row;
         }

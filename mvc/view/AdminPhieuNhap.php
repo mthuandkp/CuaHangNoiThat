@@ -25,7 +25,7 @@
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
         <a href="/CuaHangNoiThat/Admin/ThemPhieuNhap"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm Phiếu Nhập</button></a>
-        <a href="#"><button type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button></a>
+        <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
         <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
             <input type="email" class="form-control" id="searchReceipt" placeholder="Nhập vào thông tin cần tìm..." style="float: right;width: 20rem;">
         </div>
@@ -96,6 +96,13 @@
 
     </div>
     <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;"></table>
+
+    <!-- Hoa don phieu nhap -->
+    <div id="printReceipt" style="width: 40%;margin-left: 30%;background-color: lightgray;color: black;position: absolute;top: 5rem;"></div>
+
+    <!-- Thong bao xuat excel thanh cong -->
+    <div id="openExportReceipt" style="width: 60%;background-color: #007bff; position: absolute; top: 25%; height: auto; padding: 2rem; border-radius: 1rem; color: white;left:20%;font-size: 1.3rem;border: 2px solid black;"></div>
+
     <script>
         loadTable();
 
@@ -129,7 +136,7 @@
                                 '<td>' + data[$i].GIOLAP + '</td>' +
                                 '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                                 '<td>' +
-                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
+                                '<button onclick="viewBillDetail(\''+data[$i].MAPN+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
                                 '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
                                 '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
                                 '</a>' +
@@ -194,7 +201,7 @@
                                 '<td>' + data[$i].GIOLAP + '</td>' +
                                 '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                                 '<td>' +
-                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
+                                '<button onclick="viewBillDetail(\''+data[$i].MAPN+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
                                 '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
                                 '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
                                 '</a>' +
@@ -300,6 +307,133 @@
 
                     $xhtml += '</tbody></table>';
                     $('#tableContent').html($xhtml);
+                }
+            });
+        }
+
+
+        //Xem chi tiet Phieu Nhap
+        function viewBillDetail($id) {
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/getReceiptAndDetail',
+                data: {
+                    'id': $id
+                },
+                method: "post",
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    var bill = data.receipt;
+                    var detail = data.detail;
+
+                    console.log(data);
+
+                    $xhtml = '<div>' +
+                        '<button class="printBtn btn btn-primary btnControl" style="background-color: red;" onclick="$(\'#printReceipt\').hide();">Đóng</button>' +
+                        '<button class="printBtn btn btn-primary btnControl" onclick="printBillTOImage();">In</button>' +
+                        '</div>' +
+                        '<div id="exportBillToImage">' +
+                        '<div style="width: 100%;background-color: lightgray;">' +
+                        '<h1 style="text-align: center;">MILD STORE</h1>' +
+                        '<div style="width: 100%;text-align: center;">' +
+                        '<p style="font-weight: 800;color: gray;">Decorate your Life with Arts</p>' +
+                        '<h5>Địa chỉ: 273 An D. Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh</h5>' +
+                        '<h5>SĐT: 0843739379</h5>' +
+                        '<h5>www.mildstore.com</h5>' +
+                        '</div>' +
+                        '<div>' +
+                        '<p style="text-align: center;">------------------------------------------------------------------------------------------</p>' +
+                        '<h3 style="width: 90%;margin-left: 5%;">THÔNG TIN PHIẾU NHẬP</h3>' +
+                        '<div style="background-color: white;width: 90%;margin-left: 5%;padding: 1rem;">' +
+                        '<table style="font-size:1.2rem;">' +
+                        '<tr>' +
+                        '<td style="font-weight:800;padding-right:3rem;">Mã Phiếu Nhập: </td>' +
+                        '<td>' + bill.MAPN + '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td style="font-weight:800;padding-right:3rem;">Tên Nhân Viên: </td>' +
+                        '<td>' + bill.TENNV + '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td style="font-weight:800;padding-right:3rem;">Tên Nhà Cung Cấp: </td>' +
+                        '<td>' + bill.TENNCC + '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td style="font-weight:800;padding-right:3rem;">Thời gian lập : </td>' +
+                        '<td>' + bill.GIOLAP + ' ' + bill.NGAYLAP + '</td>' +
+                        '</tr>' +
+                        '</table>' +
+                        '</div>' +
+                        '<h3 style="width: 90%;margin-left: 5%;">CHI TIẾT PHIẾU NHẬP</h3>' +
+                        '<table class="table" style="width: 90%;margin-left: 5%;background-color: white;">' +
+                        '<thead>';
+                    $xhtml += '<tr>' +
+                        '<th scope="col">#</th>' +
+                        '<th scope="col">Tên Sản Phẩm</th>' +
+                        '<th scope="col">Số Lượng</th>' +
+                        '<th scope="col">Đơn Giá</th>' +
+                        '<th scope="col">Thành Tiền</th>' +
+                        '</tr>';
+                    $sumPrice = 0;
+                    $sumNumber = 0;
+                    for ($i = 0; $i < detail.length; $i++) {
+                        $sumNumber += parseInt(detail[$i].SOLUONG);
+                        $sumPrice += parseInt(detail[$i].GIA) * parseInt(detail[$i].SOLUONG);
+                        $xhtml += '<tr>' +
+                            '<th scope="col">' + ($i + 1) + '</th>' +
+                            '<td>' + detail[$i].TENSP + '</td>' +
+                            '<td>' + detail[$i].SOLUONG + '</td>' +
+                            '<th scope="col">' + formatter.format(detail[$i].GIA) + '</th>' +
+                            '<th scope="col">' + formatter.format(detail[$i].GIA * detail[$i].SOLUONG) + '</th>' +
+                            '</tr>';
+                    }
+                    $xhtml += '<tr>' +
+                        '<th scope="col" colspan="6"></th>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<th scope="col" colspan="2">Thành Tiền:</th>' +
+                        '<td colspan="1">' + $sumNumber + '<td>' +
+                        '<th scope="col">' + formatter.format($sumPrice) + '</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>' +
+                        '</tbody>' +
+                        '</table>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    $("#printReceipt").html($xhtml);
+                    $("#printReceipt").show();
+                }
+            });
+        }
+
+        function printBillTOImage() {
+            html2canvas(document.querySelector("#exportBillToImage")).then(canvas => {
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, "Receipt.png");
+                });
+            });
+        }
+
+        $('#openExportReceipt').hide();
+        function exportExcel() {
+            //<a href="">
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/exportReceiptToExcel',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    if (data.ERROR == 0) {
+                        $xhtml = 'Xuất phiếu nhập thành công file được lưu tại (' + data.NAME + '). Bạn có muốn mở file không ?' +
+                            '<div>' +
+                            '<button class="btn btn-primary btnControl" style="background-color: white;color: #007bff;float: right;" onclick="window.location = \'' + data.NAME + '\';$(\'#openExportReceipt\').hide();">Mở File</button>' +
+                            '<button class="btn btn-primary btnControl" style="background-color: blue;color: white;float: right;" onclick="$(\'#openExportReceipt\').hide();">Đóng</button>' +
+                            '</div>';
+                        $('#openExportReceipt').html($xhtml);
+                        $('#openExportReceipt').show();
+                    } else {
+                        alert('Lỗi khi ghi file : ' + data.ERROR);
+                    }
                 }
             });
         }

@@ -17,7 +17,6 @@
         }
         //Cap nhat thong tin khuyenmai
         function updateInformationSale($sale){
-
         }
         //Tao ma khuyen mai tiep theo
         function createNextSaleId(){
