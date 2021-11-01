@@ -3,7 +3,7 @@
 <?php
 class ConnectionDB
 {
-    protected $dbhost = "localhost";
+    protected $dbhost = "localhost:3309";
     protected $dbuser = "root";
     protected $dbpass = "123456";
     protected $db = "cuahangnoithat";

@@ -3,7 +3,7 @@
     class Run extends Controller{
         function display(){
             //model cần chạy
-            $obj = $this->getModel('TrangThaiDB');
+            $obj = $this->getModel('KhachHangDB');
 
 
             /*$bill = array('HD02','NV01','KH01','2021-10-28','07:03:02',800000,'TT01');
@@ -12,8 +12,10 @@
                 array('MAHD'=>'HD02','MASP'=>'SP02','SOLUONG'=>2,'GIA'=>2000)
 
             );*/
+
+            $customer = array ('KH03','Thuy', 'Thuy', '123', 'LongAn', '1234567890',1,2);
             //Hàm cần chạy 
-            $data = $obj->getStatusNameById('TT01');
+            $data = $obj->addNewCustomer($customer);
            echo '<pre>';
            print_r($data);
         }
