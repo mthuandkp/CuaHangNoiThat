@@ -9,19 +9,31 @@ class PhieuNhapDB extends ConnectionDB
     //Lay phieu nhap
     function getReceiptById($receiptId)
     {
-        $query = "SELECT * FROM phieunhap WHERE MAPN = '" . $receiptId . "'";
+        $query = "SELECT * FROM phieunhap WHERE MAPN = '$receiptId'";
         $rs = mysqli_query($this->conn, $query);
         $data[] = mysqli_fetch_assoc($rs);
         return $data;
     }
     //Lay chi tiet phieu nhap
-    function getReceiptDetailById($receiptId)
-    {
-        $query = "SELECT * FROM ct_phieunhap WHERE MAPH = '" . $receiptId . "'";
+    function getReceiptDetailById($receiptId){
+        $data = array();
+        $query = "SELECT * FROM ct_phieunhap WHERE MAPN = '$receiptId'";
         $rs = mysqli_query($this->conn, $query);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;
         }
+        
+        return $data;
+    }
+    //Lay chi tiet phieu nhap
+    function getAllReceiptDetail(){
+        $data = array();
+        $query = "SELECT * FROM ct_phieunhap;";
+        $rs = mysqli_query($this->conn, $query);
+        while ($row = mysqli_fetch_assoc($rs)) {
+            $data[] = $row;
+        }
+        
         return $data;
     }
     //Lay tat ca phieunhap
@@ -182,5 +194,73 @@ class PhieuNhapDB extends ConnectionDB
         }
 
        return $data;
+    }
+
+    function exportExcel()
+    {
+        $result = array();
+        $result['NAME'] = '';
+        $result['ERROR'] = 0;
+        
+        try {
+            //Data
+            $receipt = $this->getAllReceipt();
+            $receiptDetail = $this->getAllReceiptDetail();
+            //First sheet
+            $objPHPExcel = new Spreadsheet();
+            
+             // Add new sheet
+            $objWorkSheet = $objPHPExcel->createSheet(0); //Setting index when creating
+            $objWorkSheet->setTitle("Phiếu Nhập");
+            $numRow = 1;
+
+            $objWorkSheet
+            ->setCellValue('A'.$numRow, 'Mã Phiếu Nhập')
+            ->setCellValue('B'.$numRow, 'Mã Nhân Viên')
+            ->setCellValue('C'.$numRow, 'Mã Nhà Cung Cấp')
+            ->setCellValue('D'.$numRow, 'Ngày Lập')
+            ->setCellValue('E'.$numRow, 'Giờ Lập')
+            ->setCellValue('F'.$numRow, 'Tổng Tiền');
+            
+
+            foreach($receipt as $value){
+                ++$numRow;
+                $objWorkSheet
+                ->setCellValue('A'.$numRow, $value['MAPN'])
+                ->setCellValue('B'.$numRow, $value['MANV'])
+                ->setCellValue('C'.$numRow, $value['MANCC'])
+                ->setCellValue('D'.$numRow, $value['NGAYLAP'])
+                ->setCellValue('E'.$numRow, $value['GIOLAP'])
+                ->setCellValue('F'.$numRow, $value['TONG']);
+            }
+
+            // Add new sheet
+             $objWorkSheet = $objPHPExcel->createSheet(1); //Setting index when creating
+             $objWorkSheet->setTitle("CT Phiếu Nhập");
+             $numRow = 1;
+            $objWorkSheet
+            ->setCellValue('A'.$numRow, 'Mã Phiếu Nhập')
+            ->setCellValue('B'.$numRow, 'Mã Sản Phẩm')
+            ->setCellValue('C'.$numRow, 'Số Lượng')
+            ->setCellValue('D'.$numRow, 'Giá');
+
+            foreach($receiptDetail as $value){
+                ++$numRow;
+                $objWorkSheet
+                ->setCellValue('A'.$numRow, $value['MAPN'])
+                ->setCellValue('B'.$numRow, $value['MASP'])
+                ->setCellValue('C'.$numRow, $value['SOLUONG'])
+                ->setCellValue('D'.$numRow, $value['GIA']);
+            }
+
+            $objPHPExcel->setActiveSheetIndex(0);
+            $objWriter = new Xlsx($objPHPExcel);
+            $filename = 'Receipt'.date("dmY_His").'.xlsx';
+            $objWriter->save('./public/excel/'.$filename);
+            $result['NAME'] = '/CuaHangNoiThat/public/excel/'.$filename;
+        } catch (Exception $e) {
+            $result['ERROR'] = $e->getMessage();
+        }
+        return $result;
     }
 }

@@ -23,7 +23,7 @@
 
 <body style="background-image: radial-gradient(#b3b3b3, #ffffff);">
 
-    <div style="width: 25%;margin-left: 5%;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;float: left;height: 30rem;">
+    <div style="width: 25%;margin-left: 5%;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;float: left;height: 32rem;">
         <h2 style="width: 100%;color: #0066cc;font-weight: 600;">Thêm Phiếu Nhập</h2>
         <div class="form-group">
             <label for="exampleInputEmail1">Tên Nhân Viên</label>
@@ -58,9 +58,10 @@
 
     </div>
 
-    <div style="width: 64%;margin-left: 1rem;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;float: left;height: 30rem;">
+    <div style="width: 64%;margin-left: 1rem;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;float: left;height: 32rem;">
         <h2 style="width: 100%;color: #0066cc;font-weight: 600;text-align: center;">Thêm Chi Tiết Phiếu Nhập</h2>
-        <div style="width: 100%;">
+        <div style="width: 40%;border: 1px solid black;padding-left: 1rem;">
+        <label for="">Đọc Excel</label>
         <input type="file" name="readfile" class="form-control-file" id="readDetailFromFile" style="width: auto;margin-bottom: 1rem;" multiple>
         </div>
         <div class="form-row">
@@ -108,6 +109,13 @@
                 </div>
                 <input type="file" name="image" class="form-control" id="inputProductImage" multiple>
             </div>
+            <div class="form-group col-md-4" id="containerCurentImage">
+                <div class="form-check mb-2">
+                    <label class="form-check-label" for="autoSizingCheck">Hình Ảnh hiện tại</label>
+                </div>
+                <input type="text" value="" style="font-size: 1rem;width: 15rem;" readonly id="currentImage">
+                <button onclick="changeCurrentImage();" class="btn btn-primary" style="width: 15rem;">Thay đổi hình ảnh</button>
+            </div>
             <div style="width: 100%;" id="addControl">
                 <button onclick="addItemToDetail();" type="submit" class="btn btn-primary" style="background-color: #0066cc;color: white;font-size: 1em;margin-top: 2rem;float: right;margin-left:1rem;">Thêm Chi Tiết</button>
                 <button onclick="refreshInput();" type="submit" class="btn btn-primary" style="background-color: white;color: #0066cc;font-size: 1em;margin-top: 2rem;float: right;margin-left: 2rem;">Làm Lại</button>
@@ -127,6 +135,7 @@
         let tmpItem = new Array();
         loadTable();
         $('#editControl').hide();
+        $("#containerCurentImage").hide();
         //Onchange mã SP
         $(document).ready(function() {
             $("#inputProductId").change(function() {
@@ -150,13 +159,20 @@
                             $("#inputProductName").val(productArray[$i]['TENSP']);
                             $("#inputProductType").val(productArray[$i]['MALOAI']);
                             $("#inputProductPrice").val(productArray[$i]['GIA']);
+                            $("#currentImage").val(productArray[$i]['HINHANH']);
                             $("#containerImage").css("display", "none");
+                            $("#containerCurentImage").show();
+                            $("#containerImage").hide();
+                            $("#containerCurentImage").hide();
 
-                            //An di cac muc da lay thong tin
+                            //Vo hieu hoa cac muc da lay thong tin
+                            $("#inputProductId").prop("readonly", true);
                             $("#inputProductName").prop("readonly", true);
                             $("#inputProductType").prop("disabled", true);
                             $("#inputProductPrice").prop("readonly", true);
                             $("#inputProductImage").prop("readonly", true);
+                            
+                            
 
                             //Lay du lieu tu csdl
                             $idProduct = productArray[$i]['MASP'];
@@ -171,6 +187,7 @@
                             $("#inputProductId").val("");
                             $("#inputProductId").focus();
                         }
+                        return;
                     }
                 }
 
@@ -202,9 +219,7 @@
             $typeProduct = $("#inputProductType").val();
             $priceProduct = $("#inputProductPrice").val();
             $numberProduct = $("#inputProductNumber").val();
-            if ($("#inputProductImage").val() != '') {
-                $imageProduct = $("#inputProductImage").val();
-            }
+            $imageProduct = $("#currentImage").val();
 
             //Kiem tra dau vao
             //MASP
@@ -265,7 +280,6 @@
             //Hinh anh
             if ($imageProduct == '') {
                 alert('Vui lòng chọn hình ảnh sản phẩm');
-
                 return;
             } else {
                 $extension = $imageProduct.substring($imageProduct.length - 3);
@@ -275,17 +289,7 @@
                     return;
                 }
             }
-            //Lay ten hinh anh
-            $index = $imageProduct.length - 1;
-
-            while ($index > 0 && $imageProduct[$index] != '/' && $imageProduct[$index] != '\\') {
-                $index--;
-            }
-            if ($index == 0 && $imageProduct[0] != '/' && $imageProduct[0] != '\\') {
-                $index--;
-            }
-            $imageProduct = $imageProduct.substring($index + 1);
-
+            
             //Them vao chi tiet
             var newItem = {
                 MASP: $idProduct,
@@ -296,11 +300,15 @@
                 HINHANH: $imageProduct
             };
             detailReceipt.push(newItem);
-            console.log(detailReceipt);
 
             alert("Thêm thành công");
             refreshInput();
             loadTable();
+            tmpItem = new Array();
+            $("#containerCurentImage").hide();
+            $("#containerImage").show();
+            $("#currentImage").val("");
+            $("#inputProductImage").val("");
         }
 
         //Bat onchange khi chon hinh anh 
@@ -327,9 +335,21 @@
                     type: 'post',
                     success: function(data) {
                         var data = JSON.parse(data);
-                        console.log(data);
+                        var currentImage = $("#inputProductImage").val();
+                        //get name image
+                        $index = currentImage.length-1;
+                        console.log("Hinh anh co do dai " +currentImage.length);
+                        while($index > 0 && currentImage[$index] != '/' && currentImage[$index] != '\\'){
+                            $index--;
+                        }
+
+                        currentImage = currentImage.substring($index+1);
                         if (data == 0) {
                             alert("Thêm ảnh thành công");
+                            $("#currentImage").val(currentImage);
+                            //console.log("Hinh anh hien tai " + $("#inputProductImage").val());
+                            $("#containerCurentImage").show();
+                            $("#containerImage").hide();
                             return;
                         }
                         alert('Không thể upload ảnh');
@@ -346,14 +366,18 @@
             $("#inputProductPrice").val("");
             $("#inputProductNumber").val("");
             $("#inputProductId").focus();
+            $("#currentImage").val("");
+            $("#inputProductImage").val("");
 
-            //Hien cac muc da lay thong tin
+            //Hien cac muc 
             $("#inputProductId").prop("readonly", false);
             $("#inputProductName").prop("readonly", false);
             $("#inputProductType").prop("disabled", false);
             $("#inputProductPrice").prop("readonly", false);
             $("#inputProductImage").prop("readonly", false);
-            $("#containerImage").css("display", "block");
+            $("#containerImage").show();
+            $("#containerCurentImage").hide();
+            
 
 
         }
@@ -451,6 +475,7 @@
             $("#inputProductType").val(tmpItem.MALOAI);
             $("#inputProductPrice").val(tmpItem.GIA);
             $("#inputProductNumber").val(tmpItem.SOLUONG);
+            $("#currentImage").val(tmpItem.HINHANH);
             //An di cac muc da lay thong tin
             $("#containerImage").css("display", "none");
             if ($check) {
@@ -459,6 +484,16 @@
                 $("#inputProductName").prop("readonly", true);
                 $("#inputProductType").prop("disabled", true);
                 $("#inputProductPrice").prop("readonly", true);
+                $("#containerImage").hide();
+                $("#containerCurentImage").hide();
+            }
+            else{
+                //hien thi cac muc da lay thong tin
+                $("#inputProductId").prop("readonly", false);
+                $("#inputProductName").prop("readonly", false);
+                $("#inputProductType").prop("disabled", false);
+                $("#inputProductPrice").prop("readonly", false);
+                $("#containerCurentImage").show();
             }
         }
 
@@ -494,6 +529,9 @@
                     console.log(result);
                     if(parseInt(result) == 0){
                         alert('Thêm Phiếu Nhập thành công ');
+                        detailReceipt = new Array();
+                        refreshInput();
+                        loadTable();
                         return;
                     }
                     alert('Thêm phiếu nhập thất bại !!!');
@@ -554,6 +592,13 @@
                 });
             });
         })
+
+        function changeCurrentImage(){
+            $("#containerImage").show();
+            $("#containerCurentImage").hide();
+            $("#inputProductImage").val("");
+            $("#currentImage").val("");
+        }
     </script>
 </body>
 

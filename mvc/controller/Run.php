@@ -12,7 +12,7 @@ class Run extends Controller
             array('MASP' => 'SP02', 'TENSP' => 'Sản Phẩm 2', 'MALOAI' => 'LSP01', 'GIA' => 55000, 'SOLUONG' => 10, 'HINHANH' => 'Empty.jpg', 'TRANGTHAI' => true, 'PHANTRAMGIAM' => 20)
         );
         echo '<pre>';
-        print_r($obj->readExcel());
+        print_r($obj->getReceiptDetailById('PN01'));
     }
 }
 ?>

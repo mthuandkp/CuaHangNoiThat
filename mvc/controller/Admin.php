@@ -73,6 +73,33 @@ class Admin extends Controller{
         echo json_encode($data);
     }
 
+
+    function getReceiptAndDetail(){
+        if(!isset($_POST['id'])){
+            echo -1;
+            return;
+        }
+        $id = $_POST['id'];
+        $objReceipt = $this->getModel("PhieuNhapDB");
+        $objStaff = $this->getModel('NhanVienDB');
+        $objSupplier = $this->getModel('NhaCungCapDB');
+        $objProduct = $this->getModel('SanPhamDB');
+
+
+        $data = array();
+        $data['receipt'] = $objReceipt->getReceiptById($id)[0];
+        $data['receipt']['TENNV'] = $objStaff->getStaffById($data['receipt']['MANV'])['TENNV'];
+        $data['receipt']['TENNCC'] = $objSupplier->getSupplierById($data['receipt']['MANCC'])['TENNCC'];
+        
+        $data['detail'] = $objReceipt->getReceiptDetailById($id);
+        foreach($data['detail'] as $key => $value){
+            $product = $objProduct->getProductById($value['MASP']);
+            $data['detail'][$key]['TENSP'] = $product['TENSP'];
+            
+        }
+        echo json_encode($data);
+    }
+
     function updateBillStatus(){
         
         if(!isset($_POST['id'])){
@@ -386,6 +413,12 @@ class Admin extends Controller{
         $countArray['sumValidRow'] = $countArray['sumFilterRow'] - $countArray['sumInvalidRow'];
         $countArray['sumNewRow'] = $countArray['sumValidRow'] - $countArray['sumExistRow'];
         echo json_encode(array($data,$countArray));
+    }
+
+    function exportReceiptToExcel(){
+        $objBill = $this->getModel('PhieuNhapDB');
+        $data = $objBill->exportExcel();
+        echo json_encode($data);
     }
     /* ============================================================*/
     /* =========================SAN PHAM===================================*/
