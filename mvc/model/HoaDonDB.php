@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+
 //Model
 class HoaDonDB extends ConnectionDB
 {
@@ -60,7 +60,7 @@ class HoaDonDB extends ConnectionDB
         if ($lastBillId == 0) {
             return 'HD01';
         }
-        $nextId = (int)substr($lastBillId, 2, 2) + 1;
+        $nextId = (int)substr($lastBillId, 2) + 1;
         if (strlen($nextId) < 2) {
             $nextId = '0' . $nextId;
         }

@@ -178,8 +178,13 @@ class Admin extends Controller{
     }
     function ThemPhieuNhap(){
         $data = array();
+        $objTypeProduct = $this->getModel('LoaiSanPhamDB');
         $objSupplier = $this->getModel('NhaCungCapDB');
+        $objProduct = $this->getModel('SanPhamDB');
+
         $data['NCC'] = $objSupplier->getAllSupplier();
+        $data['TypeProduct'] = $objTypeProduct->getAllProductType();
+        $data['Product'] = $objProduct->getAllProduct();
         $this->View('AdminThemPhieuNhap','Admin Thêm Phiếu Nhập',$data);
     }
     function TimKiemPhieuNhap()
@@ -204,6 +209,184 @@ class Admin extends Controller{
         
         echo json_encode($data);
     }
+
+    function AddReceiptToDb(){
+        $dataProduct = $_POST['data'];
+        $objReceipt = $this->getModel('PhieuNhapDB');
+        $objProduct = $this->getModel('SanPhamDB');
+        //Count sum of receipt
+        $sum = 0;
+        foreach($dataProduct as $value){
+            $sum += $value['GIA']*$value['SOLUONG'];
+        }
+        
+        $receipt = array(
+            'MANV'=>$_POST['staffid'],
+            'MANCC'=>$_POST['supplierId'],
+            'MAPN'=>$objReceipt->createNextReceiptId(),
+            'NGAYLAP'=>date('Y-m-d'),
+            'GIOLAP'=>date('h:i:s'),
+            'TONG'=>$sum
+        );
+
+        //detail of receipt
+        $detailReceipt = array();
+        //New product
+        $newProduct = array();
+        //Exist Product
+        $existProduct = array();
+        foreach($dataProduct as $value){
+            if(empty($objProduct->getProductById($value['MASP']))){
+                $newProduct[] = $value;
+            }
+            else{
+                $existProduct[] = array(
+                    'MASP'=> $value['MASP'],
+                    'SOLUONG'=>$value['SOLUONG']
+                );
+            }
+            $detailReceipt[] = array(
+                'MAPN'=>$receipt['MAPN'],
+                'MASP'=>$value['MASP'],
+                'SOLUONG'=>$value['SOLUONG'],
+                'GIA'=>$value['GIA']
+            );
+        }
+
+        //Update product
+        if (!empty($newProduct)) {
+            $result = $objProduct->addNewProduct($newProduct);
+            if (!$result) {
+                echo 'ERROR_ADD_NEW';
+                return;
+            }
+        }
+
+        if (!empty($existProduct)) {
+            $result = $objProduct->updateNumberListProduct($existProduct);
+            if (!$result) {
+                echo 'ERROR_ADD_EXIST';
+                return;
+            }
+        }
+        //Update receipt
+        $result = $objReceipt->AddReceiptAndDetail($receipt,$detailReceipt);
+        echo $result ? 0:"ERROR_ADD_RECEIPT_AND_DETAIL";
+    }
+
+    function compareTo($detail1,$detail2){
+        if($detail1['MASP'] != $detail2['MASP'] ||
+        $detail1['TENSP'] != $detail2['TENSP'] ||
+        $detail1['MALOAI'] != $detail2['MALOAI'] ||
+        $detail1['GIA'] != $detail2['GIA'] ||
+        $detail1['HINHANH'] != $detail2['HINHANH'] ){
+            return false;
+        }
+        if(strcmp($detail1['MASP'],$detail2['MASP']) != 0 ||
+        strcmp($detail1['TENSP'],$detail2['TENSP']) != 0 ||
+        strcmp($detail1['MALOAI'],$detail2['MALOAI']) != 0 ||
+        $detail1['MASP'] != $detail2['MASP'] ||
+        strcmp($detail1['HINHANH'],$detail2['HINHANH']) != 0){
+            return false;
+        }
+        return true;
+    }
+
+    function readDetailReceiptFromFile(){
+        $objReceipt = $this->getModel("PhieuNhapDB");
+        $objProduct = $this->getModel("SanPhamDB");
+        $objTypeProduct = $this->getModel("LoaiSanPhamDB");
+        $data = $objReceipt->readExcel($_FILES['file']);
+        
+
+        $countArray = array(
+            'sumRow' => count($data),
+            'sumFilterRow' => 0,
+            'sumInvalidRow' => 0,
+            'sumValidRow' => 0,
+            'sumExistRow' => 0,
+            'sumNewRow' => 0
+        );
+
+        // Group number of product same as id
+        $tmp = $data;
+        $data =array();
+        while(!empty($tmp)){
+            $item = end($tmp);
+            $sumOfNumber = 0;
+            foreach($tmp as $key=>$value){
+                if($this->compareTo($item,$value)){
+                    $sumOfNumber += $value['SOLUONG'];
+                    unset($tmp[$key]);
+                }
+            }
+            $item['SOLUONG'] = $sumOfNumber;
+            $data[] = $item;
+        }
+
+        $countArray['sumFilterRow'] = count($data);
+
+        //Kiem tra hop le du lieu
+        foreach($data as $key=>$value){
+            if($value['MASP']=='' || strpos($value['MASP'],"SP")===false || strlen($value['MASP']) <=2){
+                unset($data[$key]);
+                $countArray['sumInvalidRow']++;
+                continue;
+            }
+            if($value['TENSP']=='' || $value['TENSP'] == '' || strlen($value['TENSP']) < 4){
+                unset($data[$key]);
+                $countArray['sumInvalidRow']++;
+                continue;
+            }
+            
+            if($value['MALOAI']=='' || 
+            strpos($value['MALOAI'],'LSP')===false || 
+            empty($objTypeProduct->getProductTypeById($value['MALOAI'])) || strlen($value['MALOAI']) < 4){
+                unset($data[$key]);
+                $countArray['sumInvalidRow']++;
+                continue;
+            }
+            if($value['GIA']=='' || !is_numeric($value['GIA']) || abs((int)$value['GIA']) != $value['GIA']){
+                unset($data[$key]);
+                $countArray['sumInvalidRow']++;
+                continue;
+            }
+            if($value['SOLUONG']=='' || !is_numeric($value['SOLUONG']) || abs((int)$value['SOLUONG']) != $value['SOLUONG']){
+                unset($data[$key]);
+                $countArray['sumInvalidRow']++;
+                continue;
+            }
+            if($value['HINHANH']=='' || strpos($value['HINHANH'],'jpg')===false && strpos($value['HINHANH'],'png')===false){
+                unset($data[$key]);
+                $countArray['sumInvalidRow']++;
+                continue;
+            }
+        }
+        
+        //Kiem tra tinh dung dan cua san pham da co  trong db
+        foreach ($data as $key=>$value) {
+            $product = $objProduct->getProductById($value['MASP']);
+            if(!empty($product)){
+                if(strcmp($value['TENSP'], $product['TENSP']) != 0 ||
+                strcmp($value['MALOAI'], $product['MALOAI']) != 0 ||
+                $value['GIA'] != $product['GIA']||
+                strcmp($value['HINHANH'], $product['HINHANH']) != 0){
+                    $countArray['sumInvalidRow']++;
+                    unset($data[$key]);
+                }
+            }
+        }
+
+        foreach ($data as $key=>$value) {
+            $product = $objProduct->getProductById($value['MASP']);
+            if (!empty($product)) {
+                $countArray['sumExistRow']++;
+            }
+        }
+        $countArray['sumValidRow'] = $countArray['sumFilterRow'] - $countArray['sumInvalidRow'];
+        $countArray['sumNewRow'] = $countArray['sumValidRow'] - $countArray['sumExistRow'];
+        echo json_encode(array($data,$countArray));
+    }
     /* ============================================================*/
     /* =========================SAN PHAM===================================*/
     function SanPham()
@@ -225,6 +408,16 @@ class Admin extends Controller{
     function GoiYThemSP()
     {
         $this->View('AdminGoiYThemSanPham', 'Admin Gợi ý thêm sản phẩm');
+    }
+
+    function uploadImage(){
+        $objProduct = $this->getModel("SanPhamDB");
+        if($objProduct->uploadImage($_FILES['file'])){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
     }
     /* ============================================================== */
     /* =====================TRANG THAI GIAO HANG ====================*/
