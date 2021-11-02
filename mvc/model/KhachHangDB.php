@@ -42,7 +42,7 @@
             $qry = "INSERT INTO khachhang (MAKH, TENKH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI, DIEMTL)
                    VALUES ('$cusId', '$cusName', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus, $cusPoints);";
             echo $qry;
-            if(mysqli_query($this->$conn,$qry) == false){
+            if(mysqli_query($this->conn,$qry) == false){
                 return false;
             }
          }

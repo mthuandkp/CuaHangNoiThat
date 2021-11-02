@@ -539,11 +539,11 @@
             });
         }
 
-        $(document).ready(function(){
-            $("#readDetailFromFile").change(function (){
+        $(document).ready(function() {
+            $("#readDetailFromFile").change(function() {
                 $file = $("#readDetailFromFile").val();
-                $extension = $file.substring($file.length-4);
-                if($extension != 'xlsx'){
+                $extension = $file.substring($file.length - 4);
+                if ($extension != 'xlsx') {
                     alert('Chỉ chấp nhận file excel (.xlsx)');
                     return;
                 }
@@ -561,37 +561,45 @@
                         var data = JSON.parse(data);
                         var dataItem = data[0];
                         var dataCount = data[1];
-                        
-                        if(dataItem.length == 0){
+
+                        if (countObj(dataItem) == 0) {
                             return;
                         }
-                        for($i = 0;$i < dataItem.length;$i++){
-                            //Kiem tra chi tiet da ton tai
-                            for($j = 0;$j < detailReceipt.length;$j++){
-                                if(detailReceipt[$j].MASP == dataItem[$i].MASP){
-                                    detailReceipt[$j].SOLUONG =parseInt(detailReceipt[$j].SOLUONG) + parseInt(dataItem[$i].SOLUONG);
-                                    dataItem[$i].SOLUONG = 0;
+
+                        for(var key in dataItem){
+                            for(var subKey in detailReceipt){
+                                if(detailReceipt[subKey].MASP == dataItem[key].MASP){
+                                    detailReceipt[subKey].SOLUONG = parseInt(detailReceipt[subKey].SOLUONG) + parseInt(dataItem[key].SOLUONG);
+                                    dataItem[key].SOLUONG = 0;
                                 }
                             }
-                            if (dataItem[$i].SOLUONG != 0) {
-                                detailReceipt.push(dataItem[$i]);
+                            if (dataItem[key].SOLUONG != 0) {
+                                detailReceipt.push(dataItem[key]);
                             }
                         }
-                        
+
                         loadTable();
 
-                        $message = 'Tổng số dòng đã đọc : ' + dataCount.sumRow+"\n";
-                        $message += 'Tổng số dòng sau khi lọc trùng : ' + dataCount.sumFilterRow+"\n";
-                        $message += 'Tổng số dòng hợp lệ : ' + dataCount.sumValidRow+"\n";
-                        $message += 'Tổng số dòng không hợp lệ : ' + dataCount.sumInvalidRow+"\n";
-                        $message += 'Tổng số sản phẩm mới : ' + dataCount.sumNewRow+"\n";
-                        $message += 'Tổng số sản phẩm thêm số lượng : ' + dataCount.sumExistRow+"\n";
+                        $message = 'Tổng số dòng đã đọc : ' + dataCount.sumRow + "\n";
+                        $message += 'Tổng số dòng sau khi lọc trùng : ' + dataCount.sumFilterRow + "\n";
+                        $message += 'Tổng số dòng hợp lệ : ' + dataCount.sumValidRow + "\n";
+                        $message += 'Tổng số dòng không hợp lệ : ' + dataCount.sumInvalidRow + "\n";
+                        $message += 'Tổng số sản phẩm mới : ' + dataCount.sumNewRow + "\n";
+                        $message += 'Tổng số sản phẩm thêm số lượng : ' + dataCount.sumExistRow + "\n";
                         alert($message);
                         $("#readDetailFromFile").val("");
                     }
                 });
             });
-        })
+        });
+
+        function countObj(obj) {
+            var count = 0;
+            for (var p in obj) {
+                obj.hasOwnProperty(p) && count++;
+            }
+            return count;
+        }
 
         function changeCurrentImage(){
             $("#containerImage").show();

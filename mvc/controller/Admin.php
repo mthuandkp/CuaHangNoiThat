@@ -443,6 +443,11 @@ class Admin extends Controller{
         $this->View('AdminGoiYThemSanPham', 'Admin Gợi ý thêm sản phẩm');
     }
 
+    function getAllProduct(){
+        $objProduct = $this->getModel('SanPhamDB');
+        echo json_encode($objProduct->getAllProduct());
+    }
+
     function uploadImage(){
         $objProduct = $this->getModel("SanPhamDB");
         if($objProduct->uploadImage($_FILES['file'])){

@@ -72,7 +72,17 @@
     </table>
 
 
-    
+    <script>
+        function loadTable(){
+            $.ajax({
+                url:'/CuaHangNoiThat/Admin/getAllProduct',
+                success : function(data){
+                    var data = JSON.parse(data);
+                    
+                }
+            });
+        }
+    </script>
 
 </body>
 
