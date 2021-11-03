@@ -63,7 +63,12 @@
         }
         //Xoa san pham
         function disableProductStatus($idProduct,$status = false){
-            
+            $sql = "DELETE FROM `sanpham` WHERE MASP = '$idProduct'";
+            $result = mysqli_query($this->conn, $sql);
+            if($result>0){
+                $status=true;
+            }
+            return $status;
         }
         //Cap nhat so luong san pham
         function updateNumberOfProduct($productId,$number){
