@@ -14,53 +14,7 @@
 </head>
 
 <body>
-    <div style="width: 60%;margin-left: 20%;margin-top: 1rem;">
-        <h2><?php echo $title;?></h2>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã sản phẩm</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress">
-            </div>
-            <div class="form-group col-md-8">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên sản phẩm</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo loại sản phẩm</label>
-                </div>
-                <select class="form-control">
-                    <option>Default select</option>
-                </select>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo giá sản phẩm</label>
-                </div>
-                <input type="number" class="form-control" id="inputAddress" placeholder="Giá thất nhất">
-            </div>
-            <div class="form-group col-md-4">
-            <div class="form-check mb-2">
-                    <label class="form-check-label" for="autoSizingCheck" style="color: white;">Giá cao nhất</label>
-                </div>
-                <input type="number" class="form-control" id="inputAddress" placeholder="Giá cao nhất">
-            </div>
-        </div>
-        <a href="/CuaHangNoiThat/Admin/SanPham">
-            <button type="submit" class="btn btn-primary" style="background-color: white;color: #007bff;">Trở về </button>
-        </a>
-        <button type="submit" class="btn btn-primary">Tìm kiếm </button>
-    </div>
+    
 
 
     <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;margin-top: 2rem;">

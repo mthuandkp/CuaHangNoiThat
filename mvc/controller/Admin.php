@@ -36,7 +36,7 @@ class Admin extends Controller{
         foreach($data as $key=>$value){
             $staff = $objStaff->getStaffById($value['MANV']);
             $status = $value['MATRANGTHAI'];
-            $customer = $objCustomer->getCutomerById($value['MAKH']);
+            $customer = $objCustomer->getCutomerById($value['MAKH'])[0];
             $data[$key]['MOTATRANGTHAI'] = $objStatus->getStatusNameById($status)['MOTATRANGTHAI'];
             $data[$key]['TENNV'] = $staff['TENNV'];
             $data[$key]['TENKH'] = $customer['TENKH'];
@@ -424,7 +424,11 @@ class Admin extends Controller{
     /* =========================SAN PHAM===================================*/
     function SanPham()
     {
-        $this->View('AdminSanPham', 'Admin Sản Phẩm');
+        $objTypeProduct = $this->getModel("LoaiSanPhamDB");
+        $data = array();
+        $data['type'] = $objTypeProduct->getAllProductType();
+       
+        $this->View('AdminSanPham', 'Admin Sản Phẩm',$data);
     }
     function ThemSanPham()
     {
@@ -436,7 +440,14 @@ class Admin extends Controller{
     }
     function SuaSanPham($id)
     {
-        $this->View('AdminSuaSanPham', 'Admin Sửa Sản Phẩm', $id);
+        $data = array();
+        $objProduct = $this->getModel("SanPhamDB");
+        $objTypeProduct = $this->getModel("LoaiSanPhamDB");
+        
+        $data['id'] = $id;
+        $data['product'] = $objProduct->getProductById($id);
+        $data['type'] = $objTypeProduct->getAllProductType();
+        $this->View('AdminSuaSanPham', 'Admin Sửa Sản Phẩm', $data);
     }
     function GoiYThemSP()
     {
@@ -449,14 +460,45 @@ class Admin extends Controller{
     }
 
     function uploadImage(){
+        $filename = date("dmY_his");
         $objProduct = $this->getModel("SanPhamDB");
-        if($objProduct->uploadImage($_FILES['file'])){
+        if($objProduct->uploadImage($_FILES['file'],$filename)){
+            echo json_encode(array(0,$filename));
+        }
+        else{
+            echo -1;
+        }
+    }
+    
+
+    function updateInformationProduct(){
+        $data = $_POST['obj'];
+        $objProduct = $this->getModel("SanPhamDB");
+        $rs = $objProduct->updateInformationProduct($data);
+        if($rs){
             echo 0;
         }
         else{
             echo -1;
         }
     }
+
+    function disableProductStatus(){
+        $productId = $_POST['id'];
+        $objProduct = $this->getModel("SanPhamDB");
+        if($objProduct->disableProductStatus($productId)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+    }
+    function exportProductToExcel(){
+        $objProduct = $this->getModel('SanPhamDB');
+        $data = $objProduct->exportExcel();
+        echo json_encode($data);
+    }
+
     /* ============================================================== */
     /* =====================TRANG THAI GIAO HANG ====================*/
     /* ============================================================== */

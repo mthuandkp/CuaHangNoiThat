@@ -335,19 +335,19 @@
                     type: 'post',
                     success: function(data) {
                         var data = JSON.parse(data);
+                        console.log(data);
                         var currentImage = $("#inputProductImage").val();
+                        
                         //get name image
                         $index = currentImage.length-1;
-                        console.log("Hinh anh co do dai " +currentImage.length);
                         while($index > 0 && currentImage[$index] != '/' && currentImage[$index] != '\\'){
                             $index--;
                         }
 
                         currentImage = currentImage.substring($index+1);
-                        if (data == 0) {
+                        if (data[0] == 0) {
                             alert("Thêm ảnh thành công");
                             $("#currentImage").val(currentImage);
-                            //console.log("Hinh anh hien tai " + $("#inputProductImage").val());
                             $("#containerCurentImage").show();
                             $("#containerImage").hide();
                             return;
