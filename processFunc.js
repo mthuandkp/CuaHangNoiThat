@@ -64,3 +64,12 @@ function convertStringToEnglish(dataString) {
 String.prototype.replaceAt = function(index, replacement) {
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 }
+
+
+function getImageNameFromSrc(url) {
+    $index = url.length - 1;
+    while ($index > 0 && url[$index] != '/' && url[$index] != '\\') {
+        $index--;
+    }
+    return url.substring($index + 1);
+}

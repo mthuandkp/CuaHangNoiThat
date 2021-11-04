@@ -89,14 +89,14 @@
             <div class="form-group col-md-2">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="checkStatusDecreaseProduct">
-                    <label class="form-check-label" for="autoSizingCheck" style="color: white;">Trạng thái giảm</label>
+                    <label class="form-check-label" for="autoSizingCheck">Trạng thái giảm</label>
                 </div>
                 <select class="form-control" id="inputStatusDecreaseProduct">
                     <option value="0">Không Giảm Giá</option>
                     <option value="1">Được Giảm Giá</option>
                 </select>
             </div>
-            <button onclick="searchMultiValue();" type="submit" class="btn btn-primary">Tìm kiếm </button>
+            <button onclick="searchodeMultiValue();" type="submit" class="btn btn-primary">Tìm kiếm </button>
         </div>
 
     </div>
