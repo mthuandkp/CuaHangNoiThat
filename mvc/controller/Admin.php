@@ -410,6 +410,65 @@ class Admin extends Controller{
         echo json_encode($data);
     }
 
+    function addNewStaff(){
+        $staff = $_POST['data'];
+        $objStaff = $this->getModel('NhanVienDB');
+        if($objStaff->addNewStaff($staff)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+    }
+
+    function readExcelStaff(){
+        $objSupplier = $this->getModel("NhanVienDB");
+        $data = $objSupplier->readExcel($_FILES['file']);
+
+        //print_r($data);
+        //Check valid data
+        foreach($data as $key=>$value){
+            if($value['MANV'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['TENNV'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['NGAYSINH'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['GIOITINH'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['DIACHI'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if(strlen($value['SDT']) < 10 || strlen($value['SDT']) > 11 || $value['SDT'][0] != '0' || !is_numeric($value['SDT'])){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['MAQUYEN'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['TENDN'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['MATKHAU'] == ''){
+                unset($data[$key]);
+                continue;
+            }           
+        }
+        array_filter($data);
+        echo json_encode(array('data'=>$data,'dataDB'=>$objSupplier->getAllStaff()));
+    }
+
     /* ============================================================*/
     /* ========================== PHIEU NHAP==================================*/
     function PhieuNhap()

@@ -87,6 +87,32 @@
             $usernameStaff = $("#usernameStaff").val();
             $passwordStaff = $("#passwordStaff").val();
 
+            //Kiem tra loi
+            if($nameStaff == ''){
+                alert('Tên Nhân Viên Không được để trống');
+                return;
+            }
+            if($birthdayStaff == ''){
+                alert('Ngày sinh Nhân Viên Không được để trống');
+                return;
+            }
+            if($addressStaff == ''){
+                alert('Địa chỉ Nhân Viên Không được để trống');
+                return;
+            }
+            if($phoneStaff == ''){
+                alert('SĐT Nhân Viên Không được để trống');
+                return;
+            }
+            if($usernameStaff == ''){
+                alert('Tên đăng nhập Nhân Viên Không được để trống');
+                return;
+            }
+            if($passwordStaff == ''){
+                alert('Mật khẩu Nhân Viên Không được để trống');
+                return;
+            }
+
             $obj = {
                 'MANV': $idStaff,
                 'TENNV': $nameStaff,

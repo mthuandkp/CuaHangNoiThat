@@ -19,6 +19,11 @@ class NhanVienDB extends ConnectionDB
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;
         }
+
+        //Encrypt base64 password
+        foreach($data as $key=>$value){
+            $data[$key]['MATKHAU'] = base64_decode($value['MATKHAU']);
+        }
         return $data;
     }
     //Cap nhat thong tin nhanvien
@@ -40,12 +45,30 @@ class NhanVienDB extends ConnectionDB
         return false;
     }
     //Tao ma nhanvien tiep theo
-    function createNextStaffId()
-    {
+    function createNextStaffId(){
+        $data = $this->getAllStaff();
+        $lastItem = empty($data) ? array() : end($data);
+        if (empty($lastItem)) {
+            return 'NV01';
+        } else {
+            $lastId = $lastItem['MANV'];
+            $nextIdCount = (int)substr($lastId, 2) + 1;
+            while (strlen($nextIdCount) < 2) {
+                $nextIdCount = '0' . $nextIdCount;
+            }
+            return 'NV' . $nextIdCount;
+        }
     }
     //Them nhan vien
-    function addNewSupplier($supplier)
-    {
+    function addNewStaff($staff){
+        $id = $this->createNextStaffId();
+        $hashPassword = base64_encode($staff['MATKHAU']);
+        $sql = "INSERT INTO `nhanvien`(`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES ('$id','$staff[TENNV]','$staff[NGAYSINH]','$staff[GIOITINH]','$staff[DIACHI]','$staff[SDT]','$staff[MAQUYEN]','$staff[TENDN]','$hashPassword',true);";
+
+        if(mysqli_query($this->conn, $sql)){
+            return true;
+        }
+        return false;
     }
 
     function exportExcel()
@@ -104,5 +127,37 @@ class NhanVienDB extends ConnectionDB
         }
         return $result;
     }
+
+    function readExcel($data =array()){
+        //Upload file to server
+        $filename = date("dny_hsi") . $data['name'];
+        move_uploaded_file($data['tmp_name'], './public/fileInput/' . $filename);
+
+        //create directly an object instance of the IOFactory class, and load the xlsx file
+        $fxls = './public/fileInput/'.$filename;
+        $spreadsheet = IOFactory::load($fxls);
+        //read excel data and store it into an array
+        $xls_data = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+        //Format to Receipt Array
+        array_shift($xls_data);
+        array_filter($xls_data);
+
+        $data = array();
+        foreach($xls_data as $value){
+            $data[] = array(
+                'MANV'=>$value['A'],
+                'TENNV'=>$value['B'],
+                'NGAYSINH'=>$value['C'],
+                'GIOITINH'=>$value['D'],
+                'DIACHI'=>$value['E'],
+                'SDT'=>$value['F'],
+                'MAQUYEN'=>$value['G'],
+                'TENDN'=>$value['H'],
+                'MATKHAU'=>$value['I']
+            );
+        }
+
+       return $data;
+   }
 }
 ?>

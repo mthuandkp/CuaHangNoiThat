@@ -156,6 +156,7 @@
                 url: '/CuaHangNoiThat/Admin/getAllStaff',
                 success: function(data) {
                     var data = JSON.parse(data);
+                    
                     $xhtml = '<thead>' +
                         '<tr>' +
                         '<th scope="col">#</th>' +
@@ -184,7 +185,7 @@
                             '<td>' + data[$i].SDT + '</td>' +
                             '<td>' + data[$i].RIGHT.TENQUYEN + '</td>' +
                             '<td>' + data[$i].TENDN + '</td>' +
-                            '<td>' + data[$i].MATKHAU + '</td>' +
+                            '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
                             if(data[$i].TRANGTHAI == 1){
@@ -285,7 +286,7 @@
                             '<td>' + data[$i].SDT + '</td>' +
                             '<td>' + data[$i].RIGHT.TENQUYEN + '</td>' +
                             '<td>' + data[$i].TENDN + '</td>' +
-                            '<td>' + data[$i].MATKHAU + '</td>' +
+                            '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
                             if(data[$i].TRANGTHAI == 1){
@@ -437,7 +438,7 @@
                             '<td>' + data[$i].SDT + '</td>' +
                             '<td>' + data[$i].RIGHT.TENQUYEN + '</td>' +
                             '<td>' + data[$i].TENDN + '</td>' +
-                            '<td>' + data[$i].MATKHAU + '</td>' +
+                            '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
                             if(data[$i].TRANGTHAI == 1){
