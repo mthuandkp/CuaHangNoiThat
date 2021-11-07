@@ -46,7 +46,7 @@ function convertStringToEnglish(dataString) {
         }
         for (var j = 0; j < uVN.length; j++) {
             if (dataString[i] == uVN[j]) {
-                dataString = dataString.replaceAt(i, "i");
+                dataString = dataString.replaceAt(i, "u");
             }
         }
         for (var j = 0; j < yVN.length; j++) {
@@ -72,4 +72,32 @@ function getImageNameFromSrc(url) {
         $index--;
     }
     return url.substring($index + 1);
+}
+
+function checkPhoneNumber($phone) {
+    if ($phone.length < 10 || $phone.length > 11) {
+        return false;
+    }
+    if ($phone[0] != '0') {
+        return false;
+    }
+    if (isNaN($phone)) {
+        return false;
+    }
+    return true;
+}
+
+function isInt(value) {
+    return !isNaN(value) &&
+        parseInt(Number(value)) == value &&
+        !isNaN(parseInt(value, 10));
+}
+
+//yyy-mm-dd => dd-mm-yyy
+function formatDateToddmmyyyy(date) {
+    var input = date;
+    $day = input.substring(8);
+    $month = input.substring(5, 7);
+    $year = input.substring(0, 4);
+    return $day + '-' + $month + '-' + $year;
 }

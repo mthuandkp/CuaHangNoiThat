@@ -118,7 +118,7 @@
     </div>
 
     <!-- Bang hoa don -->
-    <table id="tableContent" class="table" style="width: 90%;margin-left: 5%;"></table>
+    <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;"></table>
 
     <!-- Chi tiet hoa don -->
     <div id="printBill" style="width: 40%;margin-left: 30%;background-color: lightgray;color: black;position: absolute;top: 5rem;"></div>
@@ -156,7 +156,7 @@
                                 '<td>' + data[i]['MAHD'] + '</td>' +
                                 '<td>' + data[i]['TENNV'] + '</td>' +
                                 '<td>' + data[i]['TENKH'] + '</td>' +
-                                '<td>' + data[i]['NGAYLAP'] + '</td>' +
+                                '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                                 '<td>' + data[i]['GIOLAP'] + '</td>' +
                                 '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
                                 '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
@@ -224,7 +224,7 @@
                                 '<td>' + data[i]['MAHD'] + '</td>' +
                                 '<td>' + data[i]['TENNV'] + '</td>' +
                                 '<td>' + data[i]['TENKH'] + '</td>' +
-                                '<td>' + data[i]['NGAYLAP'] + '</td>' +
+                                '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                                 '<td>' + data[i]['GIOLAP'] + '</td>' +
                                 '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
                                 '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
@@ -466,7 +466,7 @@
                             '<td>' + data[i]['MAHD'] + '</td>' +
                             '<td>' + data[i]['TENNV'] + '</td>' +
                             '<td>' + data[i]['TENKH'] + '</td>' +
-                            '<td>' + data[i]['NGAYLAP'] + '</td>' +
+                            '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                             '<td>' + data[i]['GIOLAP'] + '</td>' +
                             '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
                             '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +

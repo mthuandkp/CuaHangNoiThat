@@ -148,7 +148,36 @@ class Admin extends Controller{
         $this->View('AdminTimKiemKhuyenMai','Admin Tìm kiếm Khuyến mãi');
     }
     function SuaKhuyenMai($id){
-        $this->View('AdminSuaKhuyenMai','Admin sửa Khuyến mãi',$id);
+        $objSale = $this->getModel('KhuyenMaiDB');
+        $sale = $objSale->getSaleById($id);
+        $this->View('AdminSuaKhuyenMai','Admin sửa Khuyến mãi',$sale);
+    }
+
+    function getAllSale(){
+        $objSale = $this->getModel('KhuyenMaiDB');
+        echo json_encode($objSale->getAllSales());
+    }
+
+    function updateInforSale(){
+        $sale = $_POST['data'];
+        $objSale = $this->getModel('KhuyenMaiDB');
+        if($objSale->updateInformationSale($sale)){
+            echo 'Sửa Thành Công';
+        }
+        else{
+            echo 'Không thể sửa';
+        }
+    }
+
+    function addNewSale(){
+        $sale = $_POST['data'];
+        $objSale = $this->getModel('KhuyenMaiDB');
+        if($objSale->addNewSale($sale)){
+            echo 'Thêm Thành Công';
+        }
+        else{
+            echo 'Không thể thêm';
+        }
     }
     /*===================================================================== */
     /*============================== LOAI SAN PHAM ============================ */
@@ -162,8 +191,73 @@ class Admin extends Controller{
     }
     function SuaLoaiSanPham($id)
     {
-        $this->View('AdminSuaLoaiSanPham','Admin Sửa Loại Sản Phẩm',$id);
+        $objType = $this->getModel('LoaiSanPhamDB');
+        $typeProduct = $objType->getProductTypeById($id);
+        $this->View('AdminSuaLoaiSanPham','Admin Sửa Loại Sản Phẩm',$typeProduct);
     }
+
+    function getAllProductType(){
+        $objType = $this->getModel('LoaiSanPhamDB');
+        echo json_encode($objType->getAllProductType());
+    }
+
+    function updateInformationProductType($typeProduct = array()){
+        if (isset($_POST['data'])) {
+            $typeProduct = $_POST['data'];
+        }
+        $objType = $this->getModel('LoaiSanPhamDB');
+
+        if($objType->updateInformationProductType($typeProduct)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+    }
+
+    function addNewTypeProduct($typeProduct = array()){
+        if (isset($_POST['data'])) {
+            $typeProduct = $_POST['data'];
+        }
+        $objType = $this->getModel('LoaiSanPhamDB');
+        
+        if($objType->addNewProductType($typeProduct)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+    }
+
+    function exportTypeProductToExcel(){
+        $typeProduct = $this->getModel('LoaiSanPhamDB');
+        $data = $typeProduct->exportExcel();
+        echo json_encode($data);
+    }
+
+    function readExcelTypeProduct(){
+        $typeProduct = $this->getModel("LoaiSanPhamDB");
+        $data = $typeProduct->readExcel($_FILES['file']);
+
+        //Check valid data
+        foreach($data as $key=>$value){
+            if($value['MALOAI'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['TENLOAI'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['MOTA'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+        }
+        array_filter($data);
+        echo json_encode(array('data'=>$data,'dataDB'=>$typeProduct->getAllProductType()));
+    }
+
     /*========================================================================= */
     /*============================== NHA CUNG CAP ============================ */
     function NhaCungCap()
@@ -176,14 +270,87 @@ class Admin extends Controller{
     }
     function SuaNhaCungCap($id)
     {
-        $this->View('AdminSuaNhaCungCap','Admin Sửa Nhà Cung Cấp',$id);
+        $objSupplier = $this->getModel("NhaCungCapDB");
+        $supplier = $objSupplier->getSupplierById($id);
+        $this->View('AdminSuaNhaCungCap','Admin Sửa Nhà Cung Cấp',$supplier);
+    }
+
+    function getAllSupplier(){
+        $objSupplier = $this->getModel("NhaCungCapDB");
+        echo json_encode($objSupplier->getAllSupplier());
+    }
+
+    function block_unblockSupplier($idSupplier){
+        $objSupplier = $this->getModel("NhaCungCapDB");
+        if($objSupplier->block_unblockSupplier($idSupplier)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+        
+    }
+
+    function updateInformationSupplier(){
+        $supplier = $_POST['data'];
+        $objSupplier = $this->getModel("NhaCungCapDB");
+        if($objSupplier->updateInformationSupplier($supplier)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+    }
+
+    function addNewSupplier(){
+        $objSupplier = $this->getModel("NhaCungCapDB");
+        $supplier = $_POST['data'];
+        if($objSupplier->addNewSupplier($supplier)){
+            echo 0;
+        }
+        else{
+            echo -1;
+        }
+    }
+
+    function readExcelSupplier(){
+        $objSupplier = $this->getModel("NhaCungCapDB");
+        $data = $objSupplier->readExcel($_FILES['file']);
+
+        //print_r($data);
+        //Check valid data
+        foreach($data as $key=>$value){
+            if($value['TENNCC'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if($value['DIACHI'] == ''){
+                unset($data[$key]);
+                continue;
+            }
+            if(strlen($value['SDT']) < 10 || strlen($value['SDT']) > 11 || $value['SDT'][0] != '0' || !is_numeric($value['SDT'])){
+                unset($data[$key]);
+                continue;
+            }
+        }
+        array_filter($data);
+        echo json_encode(array('data'=>$data,'dataDB'=>$objSupplier->getAllSupplier()));
+    }
+
+    function exportSupplierToExcel(){
+        $objSupplier = $this->getModel('NhaCungCapDB');
+        $data = $objSupplier->exportExcel();
+        echo json_encode($data);
     }
     /*========================================================================= */
 
     /* =========================NHAN VIEN===================================*/
     function NhanVien()
     {
-        $this->View('AdminNhanVien','Admin nhân viên');
+        $obj = $this->getModel('QuyenDB');
+        $data = array();
+        $data['Right'] = $obj->getAllRight();
+        $this->View('AdminNhanVien','Admin Nhân Viên',$data);
     }
     function ThemNhanVien(){
         $data = array();
@@ -195,8 +362,54 @@ class Admin extends Controller{
         $this->View('AdminTimKiemNhanVien','Admin Tìm kiếm nhân viên');
     }
     function SuaNhanVien($id){
-        $this->View('AdminSuaNhanVien','Admin sửa nhân viên',$id);
+        $data = array();
+        $objRight = $this->getModel('QuyenDB');
+        $objStaff = $this->getModel('NhanVienDB');
+
+        $data['Right'] = $objRight->getAllRight();
+        $data['Staff'] = $objStaff->getStaffById($id);
+        $this->View('AdminSuaNhanVien','Admin sửa nhân viên',$data);
     }
+
+    function getAllStaff(){
+        $objStaff = $this->getModel('NhanVienDB');
+        $objRight = $this->getModel('QuyenDB');
+        $data = $objStaff->getAllStaff();
+        //getRightById
+        foreach($data as $key=>$value){
+            $data[$key]['RIGHT'] = $objRight->getRightById($value['MAQUYEN']);
+        }
+        echo json_encode($data);
+    }
+
+    function updateInfoStaff(){
+        $staff = $_POST['data'];
+        $objStaff = $this->getModel('NhanVienDB');
+        if($objStaff->updateInformationStaff($staff)){
+            echo 'Cập nhật thành công';
+        }
+        else{
+            echo 'Không thể cập nhật';
+        }
+    }
+
+    function updateStatusStaff(){
+        $staffId = $_POST['data'];
+        $objStaff = $this->getModel('NhanVienDB');
+        if($objStaff->updateStatusStaff($staffId)){
+            echo 'Cập nhật thành công';
+        }
+        else{
+            echo 'Không thể cập nhật';
+        }
+    }
+
+    function exportStaffToExcel(){
+        $objSupplier = $this->getModel('NhanVienDB');
+        $data = $objSupplier->exportExcel();
+        echo json_encode($data);
+    }
+
     /* ============================================================*/
     /* ========================== PHIEU NHAP==================================*/
     function PhieuNhap()

@@ -24,59 +24,7 @@
 </head>
 
 <body>
-    <div style="width: 60%;margin-left: 20%;margin-top: 1rem;">
-    <h2><?php echo $title;?></h2>
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã KH</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress">
-            </div>
-            <div class="form-group col-md-6">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên khách hàng</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress">
-            </div>
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo năm sinh</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo địa chỉ</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào địa chỉ">
-            </div>
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo SĐT</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào SĐT">
-            </div>
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo Username</label>
-                </div>
-                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào Username">
-            </div>
-        </div>
-        <a href="/CuaHangNoiThat/Admin/KhachHang">
-            <button type="submit" class="btn btn-primary" style="background-color: white;color: #007bff;">Trở về </button>
-        </a>
-        <button type="submit" class="btn btn-primary">Tìm kiếm </button>
-    </div>
+    
     
     <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;">
         <thead>

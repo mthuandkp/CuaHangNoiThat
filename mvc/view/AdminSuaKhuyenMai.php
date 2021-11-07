@@ -18,23 +18,63 @@
 
     <div class="form-group">
       <label for="exampleInputEmail1">Mã Khuyến Mãi</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" readonly>
+      <input type="text" class="form-control" value="<?php echo $data['MAKM'];?>" id="idSale" readonly>
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Ngày Bắt Đầu</label>
-      <input type="text" class="form-control" id="exampleInputEmail1">
+      <input type="date" class="form-control" value="<?php echo $data['NGAYBD'];?>" id="startSale">
     </div>
     <label for="exampleInputEmail1">Ngày Kết Thúc</label>
-    <input type="text" class="form-control" id="exampleInputEmail1">
+    <input type="date" class="form-control" value="<?php echo $data['NGAYKT'];?>" id="endSale">
     <div class="form-group">
       <label for="exampleInputEmail1">Phần Trăm Giảm </label>
-      <input type="number" class="form-control" id="exampleInputEmail1">
+      <input type="number" class="form-control" id="decreaseSale" value="<?php echo $data['PHANTRAMGIAM'];?>">
     </div>
     <a href="/CuaHangNoiThat/Admin/KhuyenMai">
       <button type="submit" class="btn btn-primary" style="background-color: white;color: #0066cc;font-size: 1.5rem;margin-top: 2rem;">Trở về </button>
     </a>
-    <button class="btn btn-primary" style="background-color: #0066cc;color: white;font-size: 1.5rem;margin-top: 2rem;float: right;">Sửa Khuyến Mãi</button>
+    <button onclick="editSale();" class="btn btn-primary" style="background-color: #0066cc;color: white;font-size: 1.5rem;margin-top: 2rem;float: right;">Sửa Khuyến Mãi</button>
   </div>
+  <script>
+    function editSale(){
+      $idSale = $("#idSale").val();
+      $startSale = $("#startSale").val();
+      $endSale = $("#endSale").val();
+      $decreaseSale = $("#decreaseSale").val();
+
+      if($startSale == ''){
+        alert('Ngày bắt đầu không được trống !!!');
+        return;
+      }
+      if($endSale == ''){
+        alert('Ngày kết thúc không được trống !!!');
+        return;
+      }
+      if($startSale > $endSale){
+        alert('Ngày bắt đầu không được  vượt quá ngày kết thúc!!!');
+        return;
+      }
+      if($decreaseSale == ''){
+        alert('Phần trăm giảm không được trống !!!');
+        return;
+      }
+      if(isNaN($decreaseSale) || parseInt($decreaseSale) < 0 || parseInt($decreaseSale) > 100 || parseInt($decreaseSale) != $decreaseSale){
+        alert('Phần trăm giảm phải là số nguyên lớn hơn 0 !!!');
+        return;
+      }
+
+      $obj = {'MAKM':$idSale,'NGAYBD':$startSale,'NGAYKT':$endSale,'PHANTRAMGIAM':$decreaseSale};
+
+      $.ajax({
+        url : '/CuaHangNoiThat/Admin/updateInforSale',
+        method:'post',
+        data:{data:$obj},
+        success: function(data){
+          alert(data);
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>

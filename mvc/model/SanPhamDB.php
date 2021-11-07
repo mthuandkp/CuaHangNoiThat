@@ -141,8 +141,7 @@ class SanPhamDB extends ConnectionDB
                     ->setCellValue('F' . $numRow, ($value['TRANGTHAI'] == 1 ? " Còn Bán" : "Đã Xóa"))
                     ->setCellValue('G' . $numRow, $value['PHANTRAMGIAM']." %");  
             }
-
-
+            
             $objPHPExcel->setActiveSheetIndex(0);
             $objWriter = new Xlsx($objPHPExcel);
             $filename = 'Product' . date("dmY_His") . '.xlsx';

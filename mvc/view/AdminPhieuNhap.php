@@ -197,7 +197,7 @@
                                 '<td>' + data[$i].MAPN + '</td>' +
                                 '<td>' + data[$i].TENNV + '</td>' +
                                 '<td>' + data[$i].TENNCC + '</td>' +
-                                '<td>' + data[$i].NGAYLAP + '</td>' +
+                                '<td>' + (data[$i].NGAYLAP) + '</td>' +
                                 '<td>' + data[$i].GIOLAP + '</td>' +
                                 '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                                 '<td>' +
@@ -293,7 +293,7 @@
                             '<td>' + data[$i].MAPN + '</td>' +
                             '<td>' + data[$i].TENNV + '</td>' +
                             '<td>' + data[$i].TENNCC + '</td>' +
-                            '<td>' + data[$i].NGAYLAP + '</td>' +
+                            '<td>' + (data[$i].NGAYLAP) + '</td>' +
                             '<td>' + data[$i].GIOLAP + '</td>' +
                             '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                             '<td>' +

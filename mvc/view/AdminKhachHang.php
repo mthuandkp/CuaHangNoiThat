@@ -24,10 +24,50 @@
 <body>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <a href="/CuaHangNoiThat/Admin/TimKiemKhachHang"><button type="button" class="btn btn-primary btn-lg optionButton">Tìm kiếm khách hàng</button></a>
         <a href="#"><button type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button></a>
         <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
             <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Nhập vào tên khách hàng..." style="float: right;width: 20rem;">
+        </div>
+    </div>
+
+    <div style="width: 80%;margin-left: 10%;margin-top: 1rem;">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã KH</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress">
+            </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên khách hàng</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress">
+            </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo Username</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào Username">
+            </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo địa chỉ</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào địa chỉ">
+            </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="autoSizingCheck">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo SĐT</label>
+                </div>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Nhập vào SĐT">
+            </div>
+            <button type="submit" class="btn btn-primary">Tìm kiếm </button>
         </div>
     </div>
     <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;">
@@ -37,7 +77,6 @@
                 <th scope="col">Mã Khách Hàng</th>
                 <th scope="col">Tên Khách Hàng</th>
                 <th scope="col">Tên đăng nhập</th>
-                <th scope="col">Mật khẩu</th>
                 <th scope="col">Địa Chỉ</th>
                 <th scope="col">SĐT</th>
                 <th scope="col">Trạng thái</th>
@@ -55,9 +94,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 <td>
-                    <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Mở Khóa Khách Hàng</button>
+                    <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Mở/Khóa Khách Hàng</button>
                     <button class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Khóa Khách Hàng</button>
                 </td>
 

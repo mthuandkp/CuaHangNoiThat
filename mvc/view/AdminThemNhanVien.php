@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Ngày Sinh</label>
-      <input type="text" class="form-control" id="exampleInputEmail1">
+      <input type="date" class="form-control" id="exampleInputEmail1">
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Giới Tính</label>

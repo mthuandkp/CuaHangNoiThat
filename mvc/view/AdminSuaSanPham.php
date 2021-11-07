@@ -127,6 +127,26 @@ if ($id == '' || empty($productList)) {
       $currentImageProduct = getImageNameFromSrc($("#currentImageProduct").attr('src'));
       $decreaseProduct = $("#decreaseProduct").val();
 
+      if($nameProduct == ''){
+        alert('Tên sản phẩm không thể để trống');
+        $("#nameProduct").focus();
+        return;
+      }
+      else if(isNaN($priceProduct) || $priceProduct < 0 || !isInt($priceProduct)){
+        alert('Giá sản phẩm là số nguyên lớn hơn bằng 0');
+        $("#priceProduct").focus();
+        return;
+      }
+      else if(isNaN($numberProduct) || $numberProduct < 0 || !isInt($numberProduct)){
+        alert('SL sản phẩm là số nguyên lớn hơn bằng 0');
+        $("#numberProduct").focus();
+        return;
+      }
+      else if(isNaN($decreaseProduct) || $decreaseProduct < 0 || $decreaseProduct > 100 || !isInt($decreaseProduct)){
+        alert('Phần trăm giảm giá giao động từ 0-100%');
+        $("#decreaseProduct").focus();
+        return;
+      }
       $obj = {
         MASP:$idProduct,
         TENSP:$nameProduct,

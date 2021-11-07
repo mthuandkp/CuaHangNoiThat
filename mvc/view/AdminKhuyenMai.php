@@ -22,42 +22,108 @@
 </head>
 
 <body>
-<h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
+    <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
         <a href="/CuaHangNoiThat/Admin/ThemKhuyenMai"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm khuyến mãi</button></a>
-        <button type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
         <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Nhập tên khuyến mãi..." style="float: right;width: 20rem;">
+            <input type="text" class="form-control" id="searchValue" placeholder="Nhập thông tin khuyến mãi..." style="float: right;width: 20rem;">
         </div>
     </div>
 
-    <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Mã Khuyến Mãi</th>
-                <th scope="col">Ngày Bắt Đầu</th>
-                <th scope="col">Ngày Kết Thúc</th>
-                <th scope="col">Phần Trăm Giảm</th>
-                <th scope="col" style="width: 15rem;">Chức Năng</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <a href="/CuaHangNoiThat/Admin/SuaKhuyenMai/1">
-                        <button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa khuyến mãi</button>
-                    </a>
-                </td>
+    <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;"></table>
 
-            </tr>
-        </tbody>
-    </table>
+    <script>
+        loadTable();
+
+        function loadTable() {
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/getAllSale',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    $xhtml = '<thead>' +
+                        '<tr>' +
+                        '<th scope="col">#</th>' +
+                        '<th scope="col">Mã Khuyến Mãi</th>' +
+                        '<th scope="col">Ngày Bắt Đầu</th>' +
+                        '<th scope="col">Ngày Kết Thúc</th>' +
+                        '<th scope="col">Phần Trăm Giảm</th>' +
+                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
+                    for ($i = 0;$i < data.length;$i++) {
+                        $xhtml += '<tr>' +
+                            '<th scope="row">'+($i+1)+'</th>' +
+                            '<td>'+data[$i].MAKM+'</td>' +
+                            '<td>'+formatDateToddmmyyyy(data[$i].NGAYBD)+'</td>' +
+                            '<td>'+formatDateToddmmyyyy(data[$i].NGAYKT)+'</td>' +
+                            '<td>'+data[$i].PHANTRAMGIAM+'%</td>' +
+                            '<td>' +
+                            '<a href="/CuaHangNoiThat/Admin/SuaKhuyenMai/'+data[$i].MAKM+'">' +
+                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa khuyến mãi</button>' +
+                            '</a>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $xhtml += '</tbody>';
+                    $("#tableContent").html($xhtml);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $("#searchValue").keyup(function() {
+                $searchValue = convertStringToEnglish($("#searchValue").val());
+
+                $.ajax({
+                    url: '/CuaHangNoiThat/Admin/getAllSale',
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        $xhtml = '<thead>' +
+                        '<tr>' +
+                        '<th scope="col">#</th>' +
+                        '<th scope="col">Mã Khuyến Mãi</th>' +
+                        '<th scope="col">Ngày Bắt Đầu</th>' +
+                        '<th scope="col">Ngày Kết Thúc</th>' +
+                        '<th scope="col">Phần Trăm Giảm</th>' +
+                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
+                        
+                        for ($i = 0; $i < data.length; $i++) {
+                            $check = false;
+                            if (convertStringToEnglish(data[$i].MAKM).includes($searchValue)) {
+                                $check = true;
+                            }
+                            if (convertStringToEnglish(data[$i].NGAYBD).includes($searchValue)) {
+                                $check = true;
+                            }
+                            if (convertStringToEnglish(data[$i].NGAYKT).includes($searchValue)) {
+                                $check = true;
+                            }
+
+                            if(!$check){continue;}
+                            $xhtml += '<tr>' +
+                            '<th scope="row">'+($i+1)+'</th>' +
+                            '<td>'+data[$i].MAKM+'</td>' +
+                            '<td>'+formatDateToddmmyyyy(data[$i].NGAYBD)+'</td>' +
+                            '<td>'+formatDateToddmmyyyy(data[$i].NGAYKT)+'</td>' +
+                            '<td>'+data[$i].PHANTRAMGIAM+'%</td>' +
+                            '<td>' +
+                            '<a href="/CuaHangNoiThat/Admin/SuaKhuyenMai/'+data[$i].MAKM+'">' +
+                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa khuyến mãi</button>' +
+                            '</a>' +
+                            '</td>' +
+                            '</tr>';
+                        }
+                        $xhtml += '</tbody>';
+                        $("#tableContent").html($xhtml);
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 
