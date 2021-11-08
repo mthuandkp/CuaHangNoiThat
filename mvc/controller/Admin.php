@@ -135,6 +135,28 @@ class Admin extends Controller{
     function SuaKhachHang($id){
         $this->View('AdminSuaKhachHang','Admin sửa khách hàng',$id);
     }
+
+    function getAllCustomer(){
+        $objCus = $this->getModel('KhachHangDB');
+
+        echo json_encode($objCus->getAllCustomer());
+    }
+
+    function block_unblockCutomer($id){
+        $objCus = $this->getModel('KhachHangDB');
+        if($objCus->block_unblockCutomer($id)){
+            echo '0';
+        }
+        else{
+            echo -1;
+        }
+    }
+
+    function exportCustomerToExcel(){
+        $objCustomer = $this->getModel('KhachHangDB');
+        $data = $objCustomer->exportExcel();
+        echo json_encode($data);
+    }
     /*===================================================================== */
     /*============================== KHUYEN MAI ============================ */
     function KhuyenMai()

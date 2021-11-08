@@ -180,7 +180,7 @@
 
               for (var subkey in dataDB) {
                 $subobj = dataDB[subkey];
-                if ($obj.MANV.localeCompare($subobj.MANV) == 0) {
+                if ($obj.MANVode.localeCompare($subobj.MANVode) == 0) {
                   $check = true;
                   break;
                 }
