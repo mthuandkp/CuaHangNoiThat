@@ -11,6 +11,7 @@
   </head>
   <body>
     <?php
+    require("./menuadmin.php");
     ?>
   </body>
 </html>

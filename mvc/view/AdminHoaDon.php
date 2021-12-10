@@ -31,6 +31,9 @@
 </head>
 
 <body>
+<?php
+    require("./menuadmin.php");
+    ?>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
         <button type="button" class="btn btn-primary btn-lg optionButton" onclick="exportExcel();">Xuất Excel</button>

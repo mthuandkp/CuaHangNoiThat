@@ -36,7 +36,7 @@ class Admin extends Controller{
         foreach($data as $key=>$value){
             $staff = $objStaff->getStaffById($value['MANV']);
             $status = $value['MATRANGTHAI'];
-            $customer = $objCustomer->getCutomerById($value['MAKH'])[0];
+            $customer = $objCustomer->getCutomerById($value['MAKH']);
             $data[$key]['MOTATRANGTHAI'] = $objStatus->getStatusNameById($status)['MOTATRANGTHAI'];
             $data[$key]['TENNV'] = $staff['TENNV'];
             $data[$key]['TENKH'] = $customer['TENKH'];

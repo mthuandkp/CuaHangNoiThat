@@ -22,9 +22,12 @@
 </head>
 
 <body>
+<?php
+    require("./menuadmin.php");
+    ?>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <a href="/CuaHangNoiThat/Admin/GoiYThemSP"><button type="button" class="btn btn-primary btn-lg optionButton">Gợi ý thêm sản phẩm</button></a>
+        <a href="/CuaHangNoiThat/Admin/GoiYThemSP"><button type="button" class="btn btn-primary btn-lg optionButton" style="width: 15rem;">Gợi ý thêm sản phẩm</button></a>
         <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
         <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
             <input type="text" class="form-control" id="searchValue" placeholder="Nhập thông tin sản phẩm..." style="float: right;width: 20rem;">
