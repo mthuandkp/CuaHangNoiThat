@@ -2,11 +2,13 @@
 class Admin extends Controller{
     function display()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminTrangChu', 'Trang Chủ');
     }
     /* ===========================HOA DON================================ */
     function HoaDon()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminHoaDon', 'Admin Hóa Đơn');
     }
     function XemChiTietHD($id)
@@ -19,10 +21,11 @@ class Admin extends Controller{
             $data[$key]['TENSP'] = $product['TENSP'];
             $data[$key]['HINHANH'] = $product['HINHANH'];
         }
-
+        require_once('./menuadmin.php');
         $this->View('AdminChiTietHoaDon', 'Admin Chi Tiết HĐ', $data);
     }
     function TimKiemHoaDon(){
+        require_once('./menuadmin.php');
         $this->View('AdminTimKiemHoaDon','Tìm kiếm hóa đơn');
     }
     function getAllBill(){
@@ -124,15 +127,19 @@ class Admin extends Controller{
     /* ===========================KHACH HANG================================ */
     function KhachHang()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminKhachHang','Admin Khách Hàng');
     }
     function ThemKhachHang(){
+        require_once('./menuadmin.php');
         $this->View('AdminThemKhachHang','Admin Thêm Khách Hàng');
     }
     function TimKiemKhachHang(){
+        require_once('./menuadmin.php');
         $this->View('AdminTimKiemKhachHang','Admin Tìm kiếm khách hàng');
     }
     function SuaKhachHang($id){
+        require_once('./menuadmin.php');
         $this->View('AdminSuaKhachHang','Admin sửa khách hàng',$id);
     }
 
@@ -157,21 +164,47 @@ class Admin extends Controller{
         $data = $objCustomer->exportExcel();
         echo json_encode($data);
     }
+
+    function checkLoginCustomer($user,$pass){
+        $objCustomer = $this->getModel('KhachHangDB');
+        $cus = $objCustomer->getCutomerByUser($user);
+        $pass = hash('md5',$pass);
+        $result = array();
+        if(empty($cus)){
+            $result['RESULT'] = "NOT_EXISTS";
+        }
+        else{
+            if($pass == $cus['MATKHAU']){
+                $result['RESULT'] = "SUCCESS";
+                $result['DATA'] = $cus;
+                $_SESSION['account'] = $cus;
+            }
+            else{
+                $result['RESULT'] = "WRONG_PASSWORD";
+                
+            }
+        }
+        echo json_encode($result);
+    }
     /*===================================================================== */
     /*============================== KHUYEN MAI ============================ */
     function KhuyenMai()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminKhuyenMai','Admin Khuyến Mãi');
     }
     function ThemKhuyenMai(){
+        require_once('./menuadmin.php');
         $this->View('AdminThemKhuyenMai','Admin Thêm Khuyến mãi');
     }
     function TimKiemKhuyenMai(){
+        require_once('./menuadmin.php');
         $this->View('AdminTimKiemKhuyenMai','Admin Tìm kiếm Khuyến mãi');
     }
     function SuaKhuyenMai($id){
         $objSale = $this->getModel('KhuyenMaiDB');
         $sale = $objSale->getSaleById($id);
+        require_once('./menuadmin.php');
         $this->View('AdminSuaKhuyenMai','Admin sửa Khuyến mãi',$sale);
     }
 
@@ -205,16 +238,19 @@ class Admin extends Controller{
     /*============================== LOAI SAN PHAM ============================ */
     function LoaiSanPham()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminLoaiSanPham','Admin Loại Sản Phẩm');
     }
     function ThemLoaiSanPham()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminThemLoaiSanPham','Admin Thêm Loại Sản Phẩm');
     }
     function SuaLoaiSanPham($id)
     {
         $objType = $this->getModel('LoaiSanPhamDB');
         $typeProduct = $objType->getProductTypeById($id);
+        require_once('./menuadmin.php');
         $this->View('AdminSuaLoaiSanPham','Admin Sửa Loại Sản Phẩm',$typeProduct);
     }
 
@@ -284,16 +320,19 @@ class Admin extends Controller{
     /*============================== NHA CUNG CAP ============================ */
     function NhaCungCap()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminNhaCungCap','Admin Nhà Cung Cấp');
     }
     function ThemNhaCungCap()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminThemNhaCungCap','Admin Thêm Nhà Cung Cấp');
     }
     function SuaNhaCungCap($id)
     {
         $objSupplier = $this->getModel("NhaCungCapDB");
         $supplier = $objSupplier->getSupplierById($id);
+        require_once('./menuadmin.php');
         $this->View('AdminSuaNhaCungCap','Admin Sửa Nhà Cung Cấp',$supplier);
     }
 
@@ -372,15 +411,18 @@ class Admin extends Controller{
         $obj = $this->getModel('QuyenDB');
         $data = array();
         $data['Right'] = $obj->getAllRight();
+        require_once('./menuadmin.php');
         $this->View('AdminNhanVien','Admin Nhân Viên',$data);
     }
     function ThemNhanVien(){
         $data = array();
         $obj = $this->getModel('QuyenDB');
         $data['Right'] = $obj->getAllRight();
+        require_once('./menuadmin.php');
         $this->View('AdminThemNhanVien','Admin Thêm Nhân Viên',$data);
     }
     function TimKiemNhanVien(){
+        require_once('./menuadmin.php');
         $this->View('AdminTimKiemNhanVien','Admin Tìm kiếm nhân viên');
     }
     function SuaNhanVien($id){
@@ -390,6 +432,7 @@ class Admin extends Controller{
 
         $data['Right'] = $objRight->getAllRight();
         $data['Staff'] = $objStaff->getStaffById($id);
+        require_once('./menuadmin.php');
         $this->View('AdminSuaNhanVien','Admin sửa nhân viên',$data);
     }
 
@@ -495,6 +538,7 @@ class Admin extends Controller{
     /* ========================== PHIEU NHAP==================================*/
     function PhieuNhap()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminPhieuNhap','Admin Phiếu Nhập');
     }
     function ThemPhieuNhap(){
@@ -506,14 +550,17 @@ class Admin extends Controller{
         $data['NCC'] = $objSupplier->getAllSupplier();
         $data['TypeProduct'] = $objTypeProduct->getAllProductType();
         $data['Product'] = $objProduct->getAllProduct();
+        require_once('./menuadmin.php');
         $this->View('AdminThemPhieuNhap','Admin Thêm Phiếu Nhập',$data);
     }
     function TimKiemPhieuNhap()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminTimKiemPhieuNhap','Admin Tìm Kiếm Phiếu Nhập');
     }
     function XemCHiTietPhieuNhap($id)
     {
+        require_once('./menuadmin.php');
         $this->View('AdminChiTietPhieuNhap','Admin Chi Tiết Phiếu Nhập',$id);
     }
 
@@ -721,15 +768,17 @@ class Admin extends Controller{
         $objTypeProduct = $this->getModel("LoaiSanPhamDB");
         $data = array();
         $data['type'] = $objTypeProduct->getAllProductType();
-       
+        require_once('./menuadmin.php');
         $this->View('AdminSanPham', 'Admin Sản Phẩm',$data);
     }
     function ThemSanPham()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminThemSanPham', 'Admin Thêm Sản Phẩm');
     }
     function TimKiemSanPham()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminTimKiemSanPham', 'Admin Tìm Kiếm Sản Phẩm');
     }
     function SuaSanPham($id)
@@ -741,10 +790,12 @@ class Admin extends Controller{
         $data['id'] = $id;
         $data['product'] = $objProduct->getProductById($id);
         $data['type'] = $objTypeProduct->getAllProductType();
+        require_once('./menuadmin.php');
         $this->View('AdminSuaSanPham', 'Admin Sửa Sản Phẩm', $data);
     }
     function GoiYThemSP()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminGoiYThemSanPham', 'Admin Gợi ý thêm sản phẩm');
     }
 
@@ -793,6 +844,20 @@ class Admin extends Controller{
         echo json_encode($data);
     }
 
+    function getAllProductByType($typeId){
+        $objProduct = $this->getModel('SanPhamDB');
+        $data = $objProduct->getAllProduct();
+        $result = array();
+
+        foreach($data as $value){
+            if($value['MALOAI'] == $typeId){
+                $result[] = $value;
+            }
+        }
+
+        echo json_encode($result);
+    }
+
     /* ============================================================== */
     /* =====================TRANG THAI GIAO HANG ====================*/
     /* ============================================================== */
@@ -800,10 +865,12 @@ class Admin extends Controller{
 
     function ThongKe()
     {
+        require_once('./menuadmin.php');
         $this->View('AdminThongKe');
     }
     function DangNhap()
     {
+        require_once('./menuadmin.php');
         $this->View('DangNhap');
     }
 }

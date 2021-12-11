@@ -1,6 +1,6 @@
 <?php
     class App{
-        protected $controller = 'ErrorURL';
+        protected $controller = 'TrangChu';
         protected $method = 'display';
         protected $params = array();
 

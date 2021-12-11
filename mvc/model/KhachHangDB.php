@@ -15,6 +15,17 @@ class KhachHangDB extends ConnectionDB
         }
         return array();
     }
+    //Lay khachhang bang tendn
+    function getCutomerByUser($customerUser)
+    {
+
+        $qry = "SELECT * FROM khachhang WHERE TENDN ='$customerUser';";
+        $rs = mysqli_query($this->conn, $qry);
+        while ($row =  mysqli_fetch_assoc($rs)) {
+           return $row;
+        }
+        return array();
+    }
     //Lay tat ca khach hang
     function getAllCustomer($isDisable = false)
     {

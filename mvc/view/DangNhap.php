@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,20 +10,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
+    <link rel="stylesheet" href="./my-css.css">
     <title>Đăng nhập</title>
 </head>
+
 <body>
-<div class="header">
+    <div class="header">
         <div class="address">
-            <i class="fa fa-map-marker" > Hồ Chí Minh, Việt Nam</i>
+            <i class="fa fa-map-marker"> Hồ Chí Minh, Việt Nam</i>
             <i class="fa fa-envelope"> milfuniture@gmail.com</i>
         </div>
     </div>
     <nav class="navbar sticky-top navbar-expand-md navbar-light ">
         <div class="container-fluid">
-            <a class="navar-branch" style="cursor: pointer;" href="/CuaHangNoiThat/TrangChu">
-                <img src="/CuaHangNoiThat/public/image/logo.png" alt="logo" height="60px">
+            <a class="navar-branch" style="cursor: pointer;" href="./TrangChu">
+                <img src="./public/image/logo.png" alt="logo" height="60px">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
@@ -30,22 +32,22 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav mx-auto " id="lsp">
                     <li class="nav-item active">
-                        <a class="nav-link a active" style="cursor: pointer;" href="/CuaHangNoiThat/TrangChu">TRANG CHỦ</a>
+                        <a class="nav-link a active" style="cursor: pointer;" href="./TrangChu">TRANG CHỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/TrangTri">TRANG TRÍ</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./TrangTri">TRANG TRÍ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongNgu">PHÒNG NGỦ</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongNgu">PHÒNG NGỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongLamViec">PHÒNG LÀM VIỆC</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongLamViec">PHÒNG LÀM VIỆC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongKhach">PHÒNG KHÁCH</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongKhach">PHÒNG KHÁCH</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongAn">PHÒNG ĂN</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongAn">PHÒNG ĂN</a>
                     </li>
                 </ul>
             </div>
@@ -55,14 +57,14 @@
                 <div class="dropdown">
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
                     <div class="dropdown-content user">
-                        <a href="/CuaHangNoiThat/DangNhap">Đăng nhập</a>
-                        <a href="/CuaHangNoiThat/DangKy">Đăng ký</a>
-                        <a href="/CuaHangNoiThat/ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="/CuaHangNoiThat/TrangChu">Đăng xuất</a>
-                        <a href="/CuaHangNoiThat/GioHang">Lịch sử</a>
+                        <a href="./DangNhap">Đăng nhập</a>
+                        <a href="./DangKy">Đăng ký</a>
+                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                        <a href="./TrangChu">Đăng xuất</a>
+                        <a href="./GioHang">Lịch sử</a>
                     </div>
                 </div>
-                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cartDetail'])) {
@@ -75,15 +77,62 @@
             </div>
         </div>
     </nav>
-    <form action="/action_page.php">
-        <fieldset>
-            <legend><i class="fa fa-user-circle-o" aria-hidden="true"></i></legend>
-                <p>ĐĂNG NHẬP</p>
-                <input type="text" id="uname" name="uname" placeholder="Tên đăng nhập">
-                <input type="password" id="pass" name="pass" placeholder="Mật khẩu">
-                <input type="submit" value="ĐĂNG NHẬP" class="btn-log">
-                <div class="reg">Bạn chưa có tài khoản? <a href="/CuaHangNoiThat/DangKy">Đăng ký</a></div>
-        </fieldset>
-    </form>
+    <fieldset>
+        <legend><i class="fa fa-user-circle-o" aria-hidden="true"></i></legend>
+        <p>ĐĂNG NHẬP</p>
+        <input type="text" id="uname" name="uname" placeholder="a@gmail.com">
+        <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorUname">Tên đăng nhập không hợp lệ</p>
+        <input type="password" id="pass" name="pass" placeholder="*********">
+        <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorPass">Mật khẩu không hợp lệ</p>
+        <p id="errorMessage" style="margin-top: 0;padding-top: 0;"></p>
+        <input type="submit" id="submitbtn" value="ĐĂNG NHẬP" class="btn-log">
+        <div class="reg">Bạn chưa có tài khoản? <a href="./DangKy">Đăng ký</a></div>
+    </fieldset>
+
 </body>
+<script>
+    $(document).ready(function() {
+        $("#errorUname").hide();
+        $("#errorPass").hide();
+    });
+
+    $("#submitbtn").click(function() {
+        $("#errorUname").hide();
+        $("#errorPass").hide();
+        $("#errorMessage").hide();
+
+        $uname = $("#uname").val();
+        $pass = $("#pass").val();
+
+        if ($uname === "" || !$uname.includes("@gmail.com")) {
+            $("#errorUname").show();
+            return;
+        }
+        if ($pass === "") {
+            $("#errorPass").show();
+            return;
+        }
+
+        $.ajax({
+            url: '/CuaHangNoiThat/Admin/checkLoginCustomer/' + $uname + '/' + $pass,
+            success: function(data) {
+                var data = JSON.parse(data);
+                $result = data.RESULT;
+                if ($result === "NOT_EXISTS") {
+                    $("#errorMessage").html("Tài khoản không tồn tại");
+                    $("#errorMessage").show();
+                }
+                else if ($result === "WRONG_PASSWORD") {
+                    $("#errorMessage").html("Mật khẩu không chính xác");
+                    $("#errorMessage").show();
+                }
+                else{
+                    window.location.href = "./TrangChu";
+                }
+            }
+        });
+
+    });
+</script>
+
 </html>

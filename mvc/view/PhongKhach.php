@@ -83,41 +83,43 @@
     </h2>
     <p class="content">
     Nét hiện đại cho căn hộ là lựa chọn thông minh cho phòng khách sang trọng, tiện nghi và đẳng cấp. Được thiết kế có tính năng độc đáo, tiện lợi, chắc chắn sẽ đem đến những phút giây thư giãn tuyệt vời mỗi khi trở về nhà.    </p>
-    <div class="product-container">
-        <div class="product-item">
+    <div class="products">
+        <div class="product-container">
+            <div class="product-item">
+                <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
             <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
+            <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
+            <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
+            <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
         </div>
     </div>
     <div class="footer-container">

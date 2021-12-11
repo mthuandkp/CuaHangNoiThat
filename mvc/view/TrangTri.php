@@ -84,41 +84,43 @@
     <p class="content">
     Các phụ kiện nhập khẩu từ các hãng thiết kế nội thất uy tín của Australia mang lại điểm nhấn đặc biệt sang trọng cho không gian nội thất
     </p>
-    <div class="product-container">
-        <div class="product-item">
+    <div class="products">
+        <div class="product-container">
+            <div class="product-item">
+                <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
             <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
-        </div>
-        <div class="product-item">
-        <a href="">
-            <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
-            <p class="product-name">Gương trang trí</p>  
-            </a>
-            <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
+            <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
+            <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
+            <div class="product-item">
+            <a href="">
+                <img src="/CuaHangNoiThat/public/image/HINHANH/Trangtri/gương.jpg" alt="">
+                <p class="product-name">Gương trang trí</p>
+                </a>
+                <div style="font-size: 20px;">Giá:   <div class="price">200.000 <sup>đ</sup></div></div>
+            </div>
         </div>
     </div>
     <div class="footer-container">

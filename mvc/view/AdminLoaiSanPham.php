@@ -22,9 +22,6 @@
 </head>
 
 <body>
-<?php
-    require("./menuadmin.php");
-    ?>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
         <a href="/CuaHangNoiThat/Admin/ThemLoaiSanPham"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm loại sản phẩm</button></a>
