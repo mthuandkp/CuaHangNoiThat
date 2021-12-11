@@ -850,12 +850,48 @@ class Admin extends Controller{
         $result = array();
 
         foreach($data as $value){
-            if($value['MALOAI'] == $typeId){
+            if($value['MALOAI'] == $typeId && $value['TRANGTHAI'] != 0){
                 $result[] = $value;
             }
         }
 
         echo json_encode($result);
+    }
+
+    function addToCart($idProduct){
+        $cart = array();
+        if (isset($_SESSION['cart'])) {
+            $cart = $_SESSION['cart'];
+        }
+        $objProduct = $this->getModel('SanPhamDB');
+        $product = $objProduct->getProductById($idProduct);
+
+        if(empty($cart)){
+            $product['amount'] = 1;
+            $cart[] = $product;
+        }
+        else{
+            $isExist = false;
+            foreach($cart as $key=>$value){
+                if($value['MASP'] == $idProduct){
+                    if($product['SOLUONG'] < $value['amount'] + 1){
+                        echo 'Không đủ số lượng';
+                        return;
+                    }
+                    $cart[$key]['amount'] += 1;
+                    $isExist = true;
+                    break;
+                }
+            }
+
+            if(!$isExist){
+                $cart[] = $product;
+            }
+        }
+
+        $_SESSION['cart'] = $cart;
+
+        echo 'Thêm thành công';
     }
 
     /* ============================================================== */
