@@ -3,21 +3,24 @@
     class Run extends Controller{
         function display(){
             //model cần chạy
-            $obj = $this->getModel('SanPhamDB');
+            $obj = $this->getModel('HoaDonDB');
+            $objSale = $this->getModel("KhuyenMaiDB");
+            
+            $rs = $obj->getBillByCusId("KH01");
+            foreach($rs as $key=>$value){
+                $sumBill = 0;
+                foreach($obj->getBillDetailById($value['MAHD']) as $subvalue){
+                    $sumBill += $subvalue['GIA']*$subvalue['SOLUONG']*(1-$subvalue['PHANTRAMGIAM']/100);
+                }
 
-
-            /*$bill = array('HD02','NV01','KH01','2021-10-28','07:03:02',800000,'TT01');
-            $detail = array(
-                array('MAHD'=>'HD02','MASP'=>'SP01','SOLUONG'=>5,'GIA'=>12000),
-                array('MAHD'=>'HD02','MASP'=>'SP02','SOLUONG'=>2,'GIA'=>2000)
-
-            );*/
-
-            $customer = array ('KH03','Thuy', 'Thuy', '123', 'LongAn', '1234567890',1,2);
-            //Hàm cần chạy 
-            $data = $obj->getProductById("SP01");
-           echo '<pre>';
-           print_r($data);
+                $saleId = $value['MAKM'];
+                
+                $sale = $objSale->getSaleById($saleId);
+                $rs[$key]['LAST_PRICE'] = (1-$sale['PHANTRAMGIAM']/100)*$sumBill;
+                
+            }
+            echo '<pre>';
+            print_r($rs);
         }
     }
 ?>

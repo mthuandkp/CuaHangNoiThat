@@ -55,20 +55,30 @@
                 <p style="float: left;font-size: 13px;">
                 </p>
                 <div class="dropdown">
+                    <?php if (isset($_SESSION['account'])) {
+                        echo "Hello ," . $_SESSION['account']['TENKH'];
+                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
                     <div class="dropdown-content user">
-                        <a href="./DangNhap">Đăng nhập</a>
-                        <a href="./DangKy">Đăng ký</a>
+                        <?php if (!isset($_SESSION['account'])) {
+                            echo '<a href="./DangNhap">Đăng nhập</a>';
+                            echo '<a href="./DangKy">Đăng ký</a>';
+                        } ?>
+
                         <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./TrangChu">Đăng xuất</a>
-                        <a href="./GioHang">Lịch sử</a>
+                        <a href="./LichSuGioHang">Lịch sử</a>
+                        <a href="./TrangChu/Logout">Đăng xuất</a>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
-                    if (isset($_SESSION['cartDetail'])) {
-                        echo count($_SESSION['cartDetail']);
+                    if (isset($_SESSION['cart'])) {
+                        $count = 0;
+                        foreach ($_SESSION['cart'] as $value) {
+                            $count += $value['amount'];
+                        }
+                        echo $count;
                     } else {
                         echo 0;
                     }
@@ -115,6 +125,10 @@
 
         $.ajax({
             url: '/CuaHangNoiThat/Admin/checkLoginCustomer/' + $uname + '/' + $pass,
+            method:'POST',
+                data:{
+                    url:window.location.href
+                },
             success: function(data) {
                 var data = JSON.parse(data);
                 $result = data.RESULT;
@@ -127,7 +141,7 @@
                     $("#errorMessage").show();
                 }
                 else{
-                    window.location.href = "./TrangChu";
+                    window.location.href = "./"+data.URL;
                 }
             }
         });

@@ -40,6 +40,20 @@ class KhachHangDB extends ConnectionDB
     //Cap nhat thong tin khach hang
     function updateInformationCustomer($customer)
     {
+        $id = $customer['id'];
+        $name = $customer['name'];
+        $address = $customer['address'];
+        $phone = $customer['phone'];
+        $sex = $customer['sex'];
+
+        $qry = "UPDATE `khachhang` SET `TENKH`='$name',`GIOITINH`='$sex',`DIACHI`='$address',`SDT`='$phone' WHERE `MAKH` = '$id';";
+
+        if(mysqli_query($this->conn,$qry)){
+            $cus = $this->getCutomerById($id);
+            $_SESSION['account'] = $cus;
+            return true;
+        }
+        return false;
     }
     //Tao ma khach hang tiep theo
     function createNextCustomerId(){

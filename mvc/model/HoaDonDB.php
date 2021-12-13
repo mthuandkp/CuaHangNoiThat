@@ -18,6 +18,17 @@ class HoaDonDB extends ConnectionDB
         $data[] = mysqli_fetch_assoc($rs);
         return $data;
     }
+    function getBillByCusId($billId)
+    {
+        $data = array();
+        $query = "SELECT * FROM hoadon WHERE `MaKH` = '" . $billId . "'";
+        $rs = mysqli_query($this->conn, $query);
+        while ($row = mysqli_fetch_assoc($rs)) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
     //Lay chi tiet hoa don
     function getBillDetailById($billId)
     {
@@ -45,7 +56,7 @@ class HoaDonDB extends ConnectionDB
     function getAllBill()
     {
         $data = array();
-        $query = "SELECT * FROM hoadon";
+        $query = "SELECT * FROM `hoadon`";
         $rs = mysqli_query($this->conn, $query);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;
@@ -57,14 +68,15 @@ class HoaDonDB extends ConnectionDB
     {
         $data = $this->getAllBill();
         $lastBillId = empty($data) ? 0 : end($data)['MAHD'];
-        if ($lastBillId == 0) {
+        
+        if (strlen($lastBillId) == 0) {
             return 'HD01';
         }
         $nextId = (int)substr($lastBillId, 2) + 1;
+        
         if (strlen($nextId) < 2) {
             $nextId = '0' . $nextId;
         }
-
         return substr($lastBillId, 0, 2) . $nextId;
     }
     //Lay hoadon theo khach hang
@@ -101,8 +113,17 @@ class HoaDonDB extends ConnectionDB
 
         return $data[0];
     }
+
     //Them hoa don
-    function addBillAndDetail($bill, $detail)
+    function addBillAndDetail($billQry, $detailQry)
+    {
+        if (mysqli_query($this->conn, $billQry) && mysqli_query($this->conn, $detailQry)) {
+            return true;
+        }
+        return false;
+    }
+    //Them hoa don
+    function addBillAndDetail_Data($bill, $detail)
     {
         $query1 = "INSERT INTO `hoadon` (`MAHD`, `MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`) 
         VALUES ('$bill[0]', '$bill[1]', '$bill[2]', '$bill[3]', '$bill[4]', '$bill[5]', '$bill[6]')";
@@ -134,6 +155,14 @@ class HoaDonDB extends ConnectionDB
         return false;
     }
 
+    function updateBillStatus_Cus($id,$statusId)
+    {
+        $qry = "UPDATE `hoadon` SET `MATRANGTHAI`='$statusId' WHERE `MAHD`='$id';";
+        if (mysqli_query($this->conn, $qry)) {
+            return true;
+        }
+        return false;
+    }
     function exportExcel()
     {
         $result = array();

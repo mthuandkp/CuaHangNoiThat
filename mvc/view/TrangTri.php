@@ -56,13 +56,19 @@
                 <p style="float: left;font-size: 13px;">
                 </p>
                 <div class="dropdown">
+                    <?php if (isset($_SESSION['account'])) {
+                        echo "Hello ," . $_SESSION['account']['TENKH'];
+                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
                     <div class="dropdown-content user">
-                        <a href="./DangNhap">Đăng nhập</a>
-                        <a href="./DangKy">Đăng ký</a>
+                        <?php if (!isset($_SESSION['account'])) {
+                            echo '<a href="./DangNhap">Đăng nhập</a>';
+                            echo '<a href="./DangKy">Đăng ký</a>';
+                        } ?>
+
                         <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./TrangChu">Đăng xuất</a>
                         <a href="./LichSuGioHang">Lịch sử</a>
+                        <a href="./TrangChu/Logout">Đăng xuất</a>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -70,7 +76,7 @@
                     <?php
                     if (isset($_SESSION['cart'])) {
                         $count = 0;
-                        foreach($_SESSION['cart'] as $value){
+                        foreach ($_SESSION['cart'] as $value) {
                             $count += $value['amount'];
                         }
                         echo $count;
@@ -172,10 +178,10 @@
                             '<p class="product-name">' + $obj.TENSP + '<sup style="color: red;font-size: 1.2rem;"> -' + $obj.PHANTRAMGIAM + '%</sup></p>' +
                             '</a>' +
                             '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div>';
-                            if($obj.PHANTRAMGIAM != 0){
-                                $xhtml += '<div style="font-size: 20px;">Giá khuyến mãi: <div class="price" style="color: red;">'+formatter.format($obj.GIA*(1-$obj.PHANTRAMGIAM/100))+' <sup>đ</sup></div>';
-                            }
-                            $xhtml += '<button onclick="addToCart(\''+$obj.MASP+'\');" class="product-name" style="background-color: white;color: red;font-weight: 900;float: right;border-radius: 0.3rem;">Thêm vào giỏ</button>' +
+                        if ($obj.PHANTRAMGIAM != 0) {
+                            $xhtml += '<div style="font-size: 20px;">Giá khuyến mãi: <div class="price" style="color: red;">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100)) + ' <sup>đ</sup></div>';
+                        }
+                        $xhtml += '<button onclick="addToCart(\'' + $obj.MASP + '\');" class="product-name" style="background-color: white;color: red;font-weight: 900;float: right;border-radius: 0.3rem;">Thêm vào giỏ</button>' +
                             '</div>';
                     }
 
@@ -185,37 +191,35 @@
         });
 
 
-        $("#searchProduct").click(function(){
+        $("#searchProduct").click(function() {
             $name = "@";
             $minPrice = "@";
             $maxPrice = '@';
             $sale = "@";
 
-            if($("#checkProductName").is(":checked")){
+            if ($("#checkProductName").is(":checked")) {
                 $name = convertStringToEnglish($("#inputProductName").val());
-                if($name == ""){
+                if ($name == "") {
                     alert("Vui lòng nhập tên sản phẩm");
                     return;
                 }
             }
-            if($("#checkProductPrice").is(":checked")){
-                
-                $minPrice = parseInt( $("#inputMinProductPrice").val());
+            if ($("#checkProductPrice").is(":checked")) {
+
+                $minPrice = parseInt($("#inputMinProductPrice").val());
                 $maxPrice = parseInt($("#inputMaxProductPrice").val());
-                if($minPrice == "" || $maxPrice == ""){
+                if ($minPrice == "" || $maxPrice == "") {
                     alert("Vui lòng nhập khoảng giá cần tìm kiếm");
                     return;
-                }
-                else if(!Number.isInteger($minPrice) || !Number.isInteger($maxPrice)){
+                } else if (!Number.isInteger($minPrice) || !Number.isInteger($maxPrice)) {
                     alert("Giá tìm kiếm phải là số");
                     return;
-                }
-                else if($minPrice > $maxPrice){
+                } else if ($minPrice > $maxPrice) {
                     alert("Giá thấp nhất phải nhỏ hơn bằng giá cao nhất");
                     return;
                 }
             }
-            if($("#checkStatusDecreaseProduct").is(":checked")){
+            if ($("#checkStatusDecreaseProduct").is(":checked")) {
                 $sale = $("#inputStatusDecreaseProduct").val();
             }
 
@@ -233,11 +237,11 @@
                             continue;
                         }
                         if ($sale != '@') {
-                            if($sale == 0 && $obj.PHANTRAMGIAM != 0){
-                                continue;    
+                            if ($sale == 0 && $obj.PHANTRAMGIAM != 0) {
+                                continue;
                             }
 
-                            if($sale != 0 && $obj.PHANTRAMGIAM == 0){
+                            if ($sale != 0 && $obj.PHANTRAMGIAM == 0) {
                                 continue;
                             }
                         }
@@ -248,10 +252,10 @@
                             '<p class="product-name">' + $obj.TENSP + '<sup style="color: red;font-size: 1.2rem;"> -' + $obj.PHANTRAMGIAM + '%</sup></p>' +
                             '</a>' +
                             '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div>';
-                            if($obj.PHANTRAMGIAM != 0){
-                                $xhtml += '<div style="font-size: 20px;">Giá khuyến mãi: <div class="price" style="color: red;">'+formatter.format($obj.GIA*(1-$obj.PHANTRAMGIAM/100))+' <sup>đ</sup></div>';
-                            }
-                            $xhtml += '<button onclick="addToCart(\''+$obj.MASP+'\');" class="product-name" style="background-color: white;color: red;font-weight: 900;float: right;border-radius: 0.3rem;">Thêm vào giỏ</button>' +
+                        if ($obj.PHANTRAMGIAM != 0) {
+                            $xhtml += '<div style="font-size: 20px;">Giá khuyến mãi: <div class="price" style="color: red;">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100)) + ' <sup>đ</sup></div>';
+                        }
+                        $xhtml += '<button onclick="addToCart(\'' + $obj.MASP + '\');" class="product-name" style="background-color: white;color: red;font-weight: 900;float: right;border-radius: 0.3rem;">Thêm vào giỏ</button>' +
                             '</div>';
                     }
 
@@ -262,13 +266,13 @@
         });
 
 
-        function addToCart($productId){
-            if(!confirm("Bạn có muốn thêm sản phẩm vào giỏ hàng ?")){
+        function addToCart($productId) {
+            if (!confirm("Bạn có muốn thêm sản phẩm vào giỏ hàng ?")) {
                 return;
             }
             $.ajax({
-                url : './Admin/addToCart/' + $productId,
-                success: function(data){
+                url: './Admin/addToCart/' + $productId,
+                success: function(data) {
                     alert(data);
                 }
             });

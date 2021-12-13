@@ -1,12 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
+    <script src="./processFunc.js"></script>
+
+    <title>Lịch sử mua hàng</title>
 </head>
+
 <body>
-    <p>Lich su gio hang</p>
+    <div class="header">
+        <div class="address">
+            <i class="fa fa-map-marker"> Hồ Chí Minh, Việt Nam</i>
+            <i class="fa fa-envelope"> milfuniture@gmail.com</i>
+        </div>
+    </div>
+    <nav class="navbar sticky-top navbar-expand-md navbar-light ">
+        <div class="container-fluid">
+            <a class="navar-branch" style="cursor: pointer;" href="./TrangChu">
+                <img src="./public/image/logo.png" alt="logo" height="60px">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav mx-auto " id="lsp">
+                    <li class="nav-item active">
+                        <a class="nav-link a active" style="cursor: pointer;" href="./TrangChu">TRANG CHỦ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link a" style="cursor: pointer;" href="./TrangTri">TRANG TRÍ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongNgu">PHÒNG NGỦ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongLamViec">PHÒNG LÀM VIỆC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongKhach">PHÒNG KHÁCH</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongAn">PHÒNG ĂN</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="user-nav">
+                <p style="float: left;font-size: 13px;">
+                </p>
+                <div class="dropdown">
+                    <?php if (isset($_SESSION['account'])) {
+                        echo "Hello ," . $_SESSION['account']['TENKH'];
+                    } ?>
+                    <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
+                    <div class="dropdown-content user">
+                        <?php if (!isset($_SESSION['account'])) {
+                            echo '<a href="./DangNhap">Đăng nhập</a>';
+                            echo '<a href="./DangKy">Đăng ký</a>';
+                        } ?>
+
+                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                        <a href="./LichSuGioHang">Lịch sử</a>
+                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                    </div>
+                </div>
+                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <span id="counter">
+                    <?php
+                    if (isset($_SESSION['cart'])) {
+                        $count = 0;
+                        foreach ($_SESSION['cart'] as $value) {
+                            $count += $value['amount'];
+                        }
+                        echo $count;
+                    } else {
+                        echo 0;
+                    }
+                    ?>
+                </span>
+            </div>
+        </div>
+    </nav><br>
+    <h2 class="title">
+        <span>LỊCH SỬ MUA HÀNG</span>
+    </h2><br>
+
+    <table style="width: 60%;margin-left: 20%;font-family: 'Times New Roman', Times, serif;font-size: 1.5rem;font-weight: normal;" class="shopping-cart" id="shopping-cart-id">
+    </table>
+    <div class="footer-container">
+        <div class="footer">
+            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
+        </div>
+        <div class="footer">
+            <a href="">GIAO HÀNG</a><br>
+            <a href="">BẢO HÀNH</a><br>
+            <a href="">BẢO DƯỠNG</a><br>
+            <a href="">ĐẶT HÀNG</a><br>
+            <a href="">CỬA HÀNG</a><br>
+            <a href="">LIÊN HỆ</a><br>
+        </div>
+        <div class="footer">
+            <a href="">VỀ MILD</a><br>
+            <a href="">TẠI SAO LẠI CHỌN MILD</a><br>
+        </div>
+        <div class="footer">
+            <h3>ĐĂNG KÝ NHẬN TIN</h3><br>
+            <input type="text">
+            <button class="footer-btn">ĐĂNG KÝ</button>
+        </div>
+    </div>
+
+    <script>
+        function viewDetail($id) {
+            window.location.href="./LichSuGioHang/XemChiTiet/" + $id;
+        }
+
+        function submitBill($id) {
+            if (!confirm("Bạn đã nhận được hàng ?")) {
+                return;
+            }
+
+            $.ajax({
+                url: './Admin/submitBill/' + $id,
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    alert(data.SMS);
+
+                    loadTable();
+                }
+            })
+        }
+        loadTable();
+
+        function loadTable() {
+            $.ajax({
+                url: './Admin/getCusBillAndDetailBill',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    $xhtml = '<tr>' +
+                        '<th style="width: 10rem;">Mã Hóa Đơn</th>' +
+                        '<th style="width: 10rem;">Ngày Đặt</th>' +
+                        '<th style="width: 10rem;">Giờ Đặt</th>' +
+                        '<th>Tổng Tiền</th>' +
+                        '<th style="width: 20rem;">Trạng Thái</th>' +
+                        '<th style="width: 10rem;">Chức Năng</th>' +
+                        '</tr>';
+                    for (var key in data) {
+                        $obj = data[key];
+                        $xhtml += '<tr>' +
+                            '<td>' + $obj.MAHD + '</td>' +
+                            '<td>' + $obj.NGAYLAP + '</td>' +
+                            '<td>' + $obj.GIOLAP + '</td>';
+                        if ($obj.TONG == $obj.LAST_PRICE) {
+                            $xhtml += '<td> ' + $obj.TONG + 'VNĐ</td>';
+                        } else {
+                            $xhtml += '<td> ' + formatter.format($obj.LAST_PRICE) + ' VNĐ<p style="font-weight:800;text-decoration: line-through;">' + formatter.format($obj.TONG) + ' VNĐ</p></td>';
+                        }
+
+                        switch ($obj.MATRANGTHAI) {
+                            case 'TT01': {
+                                $xhtml += '<td style="padding:0.3rem;">Đang chờ cửa hàng xác nhận</td>' +
+                                    '<td>' +
+                                    '<button style="border-radius:0.5rem;margin: 0.2rem;width: 10rem;background-color: white;color: #2478ff;font-family: "Times New Roman", Times, serif;" onclick="viewDetail(\'' + $obj.MAHD + '\');">Xem Chi Tiết</button>' +
+                                    '</td>';
+                                break;
+                            }
+                            case 'TT02': {
+                                $xhtml += '<td padding:0.3rem;>Bạn đã nhận được hàng? Vui lòng xác nhận</td>' +
+                                    '<td>' +
+                                    '<button style="border-radius:0.5rem;margin: 0.2rem;width: 10rem;background-color: red;color: white;font-family: "Times New Roman", Times, serif;" onclick="submitBill(\'' + $obj.MAHD + '\')">Xác nhận</button>' +
+                                    '<button style="border-radius:0.5rem;margin: 0.2rem;width: 10rem;background-color: white;color: #2478ff;font-family: "Times New Roman", Times, serif;" onclick="viewDetail(\'' + $obj.MAHD + '\');">Xem Chi Tiết</button>' +
+                                    '</td>';
+                                break;
+                            }
+                            case 'TT03': {
+                                $xhtml += '<td padding:0.3rem;>Đơn hàng hoàn tất</td>' +
+                                    '<td>' +
+                                    '<button style="border-radius:0.5rem;margin: 0.2rem;width: 10rem;background-color: white;color: #2478ff;font-family: "Times New Roman", Times, serif;" onclick="viewDetail(\'' + $obj.MAHD + '\');">Xem Chi Tiết</button>' +
+                                    '</td>';
+                                break;
+                            }
+                        }
+                    }
+                    $("#shopping-cart-id").html($xhtml);
+                }
+            })
+        }
+    </script>
 </body>
+
 </html>

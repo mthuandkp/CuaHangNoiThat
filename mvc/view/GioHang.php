@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,19 +11,22 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
-    <title>Đăng nhập</title>
+    <script src="./processFunc.js"></script>
+
+    <title>Giỏ Hàng</title>
 </head>
+
 <body>
-<div class="header">
+    <div class="header">
         <div class="address">
-            <i class="fa fa-map-marker" > Hồ Chí Minh, Việt Nam</i>
+            <i class="fa fa-map-marker"> Hồ Chí Minh, Việt Nam</i>
             <i class="fa fa-envelope"> milfuniture@gmail.com</i>
         </div>
     </div>
     <nav class="navbar sticky-top navbar-expand-md navbar-light ">
         <div class="container-fluid">
-            <a class="navar-branch" style="cursor: pointer;" href="/CuaHangNoiThat/TrangChu">
-                <img src="/CuaHangNoiThat/public/image/logo.png" alt="logo" height="60px">
+            <a class="navar-branch" style="cursor: pointer;" href="./TrangChu">
+                <img src="./public/image/logo.png" alt="logo" height="60px">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
@@ -30,22 +34,22 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav mx-auto " id="lsp">
                     <li class="nav-item active">
-                        <a class="nav-link a active" style="cursor: pointer;" href="/CuaHangNoiThat/TrangChu">TRANG CHỦ</a>
+                        <a class="nav-link a active" style="cursor: pointer;" href="./TrangChu">TRANG CHỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/TrangTri">TRANG TRÍ</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./TrangTri">TRANG TRÍ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongNgu">PHÒNG NGỦ</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongNgu">PHÒNG NGỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongLamViec">PHÒNG LÀM VIỆC</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongLamViec">PHÒNG LÀM VIỆC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongKhach">PHÒNG KHÁCH</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongKhach">PHÒNG KHÁCH</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongAn">PHÒNG ĂN</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="./PhongAn">PHÒNG ĂN</a>
                     </li>
                 </ul>
             </div>
@@ -53,20 +57,30 @@
                 <p style="float: left;font-size: 13px;">
                 </p>
                 <div class="dropdown">
+                    <?php if (isset($_SESSION['account'])) {
+                        echo "Hello ," . $_SESSION['account']['TENKH'];
+                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
                     <div class="dropdown-content user">
-                        <a href="/CuaHangNoiThat/DangNhap">Đăng nhập</a>
-                        <a href="/CuaHangNoiThat/DangKy">Đăng ký</a>
-                        <a href="/CuaHangNoiThat/ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="/CuaHangNoiThat/TrangChu">Đăng xuất</a>
-                        <a href="/CuaHangNoiThat/GioHang">Lịch sử</a>
+                    <?php if (!isset($_SESSION['account'])) {
+                        echo '<a href="./DangNhap">Đăng nhập</a>';
+                        echo '<a href="./DangKy">Đăng ký</a>';
+                    } ?>
+                        
+                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                        <a href="./LichSuGioHang">Lịch sử</a>
+                        <a href="./TrangChu/Logout">Đăng xuất</a>
                     </div>
                 </div>
-                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
-                    if (isset($_SESSION['cartDetail'])) {
-                        echo count($_SESSION['cartDetail']);
+                    if (isset($_SESSION['cart'])) {
+                        $count = 0;
+                        foreach ($_SESSION['cart'] as $value) {
+                            $count += $value['amount'];
+                        }
+                        echo $count;
                     } else {
                         echo 0;
                     }
@@ -76,50 +90,11 @@
         </div>
     </nav><br>
     <h2 class="title">
-            <span>GIỎ HÀNG</span>
+        <span>GIỎ HÀNG</span>
     </h2><br>
-    <form action="/action_page.php" >
-        <table class="shopping-cart">
-                <tr>
-                    <th>Hình ảnh</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Giá</th>
-                    <th>Số lượng</th>
-                    <th>Tổng tiền</th>
-                </tr>
-                <tr>
-                    <td><img src="/CuaHangNoiThat/public/image/cate-1.jpg" alt=""></td>
-                    <td><p style="margin: 0;">Tủ đồ abcdxyz</p></td>
-                    <td ><div class="price">200.000 <sup>đ</sup></div></td>
-                    <td><input type="number" name="" id="" placeholder="1" class="number"><i class="fa fa-trash" ></i></td>
-                    <td><div class="price">200.000 <sup>đ</sup></div></td>
-                </tr>
-                <tr>
-                    <td><img src="/CuaHangNoiThat/public/image/cate-1.jpg" alt=""></td>
-                    <td><p style="margin: 0;">Tủ đồ abcdxyz</p></td>
-                    <td><div class="price">200.000 <sup>đ</sup></div></td>
-                    <td><input type="number" name="" id="" placeholder="1" class="number"><i class="fa fa-trash" ></i></td>
-                    <td><div class="price">200.000 <sup>đ</sup></div></td>
-                </tr>
-                <tr>
-                    <td><img src="/CuaHangNoiThat/public/image/cate-1.jpg" alt=""></td>
-                    <td><p style="margin: 0;">Tủ đồ abcdxyz</p></td>
-                    <td><div class="price">200.000 <sup>đ</sup></div></td>
-                    <td><input type="number" name="" id="" placeholder="1" class="number"><i class="fa fa-trash" ></i></td>
-                    <td><div class="price">200.000 <sup>đ</sup></div></td>
-                </tr>
-                <tr>
-                    <td colspan="3"><p>Ghi chú:</p><textarea name="" id="" cols="50" rows="3"></textarea></td>
-                    <td colspan="2" style="text-align: end;">
-                        <div class="total-price">
-                            200.000 <sup>đ</sup>
-                        </div>
-                        <p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>
-                        <input type="submit" value="ĐẶT HÀNG" class="cart-btn">
-                    </td>
-                </tr>
-        </table>
-    </form>
+    <div style="width: 80%;margin-left: 10%;">
+        <table style="width: 100%;" class="shopping-cart" id="shopping-cart-id"></table>
+    </div>
     <div class="footer-container">
         <div class="footer">
             <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
@@ -139,8 +114,154 @@
         <div class="footer">
             <h3>ĐĂNG KÝ NHẬN TIN</h3><br>
             <input type="text">
-            <button class="footer-btn"  >ĐĂNG KÝ</button>
+            <button class="footer-btn">ĐĂNG KÝ</button>
         </div>
     </div>
+
+    <script>
+        function loadCart() {
+            $.ajax({
+                url: './Admin/getCart',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    $xhtml = '<tr>' +
+                        '<th>Hình ảnh</th>' +
+                        '<th>Tên sản phẩm</th>' +
+                        '<th>Giá</th>' +
+                        '<th>Số lượng</th>' +
+                        '<th>Tổng tiền</th>' +
+                        '</tr>';
+                    $sum = 0;
+                    for (var key in data) {
+                        $obj = data[key];
+                        $sum += $obj.GIA * (1 - $obj.PHANTRAMGIAM / 100) * $obj.amount;
+                        $xhtml += '<tr>' +
+                            '<td><img src="./public/image/HINHANH/' + $obj.HINHANH + '" alt=""></td>' +
+                            '<td>' +
+                            '<p style="margin: 0;">' + $obj.TENSP + ' (-' + $obj.PHANTRAMGIAM + '%)</p>' +
+                            '</td>' +
+                            '<td>';
+
+                        if ($obj.PHANTRAMGIAM == 0) {
+                            $xhtml += '<div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div>';
+                        } else {
+                            $xhtml += '<div class="price">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100)) + ' <sup>đ</sup></div>';
+                            $xhtml += '<div style="text-decoration: line-through;" class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div>';
+                        }
+                        $xhtml += '</td>' +
+                            '<td><input id="number-product-item-' + $obj.MASP + '" type="number" onchange="changeNumberCart(\'' + $obj.MASP + '\');" placeholder="1" class="number" value="' + $obj.amount + '"><i class="fa fa-trash" onclick="deleteCartItem(\'' + $obj.MASP + '\')"></i><p style="color:red;">' + $obj.ERROR + '</p></td>' +
+                            '<td>' +
+                            '<div class="price">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100) * $obj.amount) + ' <sup>đ</sup></div>' +
+                            '</td>' +
+                            '</tr>';
+                    }
+                    $.ajax({
+                        url: './Admin/getSale',
+                        success: function(subdata) {
+                            var subdata = JSON.parse(subdata);
+                            if(subdata === undefined || subdata.length == 0 || data.length == 0 || data === undefined){
+                                $xhtml += '<tr>' +
+                                '<td colspan="3">' +
+                                '</td>' +
+                                '<td colspan="2" style="text-align: end;">' +
+                                '<div class="total-price">' +
+                                formatter.format($sum) + '<sup>đ</sup>' +
+                                '</div>' +
+                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
+                                '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
+                                '</td>' +
+                                '</tr>';
+
+                            }
+                            else{
+                                $xhtml += '<tr>' +
+                                '<td colspan="3">' +
+                                '</td>' +
+                                '<td colspan="2" style="text-align: end;">' +
+                                '<div class="total-price" style="text-decoration: line-through;">' +
+                                formatter.format($sum) + '<sup>đ</sup>' +
+                                '</div>' +
+                                '<div class="total-price">' +
+                                formatter.format($sum*(1-subdata.PHANTRAMGIAM/100)) + ' (-'+subdata.PHANTRAMGIAM+'%)<sup>đ</sup>' +
+                                '</div><p>(' +subdata.NGAYBD+' đến '+subdata.NGAYKT+')</p>' +
+                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
+                                '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
+                                '</td>' +
+                                '</tr>';
+
+                            }
+                            
+                            $("#shopping-cart-id").html($xhtml);
+
+                        }
+                    })
+                }
+            })
+        }
+        $(document).ready(function() {
+            loadCart();
+        });
+
+        function changeNumberCart($id) {
+            $number = ($("#number-product-item-" + $id).val());
+            if (!Number.isInteger(parseInt($number)) || parseInt($number) != $number) {
+                loadCart();
+            } else if ($number <= 0) {
+                if (confirm('Số lượng sản phẩm phải lớn hơn 0. Bạn có muốn xóa sản phẩm này không ?')) {
+                    $.ajax({
+                        url: './Admin/deleteCartItem/' + $id,
+                        success: function(data) {
+                            alert(data);
+                        }
+                    })
+                    loadCart();
+                } else {
+
+                    loadCart();
+                }
+            } else {
+                $.ajax({
+                    url: './Admin/checkNumberCart/' + $id + '/' + $number,
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        if (data.SMS != "success") {
+                            alert(data.SMS);
+                        }
+                        loadCart();
+
+                    }
+                })
+            }
+        }
+
+        function deleteCartItem($id) {
+            if (confirm('Bạn có muốn xóa sản phẩm này không ?')) {
+                $.ajax({
+                    url: './Admin/deleteCartItem/' + $id,
+                    success: function(data) {
+                        alert(data);
+                    }
+                })
+                loadCart();
+            }
+        }
+
+        function orderCart() {
+            $.ajax({
+                url: './Admin/orderCart',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    if (data.SMS == "NOT_LOGIN") {
+                        alert("Vui lòng đăng nhập để tiếp tục");
+                        window.location.href = "./DangNhap?return=GioHang"
+                    } else if (data.SMS != 'SUCCESS') {
+                        alert(data.SMS);
+                    }
+                    loadCart();
+                }
+            })
+        }
+    </script>
 </body>
+
 </html>

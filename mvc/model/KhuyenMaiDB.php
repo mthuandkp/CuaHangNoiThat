@@ -14,7 +14,9 @@ class KhuyenMaiDB extends ConnectionDB
         $qry = "SELECT * FROM khuyenmai";
         $rs = mysqli_query($this->conn, $qry);
         while ($row = mysqli_fetch_assoc($rs)) {
-            $data[] = $row;
+            if ($row['MAKM'] != 'KM00') {
+                $data[] = $row;
+            }
         }
         return $data;
     }
@@ -51,5 +53,18 @@ class KhuyenMaiDB extends ConnectionDB
             return true;
         }
         return false;
+    }
+
+    function getSaleinCurrent(){
+        $sale = $this->getAllSales();
+        $currrentTime = date("Y/m/d");
+        
+        foreach($sale as $value){
+            if($value['NGAYBD'] <= $currrentTime && $value['NGAYKT'] >= $currrentTime){
+                return $value;
+            }
+        }
+
+        return array();
     }
 }

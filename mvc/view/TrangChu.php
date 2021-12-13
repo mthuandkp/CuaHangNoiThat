@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,17 +13,18 @@
     <link rel="stylesheet" href="./my-css.css">
     <title>Trang Chủ</title>
 </head>
+
 <body>
     <div class="header">
         <div class="address">
-            <i class="fa fa-map-marker" > Hồ Chí Minh, Việt Nam</i>
+            <i class="fa fa-map-marker"> Hồ Chí Minh, Việt Nam</i>
             <i class="fa fa-envelope"> milfuniture@gmail.com</i>
         </div>
     </div>
     <nav class="navbar sticky-top navbar-expand-md navbar-light ">
         <div class="container-fluid">
-            <a class="navar-branch" style="cursor: pointer;" href="index.php">
-                <img src="./public/image/logo.png" alt="logo" height="90px" >
+            <a class="navar-branch" style="cursor: pointer;" href="./TrangChu">
+                <img src="./public/image/logo.png" alt="logo" height="60px">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
@@ -53,20 +55,32 @@
                 <p style="float: left;font-size: 13px;">
                 </p>
                 <div class="dropdown">
+                    
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
                     <div class="dropdown-content user">
-                        <a href="./DangNhap">Đăng nhập</a>
-                        <a href="./DangKy">Đăng ký</a>
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./TrangChu/Logoutoed">Đăng xuất</a>
-                        <a href="./GioHang">Lịch sử</a>
+                        <?php if (!isset($_SESSION['account'])) {
+                            echo '<a href="./DangNhap">Đăng nhập</a>';
+                            echo '<a href="./DangKy">Đăng ký</a>';
+                        }
+                        else{
+                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                            <a href="./LichSuGioHang">Lịch sử</a>
+                            <a href="./TrangChu/DoiMatKhau">Đổi mật khẩu</a>
+                            <a href="./TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
-                    if (isset($_SESSION['cartDetail'])) {
-                        echo count($_SESSION['cartDetail']);
+                    if (isset($_SESSION['cart'])) {
+                        $count = 0;
+                        foreach ($_SESSION['cart'] as $value) {
+                            $count += $value['amount'];
+                        }
+                        echo $count;
                     } else {
                         echo 0;
                     }
@@ -79,13 +93,13 @@
         <img src="./public/image/BANNER_CHINH_1.jpg" alt="">
     </div>
     <h2 class="title">
-            <span>Nội thất cho ngôi nhà hiện đại</span>
+        <span>Nội thất cho ngôi nhà hiện đại</span>
     </h2>
     <p class="content">
-    Cozy được hình thành từ năm 1995 với sứ mệnh mang đến những bộ sưu tập nội thất có thiết kế đương đại, 
-    chất lượng vượt trội từ các nước Italy, Đức, Nhật Bản với giá thành hợp lý nhất. Các sản phẩm từ sofa, 
-    bàn ăn đến từng lọ hoa trang trí,... tất cả được các Designers đến từ Italy và Australia thiết kế đồng bộ,
-     tạo nên những không gian sống hoàn chỉnh và tinh tế nhất.
+        Cozy được hình thành từ năm 1995 với sứ mệnh mang đến những bộ sưu tập nội thất có thiết kế đương đại,
+        chất lượng vượt trội từ các nước Italy, Đức, Nhật Bản với giá thành hợp lý nhất. Các sản phẩm từ sofa,
+        bàn ăn đến từng lọ hoa trang trí,... tất cả được các Designers đến từ Italy và Australia thiết kế đồng bộ,
+        tạo nên những không gian sống hoàn chỉnh và tinh tế nhất.
     </p>
     <div class="category-container">
         <div class="category">
@@ -120,7 +134,7 @@
         </div>
     </div>
     <h2 class="title">
-            <span>Hàng nhập khẩu từ các thương hiệu trên thế giới</span>
+        <span>Hàng nhập khẩu từ các thương hiệu trên thế giới</span>
     </h2>
     <div id="carouselId" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -151,7 +165,7 @@
         <div class="info">
             <h2>THIẾT KẾ HIỆN ĐẠI</h2><br>
             <p>MILD là thương hiệu tiên phong phân phối các sản phẩm bàn ăn cao cấp với mẫu mã và chất liệu đa dạng kết hợp công năng tiện nghi.</p>
-            <p>Các mẫu bàn Ceramic đang được đặc biệt ưa chuộng bởi các đặc điểm ưu việt. Ceramic đã qua xử lý kỹ thuật và được sử dụng trong nội thất cao cấp nhờ tính thẩm mỹ, chống trầy, và độ bền vượt trội, an toàn thân thiện với môi trường, không gây kích ứng khi sử dụng. 
+            <p>Các mẫu bàn Ceramic đang được đặc biệt ưa chuộng bởi các đặc điểm ưu việt. Ceramic đã qua xử lý kỹ thuật và được sử dụng trong nội thất cao cấp nhờ tính thẩm mỹ, chống trầy, và độ bền vượt trội, an toàn thân thiện với môi trường, không gây kích ứng khi sử dụng.
                 MILD độc quyền phân phối các sản phẩm nội thất Ceramic Ý cao cấp có độ bóng gấp 3 lần ceramic thông thường.</p>
             <p>Các mẫu bàn đá marble nguyên khối tự nhiên của MILD được phủ lớp sơn mài bóng chống thấm ẩm, được chế tác thủ công tỉ mỉ đến từng đường nét nhằm đảm bảo độ bền và tính thẩm mỹ cao.</p>
             <p>Tất cả các bộ sưu tập bàn ăn của MILD đều có thiết kế kết hợp công năng tiện nghi đáp ứng linh hoạt nhiều nhu cầu của khách hàng. Bàn ăn thông minh kéo dãn nhiều cấp độ là sự lựa chọn hoàn hảo cho không gian sang trọng và lịch lãm.</p>
@@ -176,8 +190,9 @@
         <div class="footer">
             <h3>ĐĂNG KÝ NHẬN TIN</h3><br>
             <input type="text">
-            <button class="footer-btn"  >ĐĂNG KÝ</button>
+            <button class="footer-btn">ĐĂNG KÝ</button>
         </div>
     </div>
 </body>
+
 </html>

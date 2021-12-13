@@ -18,4 +18,8 @@ class TrangChu extends Controller
         print_r($_SESSION);
         echo '</pre>';
     }
+
+    function clear(){
+        session_destroy();
+    }
 }

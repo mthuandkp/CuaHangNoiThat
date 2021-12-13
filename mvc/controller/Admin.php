@@ -1,5 +1,6 @@
 <?php
-class Admin extends Controller{
+class Admin extends Controller
+{
     function display()
     {
         require_once('./menuadmin.php');
@@ -16,7 +17,7 @@ class Admin extends Controller{
         $objBillDetail = $this->getModel('HoaDonDB');
         $objProduct = $this->getModel('SanPhamDB');
         $data = $objBillDetail->getBillDetailById($id);
-        foreach($data as $key => $value){
+        foreach ($data as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             $data[$key]['TENSP'] = $product['TENSP'];
             $data[$key]['HINHANH'] = $product['HINHANH'];
@@ -24,11 +25,13 @@ class Admin extends Controller{
         require_once('./menuadmin.php');
         $this->View('AdminChiTietHoaDon', 'Admin Chi Tiết HĐ', $data);
     }
-    function TimKiemHoaDon(){
+    function TimKiemHoaDon()
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminTimKiemHoaDon','Tìm kiếm hóa đơn');
+        $this->View('AdminTimKiemHoaDon', 'Tìm kiếm hóa đơn');
     }
-    function getAllBill(){
+    function getAllBill()
+    {
         $obj = $this->getModel('HoaDonDB');
         $objStatus = $this->getModel('TrangThaiDB');
         $objStaff = $this->getModel('NhanVienDB');
@@ -36,7 +39,7 @@ class Admin extends Controller{
         $objSale = $this->getModel('KhuyenMaiDB');
 
         $data = $obj->getAllBIll();
-        foreach($data as $key=>$value){
+        foreach ($data as $key => $value) {
             $staff = $objStaff->getStaffById($value['MANV']);
             $status = $value['MATRANGTHAI'];
             $customer = $objCustomer->getCutomerById($value['MAKH']);
@@ -45,12 +48,13 @@ class Admin extends Controller{
             $data[$key]['TENKH'] = $customer['TENKH'];
             $data[$key]['PHANTRAMGIAM'] = $objSale->getSaleById($value['MAKM'])['PHANTRAMGIAM'];
         }
-        
+
         echo json_encode($data);
     }
 
-    function getBillAndDetail(){
-        if(!isset($_POST['id'])){
+    function getBillAndDetail()
+    {
+        if (!isset($_POST['id'])) {
             echo -1;
             return;
         }
@@ -68,17 +72,17 @@ class Admin extends Controller{
         $data['bill']['TENKH'] = $objCustomer->getCutomerById($data['bill']['MAKH'])['TENKH'];
         $data['bill']['SALE'] = $objSale->getSaleById($data['bill']['MAKM']);
         $data['detail'] = $objBill->getBillDetailById($id);
-        foreach($data['detail'] as $key => $value){
+        foreach ($data['detail'] as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             $data['detail'][$key]['TENSP'] = $product['TENSP'];
-            
         }
         echo json_encode($data);
     }
 
 
-    function getReceiptAndDetail(){
-        if(!isset($_POST['id'])){
+    function getReceiptAndDetail()
+    {
+        if (!isset($_POST['id'])) {
             echo -1;
             return;
         }
@@ -93,34 +97,71 @@ class Admin extends Controller{
         $data['receipt'] = $objReceipt->getReceiptById($id)[0];
         $data['receipt']['TENNV'] = $objStaff->getStaffById($data['receipt']['MANV'])['TENNV'];
         $data['receipt']['TENNCC'] = $objSupplier->getSupplierById($data['receipt']['MANCC'])['TENNCC'];
-        
+
         $data['detail'] = $objReceipt->getReceiptDetailById($id);
-        foreach($data['detail'] as $key => $value){
+        foreach ($data['detail'] as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             $data['detail'][$key]['TENSP'] = $product['TENSP'];
-            
         }
         echo json_encode($data);
     }
 
-    function updateBillStatus(){
-        
-        if(!isset($_POST['id'])){
+    function updateBillStatus()
+    {
+
+        if (!isset($_POST['id'])) {
             echo -1;
             return;
         }
         $id = $_POST['id'];
         $objBill = $this->getModel("HoaDonDB");
-        if($objBill->updateBillStatus($id)){
+        if ($objBill->updateBillStatus($id)) {
             echo 0;
             return;
         }
         echo -1;
     }
 
-    function exportBillToExcel(){
+    function exportBillToExcel()
+    {
         $objBill = $this->getModel('HoaDonDB');
         $data = $objBill->exportExcel();
+        echo json_encode($data);
+    }
+
+    function submitBill($id){
+        $objBill = $this->getModel("HoaDonDB");
+        $result = array();
+        $result['SMS'] = 'Lỗi khi cập nhật';
+        if($objBill->updateBillStatus_Cus($id,'TT03')){
+            $result['SMS'] = 'Cập nhật thành công';
+        }
+
+        echo json_encode($result);
+    }
+
+    function getCusBillAndDetailBill(){
+        if(!isset($_SESSION['account'])){
+            echo json_encode(array());
+            return;    
+        }
+        $obj = $this->getModel('HoaDonDB');
+        $objSale = $this->getModel("KhuyenMaiDB");
+        
+        $data = $obj->getBillByCusId("KH01");
+        foreach($data as $key=>$value){
+            $sumBill = 0;
+            foreach($obj->getBillDetailById($value['MAHD']) as $subvalue){
+                $sumBill += $subvalue['GIA']*$subvalue['SOLUONG']*(1-$subvalue['PHANTRAMGIAM']/100);
+            }
+
+            $saleId = $value['MAKM'];
+            
+            $sale = $objSale->getSaleById($saleId);
+            $data[$key]['LAST_PRICE'] = (1-$sale['PHANTRAMGIAM']/100)*$sumBill;
+            
+        }
+
         echo json_encode($data);
     }
     /*===================================================================== */
@@ -128,61 +169,88 @@ class Admin extends Controller{
     function KhachHang()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminKhachHang','Admin Khách Hàng');
+        $this->View('AdminKhachHang', 'Admin Khách Hàng');
     }
-    function ThemKhachHang(){
+    function ThemKhachHang()
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminThemKhachHang','Admin Thêm Khách Hàng');
+        $this->View('AdminThemKhachHang', 'Admin Thêm Khách Hàng');
     }
-    function TimKiemKhachHang(){
+    function TimKiemKhachHang()
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminTimKiemKhachHang','Admin Tìm kiếm khách hàng');
+        $this->View('AdminTimKiemKhachHang', 'Admin Tìm kiếm khách hàng');
     }
-    function SuaKhachHang($id){
+    function SuaKhachHang($id)
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminSuaKhachHang','Admin sửa khách hàng',$id);
+        $this->View('AdminSuaKhachHang', 'Admin sửa khách hàng', $id);
     }
 
-    function getAllCustomer(){
+    function getAllCustomer()
+    {
         $objCus = $this->getModel('KhachHangDB');
 
         echo json_encode($objCus->getAllCustomer());
     }
 
-    function block_unblockCutomer($id){
+    function block_unblockCutomer($id)
+    {
         $objCus = $this->getModel('KhachHangDB');
-        if($objCus->block_unblockCutomer($id)){
+        if ($objCus->block_unblockCutomer($id)) {
             echo '0';
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function exportCustomerToExcel(){
+    function exportCustomerToExcel()
+    {
         $objCustomer = $this->getModel('KhachHangDB');
         $data = $objCustomer->exportExcel();
         echo json_encode($data);
     }
 
-    function checkLoginCustomer($user,$pass){
+    function checkLoginCustomer($user, $pass)
+    {
         $objCustomer = $this->getModel('KhachHangDB');
         $cus = $objCustomer->getCutomerByUser($user);
-        $pass = hash('md5',$pass);
+        $pass = hash('md5', $pass);
         $result = array();
-        if(empty($cus)){
+        $result['URL'] = 'TrangChu';
+        if (empty($cus)) {
             $result['RESULT'] = "NOT_EXISTS";
-        }
-        else{
-            if($pass == $cus['MATKHAU']){
+        } else {
+            if ($pass == $cus['MATKHAU']) {
                 $result['RESULT'] = "SUCCESS";
                 $result['DATA'] = $cus;
                 $_SESSION['account'] = $cus;
-            }
-            else{
+                if (isset($_GET['return']) && $_GET['return'] != '') {
+                    $result['URL'] = $_GET['return'];
+                }
+            } else {
                 $result['RESULT'] = "WRONG_PASSWORD";
-                
             }
+        }
+        echo json_encode($result);
+    }
+
+    function saveInfoAccount($name,$address,$phone,$sex){
+        $objCustomer = $this->getModel("KhachHangDB");
+        $cusId = $_SESSION['account']['MAKH'];
+        $customer = array(
+            'id'=>$cusId,
+            'name'=>$name,
+            'address'=>$address,
+            'phone'=>$phone,
+            'sex'=>$sex
+        );
+
+        $result = array();
+
+        $result['SMS'] = 'Cập nhật không thành công';
+        if($objCustomer->updateInformationCustomer($customer)){
+            $result['SMS'] = 'Cập nhật thành công';
         }
         echo json_encode($result);
     }
@@ -191,46 +259,50 @@ class Admin extends Controller{
     function KhuyenMai()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminKhuyenMai','Admin Khuyến Mãi');
+        $this->View('AdminKhuyenMai', 'Admin Khuyến Mãi');
     }
-    function ThemKhuyenMai(){
+    function ThemKhuyenMai()
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminThemKhuyenMai','Admin Thêm Khuyến mãi');
+        $this->View('AdminThemKhuyenMai', 'Admin Thêm Khuyến mãi');
     }
-    function TimKiemKhuyenMai(){
+    function TimKiemKhuyenMai()
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminTimKiemKhuyenMai','Admin Tìm kiếm Khuyến mãi');
+        $this->View('AdminTimKiemKhuyenMai', 'Admin Tìm kiếm Khuyến mãi');
     }
-    function SuaKhuyenMai($id){
+    function SuaKhuyenMai($id)
+    {
         $objSale = $this->getModel('KhuyenMaiDB');
         $sale = $objSale->getSaleById($id);
         require_once('./menuadmin.php');
-        $this->View('AdminSuaKhuyenMai','Admin sửa Khuyến mãi',$sale);
+        $this->View('AdminSuaKhuyenMai', 'Admin sửa Khuyến mãi', $sale);
     }
 
-    function getAllSale(){
+    function getAllSale()
+    {
         $objSale = $this->getModel('KhuyenMaiDB');
         echo json_encode($objSale->getAllSales());
     }
 
-    function updateInforSale(){
+    function updateInforSale()
+    {
         $sale = $_POST['data'];
         $objSale = $this->getModel('KhuyenMaiDB');
-        if($objSale->updateInformationSale($sale)){
+        if ($objSale->updateInformationSale($sale)) {
             echo 'Sửa Thành Công';
-        }
-        else{
+        } else {
             echo 'Không thể sửa';
         }
     }
 
-    function addNewSale(){
+    function addNewSale()
+    {
         $sale = $_POST['data'];
         $objSale = $this->getModel('KhuyenMaiDB');
-        if($objSale->addNewSale($sale)){
+        if ($objSale->addNewSale($sale)) {
             echo 'Thêm Thành Công';
-        }
-        else{
+        } else {
             echo 'Không thể thêm';
         }
     }
@@ -239,81 +311,84 @@ class Admin extends Controller{
     function LoaiSanPham()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminLoaiSanPham','Admin Loại Sản Phẩm');
+        $this->View('AdminLoaiSanPham', 'Admin Loại Sản Phẩm');
     }
     function ThemLoaiSanPham()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminThemLoaiSanPham','Admin Thêm Loại Sản Phẩm');
+        $this->View('AdminThemLoaiSanPham', 'Admin Thêm Loại Sản Phẩm');
     }
     function SuaLoaiSanPham($id)
     {
         $objType = $this->getModel('LoaiSanPhamDB');
         $typeProduct = $objType->getProductTypeById($id);
         require_once('./menuadmin.php');
-        $this->View('AdminSuaLoaiSanPham','Admin Sửa Loại Sản Phẩm',$typeProduct);
+        $this->View('AdminSuaLoaiSanPham', 'Admin Sửa Loại Sản Phẩm', $typeProduct);
     }
 
-    function getAllProductType(){
+    function getAllProductType()
+    {
         $objType = $this->getModel('LoaiSanPhamDB');
         echo json_encode($objType->getAllProductType());
     }
 
-    function updateInformationProductType($typeProduct = array()){
+    function updateInformationProductType($typeProduct = array())
+    {
         if (isset($_POST['data'])) {
             $typeProduct = $_POST['data'];
         }
         $objType = $this->getModel('LoaiSanPhamDB');
 
-        if($objType->updateInformationProductType($typeProduct)){
+        if ($objType->updateInformationProductType($typeProduct)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function addNewTypeProduct($typeProduct = array()){
+    function addNewTypeProduct($typeProduct = array())
+    {
         if (isset($_POST['data'])) {
             $typeProduct = $_POST['data'];
         }
         $objType = $this->getModel('LoaiSanPhamDB');
-        
-        if($objType->addNewProductType($typeProduct)){
+
+        if ($objType->addNewProductType($typeProduct)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function exportTypeProductToExcel(){
+    function exportTypeProductToExcel()
+    {
         $typeProduct = $this->getModel('LoaiSanPhamDB');
         $data = $typeProduct->exportExcel();
         echo json_encode($data);
     }
 
-    function readExcelTypeProduct(){
+    function readExcelTypeProduct()
+    {
         $typeProduct = $this->getModel("LoaiSanPhamDB");
         $data = $typeProduct->readExcel($_FILES['file']);
 
         //Check valid data
-        foreach($data as $key=>$value){
-            if($value['MALOAI'] == ''){
+        foreach ($data as $key => $value) {
+            if ($value['MALOAI'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['TENLOAI'] == ''){
+            if ($value['TENLOAI'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['MOTA'] == ''){
+            if ($value['MOTA'] == '') {
                 unset($data[$key]);
                 continue;
             }
         }
         array_filter($data);
-        echo json_encode(array('data'=>$data,'dataDB'=>$typeProduct->getAllProductType()));
+        echo json_encode(array('data' => $data, 'dataDB' => $typeProduct->getAllProductType()));
     }
 
     /*========================================================================= */
@@ -321,84 +396,86 @@ class Admin extends Controller{
     function NhaCungCap()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminNhaCungCap','Admin Nhà Cung Cấp');
+        $this->View('AdminNhaCungCap', 'Admin Nhà Cung Cấp');
     }
     function ThemNhaCungCap()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminThemNhaCungCap','Admin Thêm Nhà Cung Cấp');
+        $this->View('AdminThemNhaCungCap', 'Admin Thêm Nhà Cung Cấp');
     }
     function SuaNhaCungCap($id)
     {
         $objSupplier = $this->getModel("NhaCungCapDB");
         $supplier = $objSupplier->getSupplierById($id);
         require_once('./menuadmin.php');
-        $this->View('AdminSuaNhaCungCap','Admin Sửa Nhà Cung Cấp',$supplier);
+        $this->View('AdminSuaNhaCungCap', 'Admin Sửa Nhà Cung Cấp', $supplier);
     }
 
-    function getAllSupplier(){
+    function getAllSupplier()
+    {
         $objSupplier = $this->getModel("NhaCungCapDB");
         echo json_encode($objSupplier->getAllSupplier());
     }
 
-    function block_unblockSupplier($idSupplier){
+    function block_unblockSupplier($idSupplier)
+    {
         $objSupplier = $this->getModel("NhaCungCapDB");
-        if($objSupplier->block_unblockSupplier($idSupplier)){
+        if ($objSupplier->block_unblockSupplier($idSupplier)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
-        
     }
 
-    function updateInformationSupplier(){
+    function updateInformationSupplier()
+    {
         $supplier = $_POST['data'];
         $objSupplier = $this->getModel("NhaCungCapDB");
-        if($objSupplier->updateInformationSupplier($supplier)){
+        if ($objSupplier->updateInformationSupplier($supplier)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function addNewSupplier(){
+    function addNewSupplier()
+    {
         $objSupplier = $this->getModel("NhaCungCapDB");
         $supplier = $_POST['data'];
-        if($objSupplier->addNewSupplier($supplier)){
+        if ($objSupplier->addNewSupplier($supplier)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function readExcelSupplier(){
+    function readExcelSupplier()
+    {
         $objSupplier = $this->getModel("NhaCungCapDB");
         $data = $objSupplier->readExcel($_FILES['file']);
 
         //print_r($data);
         //Check valid data
-        foreach($data as $key=>$value){
-            if($value['TENNCC'] == ''){
+        foreach ($data as $key => $value) {
+            if ($value['TENNCC'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['DIACHI'] == ''){
+            if ($value['DIACHI'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if(strlen($value['SDT']) < 10 || strlen($value['SDT']) > 11 || $value['SDT'][0] != '0' || !is_numeric($value['SDT'])){
+            if (strlen($value['SDT']) < 10 || strlen($value['SDT']) > 11 || $value['SDT'][0] != '0' || !is_numeric($value['SDT'])) {
                 unset($data[$key]);
                 continue;
             }
         }
         array_filter($data);
-        echo json_encode(array('data'=>$data,'dataDB'=>$objSupplier->getAllSupplier()));
+        echo json_encode(array('data' => $data, 'dataDB' => $objSupplier->getAllSupplier()));
     }
 
-    function exportSupplierToExcel(){
+    function exportSupplierToExcel()
+    {
         $objSupplier = $this->getModel('NhaCungCapDB');
         $data = $objSupplier->exportExcel();
         echo json_encode($data);
@@ -412,20 +489,23 @@ class Admin extends Controller{
         $data = array();
         $data['Right'] = $obj->getAllRight();
         require_once('./menuadmin.php');
-        $this->View('AdminNhanVien','Admin Nhân Viên',$data);
+        $this->View('AdminNhanVien', 'Admin Nhân Viên', $data);
     }
-    function ThemNhanVien(){
+    function ThemNhanVien()
+    {
         $data = array();
         $obj = $this->getModel('QuyenDB');
         $data['Right'] = $obj->getAllRight();
         require_once('./menuadmin.php');
-        $this->View('AdminThemNhanVien','Admin Thêm Nhân Viên',$data);
+        $this->View('AdminThemNhanVien', 'Admin Thêm Nhân Viên', $data);
     }
-    function TimKiemNhanVien(){
+    function TimKiemNhanVien()
+    {
         require_once('./menuadmin.php');
-        $this->View('AdminTimKiemNhanVien','Admin Tìm kiếm nhân viên');
+        $this->View('AdminTimKiemNhanVien', 'Admin Tìm kiếm nhân viên');
     }
-    function SuaNhanVien($id){
+    function SuaNhanVien($id)
+    {
         $data = array();
         $objRight = $this->getModel('QuyenDB');
         $objStaff = $this->getModel('NhanVienDB');
@@ -433,105 +513,108 @@ class Admin extends Controller{
         $data['Right'] = $objRight->getAllRight();
         $data['Staff'] = $objStaff->getStaffById($id);
         require_once('./menuadmin.php');
-        $this->View('AdminSuaNhanVien','Admin sửa nhân viên',$data);
+        $this->View('AdminSuaNhanVien', 'Admin sửa nhân viên', $data);
     }
 
-    function getAllStaff(){
+    function getAllStaff()
+    {
         $objStaff = $this->getModel('NhanVienDB');
         $objRight = $this->getModel('QuyenDB');
         $data = $objStaff->getAllStaff();
         //getRightById
-        foreach($data as $key=>$value){
+        foreach ($data as $key => $value) {
             $data[$key]['RIGHT'] = $objRight->getRightById($value['MAQUYEN']);
         }
         echo json_encode($data);
     }
 
-    function updateInfoStaff(){
+    function updateInfoStaff()
+    {
         $staff = $_POST['data'];
         $objStaff = $this->getModel('NhanVienDB');
-        if($objStaff->updateInformationStaff($staff)){
+        if ($objStaff->updateInformationStaff($staff)) {
             echo 'Cập nhật thành công';
-        }
-        else{
+        } else {
             echo 'Không thể cập nhật';
         }
     }
 
-    function updateStatusStaff(){
+    function updateStatusStaff()
+    {
         $staffId = $_POST['data'];
         $objStaff = $this->getModel('NhanVienDB');
-        if($objStaff->updateStatusStaff($staffId)){
+        if ($objStaff->updateStatusStaff($staffId)) {
             echo 'Cập nhật thành công';
-        }
-        else{
+        } else {
             echo 'Không thể cập nhật';
         }
     }
 
-    function exportStaffToExcel(){
+    function exportStaffToExcel()
+    {
         $objSupplier = $this->getModel('NhanVienDB');
         $data = $objSupplier->exportExcel();
         echo json_encode($data);
     }
 
-    function addNewStaff(){
+    function addNewStaff()
+    {
         $staff = $_POST['data'];
         $objStaff = $this->getModel('NhanVienDB');
-        if($objStaff->addNewStaff($staff)){
+        if ($objStaff->addNewStaff($staff)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function readExcelStaff(){
+    function readExcelStaff()
+    {
         $objSupplier = $this->getModel("NhanVienDB");
         $data = $objSupplier->readExcel($_FILES['file']);
 
         //print_r($data);
         //Check valid data
-        foreach($data as $key=>$value){
-            if($value['MANV'] == ''){
+        foreach ($data as $key => $value) {
+            if ($value['MANV'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['TENNV'] == ''){
+            if ($value['TENNV'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['NGAYSINH'] == ''){
+            if ($value['NGAYSINH'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['GIOITINH'] == ''){
+            if ($value['GIOITINH'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['DIACHI'] == ''){
+            if ($value['DIACHI'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if(strlen($value['SDT']) < 10 || strlen($value['SDT']) > 11 || $value['SDT'][0] != '0' || !is_numeric($value['SDT'])){
+            if (strlen($value['SDT']) < 10 || strlen($value['SDT']) > 11 || $value['SDT'][0] != '0' || !is_numeric($value['SDT'])) {
                 unset($data[$key]);
                 continue;
             }
-            if($value['MAQUYEN'] == ''){
+            if ($value['MAQUYEN'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['TENDN'] == ''){
+            if ($value['TENDN'] == '') {
                 unset($data[$key]);
                 continue;
             }
-            if($value['MATKHAU'] == ''){
+            if ($value['MATKHAU'] == '') {
                 unset($data[$key]);
                 continue;
-            }           
+            }
         }
         array_filter($data);
-        echo json_encode(array('data'=>$data,'dataDB'=>$objSupplier->getAllStaff()));
+        echo json_encode(array('data' => $data, 'dataDB' => $objSupplier->getAllStaff()));
     }
 
     /* ============================================================*/
@@ -539,9 +622,10 @@ class Admin extends Controller{
     function PhieuNhap()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminPhieuNhap','Admin Phiếu Nhập');
+        $this->View('AdminPhieuNhap', 'Admin Phiếu Nhập');
     }
-    function ThemPhieuNhap(){
+    function ThemPhieuNhap()
+    {
         $data = array();
         $objTypeProduct = $this->getModel('LoaiSanPhamDB');
         $objSupplier = $this->getModel('NhaCungCapDB');
@@ -551,50 +635,52 @@ class Admin extends Controller{
         $data['TypeProduct'] = $objTypeProduct->getAllProductType();
         $data['Product'] = $objProduct->getAllProduct();
         require_once('./menuadmin.php');
-        $this->View('AdminThemPhieuNhap','Admin Thêm Phiếu Nhập',$data);
+        $this->View('AdminThemPhieuNhap', 'Admin Thêm Phiếu Nhập', $data);
     }
     function TimKiemPhieuNhap()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminTimKiemPhieuNhap','Admin Tìm Kiếm Phiếu Nhập');
+        $this->View('AdminTimKiemPhieuNhap', 'Admin Tìm Kiếm Phiếu Nhập');
     }
     function XemCHiTietPhieuNhap($id)
     {
         require_once('./menuadmin.php');
-        $this->View('AdminChiTietPhieuNhap','Admin Chi Tiết Phiếu Nhập',$id);
+        $this->View('AdminChiTietPhieuNhap', 'Admin Chi Tiết Phiếu Nhập', $id);
     }
 
-    function getAllReceipt(){
+    function getAllReceipt()
+    {
         $objReceipt = $this->getModel('PhieuNhapDB');
         $objStaff = $this->getModel('NhanVienDB');
         $objSupplier = $this->getModel('NhaCungCapDB');
 
         $data = $objReceipt->getAllReceipt();
-        foreach($data as $key=>$value){
+        foreach ($data as $key => $value) {
             $data[$key]['TENNV'] = $objStaff->getStaffById($value['MANV'])['TENNV'];
             $data[$key]['TENNCC'] = $objSupplier->getSupplierById($value['MANCC'])['TENNCC'];
         }
-        
+
         echo json_encode($data);
     }
 
-    function AddReceiptToDb(){
+    function AddReceiptToDb()
+    {
         $dataProduct = $_POST['data'];
         $objReceipt = $this->getModel('PhieuNhapDB');
         $objProduct = $this->getModel('SanPhamDB');
         //Count sum of receipt
         $sum = 0;
-        foreach($dataProduct as $value){
-            $sum += $value['GIA']*$value['SOLUONG'];
+        foreach ($dataProduct as $value) {
+            $sum += $value['GIA'] * $value['SOLUONG'];
         }
-        
+
         $receipt = array(
-            'MANV'=>$_POST['staffid'],
-            'MANCC'=>$_POST['supplierId'],
-            'MAPN'=>$objReceipt->createNextReceiptId(),
-            'NGAYLAP'=>date('Y-m-d'),
-            'GIOLAP'=>date('h:i:s'),
-            'TONG'=>$sum
+            'MANV' => $_POST['staffid'],
+            'MANCC' => $_POST['supplierId'],
+            'MAPN' => $objReceipt->createNextReceiptId(),
+            'NGAYLAP' => date('Y-m-d'),
+            'GIOLAP' => date('h:i:s'),
+            'TONG' => $sum
         );
 
         //detail of receipt
@@ -603,21 +689,20 @@ class Admin extends Controller{
         $newProduct = array();
         //Exist Product
         $existProduct = array();
-        foreach($dataProduct as $value){
-            if(empty($objProduct->getProductById($value['MASP']))){
+        foreach ($dataProduct as $value) {
+            if (empty($objProduct->getProductById($value['MASP']))) {
                 $newProduct[] = $value;
-            }
-            else{
+            } else {
                 $existProduct[] = array(
-                    'MASP'=> $value['MASP'],
-                    'SOLUONG'=>$value['SOLUONG']
+                    'MASP' => $value['MASP'],
+                    'SOLUONG' => $value['SOLUONG']
                 );
             }
             $detailReceipt[] = array(
-                'MAPN'=>$receipt['MAPN'],
-                'MASP'=>$value['MASP'],
-                'SOLUONG'=>$value['SOLUONG'],
-                'GIA'=>$value['GIA']
+                'MAPN' => $receipt['MAPN'],
+                'MASP' => $value['MASP'],
+                'SOLUONG' => $value['SOLUONG'],
+                'GIA' => $value['GIA']
             );
         }
 
@@ -638,34 +723,40 @@ class Admin extends Controller{
             }
         }
         //Update receipt
-        $result = $objReceipt->AddReceiptAndDetail($receipt,$detailReceipt);
-        echo $result ? 0:"ERROR_ADD_RECEIPT_AND_DETAIL";
+        $result = $objReceipt->AddReceiptAndDetail($receipt, $detailReceipt);
+        echo $result ? 0 : "ERROR_ADD_RECEIPT_AND_DETAIL";
     }
 
-    function compareTo($detail1,$detail2){
-        if($detail1['MASP'] != $detail2['MASP'] ||
-        $detail1['TENSP'] != $detail2['TENSP'] ||
-        $detail1['MALOAI'] != $detail2['MALOAI'] ||
-        $detail1['GIA'] != $detail2['GIA'] ||
-        $detail1['HINHANH'] != $detail2['HINHANH'] ){
+    function compareTo($detail1, $detail2)
+    {
+        if (
+            $detail1['MASP'] != $detail2['MASP'] ||
+            $detail1['TENSP'] != $detail2['TENSP'] ||
+            $detail1['MALOAI'] != $detail2['MALOAI'] ||
+            $detail1['GIA'] != $detail2['GIA'] ||
+            $detail1['HINHANH'] != $detail2['HINHANH']
+        ) {
             return false;
         }
-        if(strcmp($detail1['MASP'],$detail2['MASP']) != 0 ||
-        strcmp($detail1['TENSP'],$detail2['TENSP']) != 0 ||
-        strcmp($detail1['MALOAI'],$detail2['MALOAI']) != 0 ||
-        $detail1['MASP'] != $detail2['MASP'] ||
-        strcmp($detail1['HINHANH'],$detail2['HINHANH']) != 0){
+        if (
+            strcmp($detail1['MASP'], $detail2['MASP']) != 0 ||
+            strcmp($detail1['TENSP'], $detail2['TENSP']) != 0 ||
+            strcmp($detail1['MALOAI'], $detail2['MALOAI']) != 0 ||
+            $detail1['MASP'] != $detail2['MASP'] ||
+            strcmp($detail1['HINHANH'], $detail2['HINHANH']) != 0
+        ) {
             return false;
         }
         return true;
     }
 
-    function readDetailReceiptFromFile(){
+    function readDetailReceiptFromFile()
+    {
         $objReceipt = $this->getModel("PhieuNhapDB");
         $objProduct = $this->getModel("SanPhamDB");
         $objTypeProduct = $this->getModel("LoaiSanPhamDB");
         $data = $objReceipt->readExcel($_FILES['file']);
-        
+
 
         $countArray = array(
             'sumRow' => count($data),
@@ -678,12 +769,12 @@ class Admin extends Controller{
 
         // Group number of product same as id
         $tmp = $data;
-        $data =array();
-        while(!empty($tmp)){
+        $data = array();
+        while (!empty($tmp)) {
             $item = end($tmp);
             $sumOfNumber = 0;
-            foreach($tmp as $key=>$value){
-                if($this->compareTo($item,$value)){
+            foreach ($tmp as $key => $value) {
+                if ($this->compareTo($item, $value)) {
                     $sumOfNumber += $value['SOLUONG'];
                     unset($tmp[$key]);
                 }
@@ -695,57 +786,61 @@ class Admin extends Controller{
         $countArray['sumFilterRow'] = count($data);
 
         //Kiem tra hop le du lieu
-        foreach($data as $key=>$value){
-            if($value['MASP']=='' || strpos($value['MASP'],"SP")===false || strlen($value['MASP']) <=2){
+        foreach ($data as $key => $value) {
+            if ($value['MASP'] == '' || strpos($value['MASP'], "SP") === false || strlen($value['MASP']) <= 2) {
                 unset($data[$key]);
                 $countArray['sumInvalidRow']++;
                 continue;
             }
-            if($value['TENSP']=='' || $value['TENSP'] == '' || strlen($value['TENSP']) < 4){
+            if ($value['TENSP'] == '' || $value['TENSP'] == '' || strlen($value['TENSP']) < 4) {
                 unset($data[$key]);
                 $countArray['sumInvalidRow']++;
                 continue;
             }
-            
-            if($value['MALOAI']=='' || 
-            strpos($value['MALOAI'],'LSP')===false || 
-            empty($objTypeProduct->getProductTypeById($value['MALOAI'])) || strlen($value['MALOAI']) < 4){
+
+            if (
+                $value['MALOAI'] == '' ||
+                strpos($value['MALOAI'], 'LSP') === false ||
+                empty($objTypeProduct->getProductTypeById($value['MALOAI'])) || strlen($value['MALOAI']) < 4
+            ) {
                 unset($data[$key]);
                 $countArray['sumInvalidRow']++;
                 continue;
             }
-            if($value['GIA']=='' || !is_numeric($value['GIA']) || abs((int)$value['GIA']) != $value['GIA']){
+            if ($value['GIA'] == '' || !is_numeric($value['GIA']) || abs((int)$value['GIA']) != $value['GIA']) {
                 unset($data[$key]);
                 $countArray['sumInvalidRow']++;
                 continue;
             }
-            if($value['SOLUONG']=='' || !is_numeric($value['SOLUONG']) || abs((int)$value['SOLUONG']) != $value['SOLUONG']){
+            if ($value['SOLUONG'] == '' || !is_numeric($value['SOLUONG']) || abs((int)$value['SOLUONG']) != $value['SOLUONG']) {
                 unset($data[$key]);
                 $countArray['sumInvalidRow']++;
                 continue;
             }
-            if($value['HINHANH']=='' || strpos($value['HINHANH'],'jpg')===false && strpos($value['HINHANH'],'png')===false){
+            if ($value['HINHANH'] == '' || strpos($value['HINHANH'], 'jpg') === false && strpos($value['HINHANH'], 'png') === false) {
                 unset($data[$key]);
                 $countArray['sumInvalidRow']++;
                 continue;
             }
         }
-        
+
         //Kiem tra tinh dung dan cua san pham da co  trong db
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
-            if(!empty($product)){
-                if(strcmp($value['TENSP'], $product['TENSP']) != 0 ||
-                strcmp($value['MALOAI'], $product['MALOAI']) != 0 ||
-                $value['GIA'] != $product['GIA']||
-                strcmp($value['HINHANH'], $product['HINHANH']) != 0){
+            if (!empty($product)) {
+                if (
+                    strcmp($value['TENSP'], $product['TENSP']) != 0 ||
+                    strcmp($value['MALOAI'], $product['MALOAI']) != 0 ||
+                    $value['GIA'] != $product['GIA'] ||
+                    strcmp($value['HINHANH'], $product['HINHANH']) != 0
+                ) {
                     $countArray['sumInvalidRow']++;
                     unset($data[$key]);
                 }
             }
         }
 
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             if (!empty($product)) {
                 $countArray['sumExistRow']++;
@@ -753,10 +848,11 @@ class Admin extends Controller{
         }
         $countArray['sumValidRow'] = $countArray['sumFilterRow'] - $countArray['sumInvalidRow'];
         $countArray['sumNewRow'] = $countArray['sumValidRow'] - $countArray['sumExistRow'];
-        echo json_encode(array($data,$countArray));
+        echo json_encode(array($data, $countArray));
     }
 
-    function exportReceiptToExcel(){
+    function exportReceiptToExcel()
+    {
         $objBill = $this->getModel('PhieuNhapDB');
         $data = $objBill->exportExcel();
         echo json_encode($data);
@@ -769,7 +865,7 @@ class Admin extends Controller{
         $data = array();
         $data['type'] = $objTypeProduct->getAllProductType();
         require_once('./menuadmin.php');
-        $this->View('AdminSanPham', 'Admin Sản Phẩm',$data);
+        $this->View('AdminSanPham', 'Admin Sản Phẩm', $data);
     }
     function ThemSanPham()
     {
@@ -786,7 +882,7 @@ class Admin extends Controller{
         $data = array();
         $objProduct = $this->getModel("SanPhamDB");
         $objTypeProduct = $this->getModel("LoaiSanPhamDB");
-        
+
         $data['id'] = $id;
         $data['product'] = $objProduct->getProductById($id);
         $data['type'] = $objTypeProduct->getAllProductType();
@@ -799,58 +895,61 @@ class Admin extends Controller{
         $this->View('AdminGoiYThemSanPham', 'Admin Gợi ý thêm sản phẩm');
     }
 
-    function getAllProduct(){
+    function getAllProduct()
+    {
         $objProduct = $this->getModel('SanPhamDB');
         echo json_encode($objProduct->getAllProduct());
     }
 
-    function uploadImage(){
+    function uploadImage()
+    {
         $filename = date("dmY_his");
         $objProduct = $this->getModel("SanPhamDB");
-        if($objProduct->uploadImage($_FILES['file'],$filename)){
-            echo json_encode(array(0,$filename));
-        }
-        else{
+        if ($objProduct->uploadImage($_FILES['file'], $filename)) {
+            echo json_encode(array(0, $filename));
+        } else {
             echo -1;
         }
     }
-    
 
-    function updateInformationProduct(){
+
+    function updateInformationProduct()
+    {
         $data = $_POST['obj'];
         $objProduct = $this->getModel("SanPhamDB");
         $rs = $objProduct->updateInformationProduct($data);
-        if($rs){
+        if ($rs) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
 
-    function disableProductStatus(){
+    function disableProductStatus()
+    {
         $productId = $_POST['id'];
         $objProduct = $this->getModel("SanPhamDB");
-        if($objProduct->disableProductStatus($productId)){
+        if ($objProduct->disableProductStatus($productId)) {
             echo 0;
-        }
-        else{
+        } else {
             echo -1;
         }
     }
-    function exportProductToExcel(){
+    function exportProductToExcel()
+    {
         $objProduct = $this->getModel('SanPhamDB');
         $data = $objProduct->exportExcel();
         echo json_encode($data);
     }
 
-    function getAllProductByType($typeId){
+    function getAllProductByType($typeId)
+    {
         $objProduct = $this->getModel('SanPhamDB');
         $data = $objProduct->getAllProduct();
         $result = array();
 
-        foreach($data as $value){
-            if($value['MALOAI'] == $typeId && $value['TRANGTHAI'] != 0){
+        foreach ($data as $value) {
+            if ($value['MALOAI'] == $typeId && $value['TRANGTHAI'] != 0) {
                 $result[] = $value;
             }
         }
@@ -858,7 +957,8 @@ class Admin extends Controller{
         echo json_encode($result);
     }
 
-    function addToCart($idProduct){
+    function addToCart($idProduct)
+    {
         $cart = array();
         if (isset($_SESSION['cart'])) {
             $cart = $_SESSION['cart'];
@@ -866,32 +966,192 @@ class Admin extends Controller{
         $objProduct = $this->getModel('SanPhamDB');
         $product = $objProduct->getProductById($idProduct);
 
-        if(empty($cart)){
+        if (empty($cart)) {
             $product['amount'] = 1;
             $cart[] = $product;
-        }
-        else{
+        } else {
             $isExist = false;
-            foreach($cart as $key=>$value){
-                if($value['MASP'] == $idProduct){
-                    if($product['SOLUONG'] < $value['amount'] + 1){
+            foreach ($cart as $key => $value) {
+                if ($value['MASP'] == $idProduct) {
+                    if ($product['SOLUONG'] < $value['amount'] + 1) {
                         echo 'Không đủ số lượng';
                         return;
                     }
                     $cart[$key]['amount'] += 1;
+                    $cart[$key]['ERROR'] = '';
                     $isExist = true;
                     break;
                 }
             }
 
-            if(!$isExist){
+            if (!$isExist) {
+                $product['amount'] = 1;
                 $cart[] = $product;
             }
+            
         }
 
         $_SESSION['cart'] = $cart;
 
         echo 'Thêm thành công';
+    }
+
+    function getCart()
+    {
+        if (!isset($_SESSION['cart'])) {
+            echo json_encode(array());
+            return;
+        }
+        $objSale = $this->getModel('KhuyenMaiDB');
+        $_SESSION['sale'] = $objSale->getSaleinCurrent();
+        $this->checkCart();
+
+        echo json_encode($_SESSION['cart']);
+    }
+
+    function getSale(){
+        if(isset($_SESSION['sale'])){
+            echo json_encode($_SESSION['sale']);
+        }
+        else{
+            echo json_encode(array());
+        }
+    }
+
+    function deleteCartItem($id)
+    {
+        $cart = $_SESSION['cart'];
+        $check = false;
+        foreach ($cart as $key => $value) {
+            if ($value['MASP'] == $id) {
+                unset($cart[$key]);
+                $check = true;
+                break;
+            }
+        }
+
+        $_SESSION['cart'] = $cart;
+        if ($check) {
+            echo 'Xóa thành công';
+        } else {
+            echo 'Lỗi khi xóa';
+        }
+    }
+
+    function checkNumberCart($id, $newNumber)
+    {
+        $result = array();
+        $objProduct = $this->getModel('SanPhamDB');
+        $product = $objProduct->getProductById($id);
+        if ($product['SOLUONG'] < $newNumber) {
+            $result['SMS'] = 'Số lượng vượt quá số lượng sản phẩm trong kho';
+        } else {
+            //Cap nhat so luong moi
+            $cart = array();
+            if (isset($_SESSION['cart'])) {
+                $cart = $_SESSION['cart'];
+            }
+            foreach ($cart as $key => $value) {
+                if ($value['MASP'] == $id) {
+                    $cart[$key]['amount'] = $newNumber;
+                    $result['SMS'] = "success";
+                    break;
+                }
+            }
+
+            $_SESSION['cart'] = $cart;
+        }
+
+        echo json_encode($result);
+    }
+
+    function orderCart()
+    {
+        $result = array();
+        $valid = true;
+
+        if (!isset($_SESSION['account'])) {
+            $result['SMS'] = 'NOT_LOGIN';
+        }
+        else if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+            $result['SMS'] = 'Giỏ hàng rỗng';
+        }
+        else{
+            //Duyet tat ca san pham trong gio hang check so luong
+            $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
+            $objProduct = $this->getModel('SanPhamDB');
+            foreach($cart as $key=>$value){
+                $product = $objProduct->getProductById($value['MASP']);
+                $cart[$key]['ERROR'] = '';
+                
+                if($product['SOLUONG'] < $value['amount']){
+                    $cart[$key]['ERROR'] = "Số lượng tối đa ".$product['SOLUONG'];
+                    $valid = false;
+                }
+            }
+            $_SESSION['cart'] = $cart;
+        }
+
+        if($valid){
+            $objBill = $this->getModel('HoaDonDB');
+            $billId = $objBill->createNextBillId();
+            $cus = $_SESSION['account'];
+            $cart = $_SESSION['cart'];
+            $cusId = $cus['MAKH'];
+            $sum = 0;
+            $saleId = $_SESSION['sale']['MAKM'];
+            $day = date('Y/m/d');
+            $time = date('H:i:s');
+            foreach($cart as $value){
+                $sum += $value['GIA']*$value['amount'];
+            }
+            //Tao hoa don
+            $billQry = "INSERT INTO `hoadon`(`MAHD`,`MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`, `MAKM`) VALUES ('$billId',NULL,'$cusId','$day','$time',$sum,'TT01','$saleId');";
+
+            //Tao chi tiet hoa don
+            $detailQry = "";
+            foreach($cart as $value){
+                $proId = $value['MASP'];
+                $proNumber = $value['amount'];
+                $proPrice = $value['GIA'];
+                $proSale = $value['PHANTRAMGIAM'];
+                $detailQry .= "INSERT INTO `ct_hoadon`(`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUES ('$billId','$proId',$proNumber,$proPrice,$proSale);";
+            }
+
+            if($objBill->addBillAndDetail($billQry,$detailQry)){
+                $result['SMS'] = 'Thêm thành công';
+                //tru so luong san pham trong kho
+                $objProduct = $this->getModel('SanPhamDB');
+                if($objProduct->updateNumberListProduct($cart)){
+                    //Xoa gio hang
+                    unset($_SESSION['cart']);
+                }
+                
+            }
+            else{
+                $result['SMS'] = 'Thêm hóa đơn thất bại';
+                echo $billQry.'<br>';
+                echo $detailQry;
+            }
+        }
+        echo json_encode($result);
+    }
+
+    function checkCart(){
+        if (isset($_SESSION['cart'])) {
+            $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
+            $objProduct = $this->getModel('SanPhamDB');
+            foreach($cart as $key=>$value){
+                $product = $objProduct->getProductById($value['MASP']);
+                $cart[$key]['ERROR'] = '';
+                
+                if($product['SOLUONG'] < $value['amount']){
+                    $cart[$key]['ERROR'] = "Số lượng tối đa ".$product['SOLUONG'];
+                    $valid = false;
+                }
+            }
+            $_SESSION['cart'] = $cart;
+        }
     }
 
     /* ============================================================== */
@@ -910,4 +1170,3 @@ class Admin extends Controller{
         $this->View('DangNhap');
     }
 }
-?>
