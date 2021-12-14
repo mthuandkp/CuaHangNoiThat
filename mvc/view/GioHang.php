@@ -53,23 +53,25 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                    <?php if (!isset($_SESSION['account'])) {
-                        echo '<a href="./DangNhap">Đăng nhập</a>';
-                        echo '<a href="./DangKy">Đăng ký</a>';
-                    } ?>
-                        
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./LichSuGioHang">Lịch sử</a>
-                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                    <?php 
+                            if (!isset($_SESSION['account'])) {
+                                echo '<a href="./DangNhap">Đăng nhập</a>';
+                                echo '<a href="./DangKy">Đăng ký</a>';
+                            }
+                            else{
+                                echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                            }
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -159,22 +161,21 @@
                         url: './Admin/getSale',
                         success: function(subdata) {
                             var subdata = JSON.parse(subdata);
-                            if(subdata === undefined || subdata.length == 0 || data.length == 0 || data === undefined){
+                            if (subdata === undefined || subdata.length == 0 || data.length == 0 || data === undefined) {
                                 $xhtml += '<tr>' +
-                                '<td colspan="3">' +
-                                '</td>' +
-                                '<td colspan="2" style="text-align: end;">' +
-                                '<div class="total-price">' +
-                                formatter.format($sum) + '<sup>đ</sup>' +
-                                '</div>' +
-                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
-                                '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
-                                '</td>' +
-                                '</tr>';
+                                    '<td colspan="3">' +
+                                    '</td>' +
+                                    '<td colspan="2" style="text-align: end;">' +
+                                    '<div class="total-price">' +
+                                    formatter.format($sum) + '<sup>đ</sup>' +
+                                    '</div>' +
+                                    '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
+                                    '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
+                                    '</td>' +
+                                    '</tr>';
 
-                            }
-                            else{
-                                $xhtml += '<tr>' +
+                            } else {
+                                /*$xhtml += '<tr>' +
                                 '<td colspan="3">' +
                                 '</td>' +
                                 '<td colspan="2" style="text-align: end;">' +
@@ -187,10 +188,42 @@
                                 '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
                                 '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
                                 '</td>' +
-                                '</tr>';
+                                '</tr>';*/
 
+                                $xhtml += '<tr>' +
+                                    '<td>Tổng</td>' +
+                                    '<td></td>' +
+                                    '<td></td>' +
+                                    '<td></td>' +
+                                    '<td style="text-align: end;">' +
+                                    '<div class="total-price">' +formatter.format($sum) + '</div>' +
+                                    '</td>' +
+                                    '</tr>' +
+                                    '<tr>' +
+                                    '<td>Khuyến mãi</td>' +
+                                    '<td></td>' +
+                                    '<td>'+subdata.PHANTRAMGIAM+'%</td>' +
+                                    '<td>('+subdata.NGAYBD +' đến '+ subdata.NGAYKT+')</td>' +
+                                    '<td style="text-align: end;">' +
+                                    '<div class="total-price">- '+formatter.format($sum*(subdata.PHANTRAMGIAM/100))+'</div>' +
+                                    '</td>' +
+                                    '</tr>' +
+                                    '<tr>' +
+                                    '<td><div class="total-price">Thành tiền</div></td>' +
+                                    '<td colspan="3"></td>' +
+                                    '<td style="text-align: end;">' +
+                                    '<div class="total-price">'+formatter.format($sum*(1-subdata.PHANTRAMGIAM/100))+
+                                '</div>' +
+                                '</td>' +
+                                '</tr>' +
+                                '<tr>' +
+                                '<td colspan="4"></td>' +
+                                '<td>' +
+                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p><input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn"></p>' +
+                                '</td>' +
+                                '</tr>';
                             }
-                            
+
                             $("#shopping-cart-id").html($xhtml);
 
                         }
@@ -251,10 +284,11 @@
                 url: './Admin/orderCart',
                 success: function(data) {
                     var data = JSON.parse(data);
+                    console.log(data);
                     if (data.SMS == "NOT_LOGIN") {
                         alert("Vui lòng đăng nhập để tiếp tục");
                         window.location.href = "./DangNhap?return=GioHang"
-                    } else if (data.SMS != 'SUCCESS') {
+                    } else {
                         alert(data.SMS);
                     }
                     loadCart();

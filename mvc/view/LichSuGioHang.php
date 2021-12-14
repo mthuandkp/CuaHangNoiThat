@@ -53,23 +53,24 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                        <?php if (!isset($_SESSION['account'])) {
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php
+                        if (!isset($_SESSION['account'])) {
                             echo '<a href="./DangNhap">Đăng nhập</a>';
                             echo '<a href="./DangKy">Đăng ký</a>';
-                        } ?>
-
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./LichSuGioHang">Lịch sử</a>
-                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                        } else {
+                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -93,7 +94,7 @@
         <span>LỊCH SỬ MUA HÀNG</span>
     </h2><br>
 
-    <table style="width: 60%;margin-left: 20%;font-family: 'Times New Roman', Times, serif;font-size: 1.5rem;font-weight: normal;" class="shopping-cart" id="shopping-cart-id">
+    <table style="width: 70%;margin-left: 15%;font-family: 'Times New Roman', Times, serif;font-size: 1.5rem;font-weight: normal;" class="shopping-cart" id="shopping-cart-id">
     </table>
     <div class="footer-container">
         <div class="footer">
@@ -120,7 +121,7 @@
 
     <script>
         function viewDetail($id) {
-            window.location.href="./LichSuGioHang/XemChiTiet/" + $id;
+            window.location.href = "./LichSuGioHang/XemChiTiet/" + $id;
         }
 
         function submitBill($id) {
@@ -150,12 +151,12 @@
                         '<th style="width: 10rem;">Ngày Đặt</th>' +
                         '<th style="width: 10rem;">Giờ Đặt</th>' +
                         '<th>Tổng Tiền</th>' +
-                        '<th style="width: 20rem;">Trạng Thái</th>' +
+                        '<th>Trạng Thái</th>' +
                         '<th style="width: 10rem;">Chức Năng</th>' +
                         '</tr>';
                     for (var key in data) {
                         $obj = data[key];
-                        $xhtml += '<tr>' +
+                        $xhtml += '<tr style="background-color:#e6e6e6;height:6rem;">' +
                             '<td>' + $obj.MAHD + '</td>' +
                             '<td>' + $obj.NGAYLAP + '</td>' +
                             '<td>' + $obj.GIOLAP + '</td>';
@@ -189,6 +190,7 @@
                                 break;
                             }
                         }
+                        $xhtml += '<tr><td style="height:2.5rem;"></td></tr>';
                     }
                     $("#shopping-cart-id").html($xhtml);
                 }

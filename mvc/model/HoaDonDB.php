@@ -117,8 +117,13 @@ class HoaDonDB extends ConnectionDB
     //Them hoa don
     function addBillAndDetail($billQry, $detailQry)
     {
-        if (mysqli_query($this->conn, $billQry) && mysqli_query($this->conn, $detailQry)) {
-            return true;
+        if (mysqli_query($this->conn, $billQry)) {
+            if (mysqli_query($this->conn, $detailQry)) {
+                return true;
+            }
+            else{
+                echo $detailQry;
+            }
         }
         return false;
     }

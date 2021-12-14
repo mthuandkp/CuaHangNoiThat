@@ -96,7 +96,7 @@
                     <option value="1">Được Giảm Giá</option>
                 </select>
             </div>
-            <button onclick="searchodeMultiValue();" type="submit" class="btn btn-primary">Tìm kiếm </button>
+            <button onclick="searchMultiValue();" type="submit" class="btn btn-primary">Tìm kiếm </button>
         </div>
 
     </div>
@@ -216,7 +216,7 @@
                                 '<td>' + $obj.MALOAI + '</td>' +
                                 '<td>' + $obj.GIA + '</td>' +
                                 '<td>' + $obj.SOLUONG + '</td>' +
-                                '<td><img src="/CuaHangNoiThat/public/image/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
+                                '<td><img src="../public/image/HINHANH/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
                                 '<td>' + ($obj.TRANGTHAI == 1 ? 'Còn Trong Cửa Hàng' : 'Đã Xóa') + '</td>' +
                                 '<td>' + $obj.PHANTRAMGIAM + '%</td>';
                             if ($obj.TRANGTHAI == 1) {
@@ -328,7 +328,7 @@
                             '<td>' + $obj.MALOAI + '</td>' +
                             '<td>' + $obj.GIA + '</td>' +
                             '<td>' + $obj.SOLUONG + '</td>' +
-                            '<td><img src="/CuaHangNoiThat/public/image/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
+                            '<td><img src="../public/image/HINHANH/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
                             '<td>' + ($obj.TRANGTHAI == 1 ? 'Còn Trong Cửa Hàng' : 'Đã Xóa') + '</td>' +
                             '<td>' + $obj.PHANTRAMGIAM + '%</td>';
                         if ($obj.TRANGTHAI == 1) {

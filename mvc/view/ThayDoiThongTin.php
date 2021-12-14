@@ -51,23 +51,24 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                        <?php if (!isset($_SESSION['account'])) {
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php
+                        if (!isset($_SESSION['account'])) {
                             echo '<a href="./DangNhap">Đăng nhập</a>';
                             echo '<a href="./DangKy">Đăng ký</a>';
-                        } ?>
-
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./LichSuGioHang">Lịch sử</a>
-                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                        } else {
+                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -93,19 +94,19 @@
             <p>THAY ĐỔI THÔNG TIN</p>
             <label for="exampleInputEmail1">Tên Khách Hàng</label>
             <div class="form-group" style="width: 80%;margin-left:10%;">
-                <input type="text" class="form-control" id="nameCus" value="<?php echo $data['TENKH']; ?>">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="nameCus" value="<?php echo $data['TENKH']; ?>">
             </div>
             <label for="exampleInputEmail1">Địa chỉ</label>
             <div class="form-group" style="width: 80%;margin-left:10%;">
-                <input type="text" class="form-control" id="addressCus" value="<?php echo $data['DIACHI']; ?>">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="addressCus" value="<?php echo $data['DIACHI']; ?>">
             </div>
             <label for="exampleInputEmail1">Số điện thoại</label>
             <div class="form-group" style="width: 80%;margin-left:10%;">
-                <input type="text" class="form-control" id="phoneCus" value="<?php echo $data['SDT']; ?>">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="phoneCus" value="<?php echo $data['SDT']; ?>">
             </div>
             <label for="exampleInputEmail1">Giới tính</label>
             <div class="form-group" style="width: 80%;margin-left:10%;">
-                <select class="form-control" id="sexCus">
+                <select style="font-family: 'Times New Roman', Times, serif;" class="form-control" id="sexCus">
                     <option value="Nam" <?php if ($data['GIOITINH'] == 'Nam') {
                                             echo "selected";
                                         } ?>>Nam</option>
@@ -114,7 +115,7 @@
                                         } ?>>Nữ</option>
                 </select>
             </div>
-            <button style="float: right;margin-right: 10%;font-size: 1.5rem;width: 10rem;color: white;" onclick="saveInfo();" class="btn btn-primary">Lưu</button>
+            <button style="float: right;margin-right: 10%;font-size: 1.5rem;width: 10rem;color: white;font-family: 'Times New Roman', Times, serif;margin: 1rem;" onclick="saveInfo();" class="btn btn-primary">Lưu</button>
         </fieldset>
     </div>
     <script>

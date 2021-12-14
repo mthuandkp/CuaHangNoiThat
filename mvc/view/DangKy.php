@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,10 +13,11 @@
     <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
     <title>Đăng ký</title>
 </head>
+
 <body>
-<div class="header">
+    <div class="header">
         <div class="address">
-            <i class="fa fa-map-marker" > Hồ Chí Minh, Việt Nam</i>
+            <i class="fa fa-map-marker"> Hồ Chí Minh, Việt Nam</i>
             <i class="fa fa-envelope"> milfuniture@gmail.com</i>
         </div>
     </div>
@@ -49,23 +51,24 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                        <?php if (!isset($_SESSION['account'])) {
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php
+                        if (!isset($_SESSION['account'])) {
                             echo '<a href="./DangNhap">Đăng nhập</a>';
                             echo '<a href="./DangKy">Đăng ký</a>';
-                        } ?>
-
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./LichSuGioHang">Lịch sử</a>
-                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                        } else {
+                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -88,17 +91,17 @@
     <form action="/action_page.php">
         <fieldset>
             <legend><i class="fa fa-user-circle-o" aria-hidden="true"></i></legend>
-                <p>ĐĂNG KÝ</p>
-                <label for="">Họ và tên: </label>
-                <input type="text" id="name" name="name" >
-                <label for="">Tên đăng nhập:</label>
-                <input type="text" id="uname" name="uname" >
-                <label for="">Mật khẩu:</label>
-                <input type="password" id="pass" name="pass" >
-                <label for="">Số điện thoại: </label>
-                <input type="text" id="pnumber" name="pnumber" >
-                <label for="">Địa chỉ:</label>
-                <input type="text" id="address" name="address" >
-                <input type="submit" value="ĐĂNG KÝ" class="btn-reg">
+            <p>ĐĂNG KÝ</p>
+            <label for="">Họ và tên: </label>
+            <input type="text" id="name" name="name">
+            <label for="">Tên đăng nhập:</label>
+            <input type="text" id="uname" name="uname">
+            <label for="">Mật khẩu:</label>
+            <input type="password" id="pass" name="pass">
+            <label for="">Số điện thoại: </label>
+            <input type="text" id="pnumber" name="pnumber">
+            <label for="">Địa chỉ:</label>
+            <input type="text" id="address" name="address">
+            <input type="submit" value="ĐĂNG KÝ" class="btn-reg">
         </fieldset>
     </form>

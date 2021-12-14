@@ -51,23 +51,24 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                        <?php if (!isset($_SESSION['account'])) {
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php
+                        if (!isset($_SESSION['account'])) {
                             echo '<a href="./DangNhap">Đăng nhập</a>';
                             echo '<a href="./DangKy">Đăng ký</a>';
-                        } ?>
-
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./LichSuGioHang">Lịch sử</a>
-                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                        } else {
+                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -125,23 +126,21 @@
 
         $.ajax({
             url: '/CuaHangNoiThat/Admin/checkLoginCustomer/' + $uname + '/' + $pass,
-            method:'POST',
-                data:{
-                    url:window.location.href
-                },
+            method: 'POST',
+            data: {
+                url: window.location.href
+            },
             success: function(data) {
                 var data = JSON.parse(data);
                 $result = data.RESULT;
                 if ($result === "NOT_EXISTS") {
                     $("#errorMessage").html("Tài khoản không tồn tại");
                     $("#errorMessage").show();
-                }
-                else if ($result === "WRONG_PASSWORD") {
+                } else if ($result === "WRONG_PASSWORD") {
                     $("#errorMessage").html("Mật khẩu không chính xác");
                     $("#errorMessage").show();
-                }
-                else{
-                    window.location.href = "./"+data.URL;
+                } else {
+                    window.location.href = "./" + data.URL;
                 }
             }
         });

@@ -37,6 +37,8 @@
             foreach($data['detail'] as $key=>$value){
                 $pro = $objProduct->getProductById($value['MASP']);
                 $data['detail'][$key]['TENSP'] = $pro['TENSP'];
+                $data['detail'][$key]['HINHANH'] = $pro['HINHANH'];
+
             }
             $this->View('XemChiTiet',"Xem Chi Tiết Đơn Hàng",$data);
         }

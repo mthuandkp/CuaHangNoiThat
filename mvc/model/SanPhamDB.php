@@ -63,7 +63,7 @@ class SanPhamDB extends ConnectionDB
 
         foreach ($productArr as $value) {
             $currentProduct = $this->getProductById($value['MASP']);
-            $qry .= "UPDATE `noithat` SET `SOLUONG`=($value[SOLUONG]+$currentProduct[SOLUONG]) WHERE `MASP`='$value[MASP]';";
+            $qry .= "UPDATE `noithat` SET `SOLUONG`=(-$value[amount]+$currentProduct[SOLUONG]) WHERE `MASP`='$value[MASP]';";
         }
         if (mysqli_multi_query($this->conn, $qry)) {
             return true;

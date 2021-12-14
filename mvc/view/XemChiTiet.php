@@ -53,26 +53,27 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                        <?php if (!isset($_SESSION['account'])) {
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php
+                        if (!isset($_SESSION['account'])) {
                             echo '<a href="../../DangNhap">Đăng nhập</a>';
                             echo '<a href="../../DangKy">Đăng ký</a>';
-                        } ?>
-
-                        <a href="../../ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="../../LichSuGioHang">Lịch sử</a>
-                        <a href="../../TrangChu/Logout">Đăng xuất</a>
+                        } else {
+                            echo '<a href="../../ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="../../LichSuGioHang">Lịch sử</a>
+                                <a href="../../TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        ?>
                     </div>
                 </div>
-                <a href="../../GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cart'])) {
@@ -97,6 +98,7 @@
     <table class="table" style="width: 80%;margin-left: 10%;font-family: 'Times New Roman', Times, serif;font-size: 1.5rem;font-weight: normal;" id="shopping-cart-id">
         <tr>
             <th>Tên Sản Phẩm</th>
+            <th>Hình ảnh</th>
             <th>Giá</th>
             <th>Số Lượng</th>
             <th>Tổng</th>
@@ -109,6 +111,7 @@
         foreach ($data['detail'] as $value) {
             echo '<tr>
                 <td>' . $value['TENSP'] . '</td>
+                <td><img src="../../public/image/HINHANH/' . $value['HINHANH'] . '" alt="no image" style="width: 15rem;height:10rem;"></td>
                 <td>' . number_format($value['GIA']) . ' VNĐ</td>
                 <td>' . $value['SOLUONG'] . '</td>
                 <td>' . number_format($value['GIA'] * $value['SOLUONG']) . ' VNĐ</td>
@@ -120,36 +123,23 @@
         ?>
 
         <tr style="height: 5rem;">
-            <th></th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
             <td></td>
         </tr>
         <tr>
             <th>Tổng:</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th><?php echo number_format($sumSale)?> VNĐ</th>
+            <td colspan="5"></td>
+            <th><?php echo number_format($sumSale) ?> VNĐ</th>
         </tr>
         <tr>
             <th>Giảm Khuyến Mãi :</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>-<?php  echo $data['sale']['PHANTRAMGIAM'].'% ('.$data['sale']['MAKM'].')';?></td>
-            <th> - <?php echo number_format($sumSale*($data['sale']['PHANTRAMGIAM']/100))?> VNĐ</th>
+            <td colspan="4"></td>
+            <td>-<?php echo $data['sale']['PHANTRAMGIAM'] . '% (' . $data['sale']['MAKM'] . ')'; ?></td>
+            <th> - <?php echo number_format($sumSale * ($data['sale']['PHANTRAMGIAM'] / 100)) ?> VNĐ</th>
         </tr>
         <tr>
             <th>Thành Tiền :</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th><?php echo number_format($sumSale*(1-$data['sale']['PHANTRAMGIAM']/100))?> VNĐ</th>
+            <td colspan="5"></td>
+            <th><?php echo number_format($sumSale * (1 - $data['sale']['PHANTRAMGIAM'] / 100)) ?> VNĐ</th>
         </tr>
     </table>
     <div class="footer-container">

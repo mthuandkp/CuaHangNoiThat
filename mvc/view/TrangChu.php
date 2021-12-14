@@ -51,25 +51,25 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                        <?php if (!isset($_SESSION['account'])) {
-                            echo '<a href="./DangNhap">Đăng nhập</a>';
-                            echo '<a href="./DangKy">Đăng ký</a>';
-                        }
-                        else{
-                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                            <a href="./LichSuGioHang">Lịch sử</a>
-                            <a href="./TrangChu/DoiMatKhau">Đổi mật khẩu</a>
-                            <a href="./TrangChu/Logout">Đăng xuất</a>';
-                        }
-                        
-                        ?>
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php 
+                            if (!isset($_SESSION['account'])) {
+                                echo '<a href="./DangNhap">Đăng nhập</a>';
+                                echo '<a href="./DangKy">Đăng ký</a>';
+                            }
+                            else{
+                                echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                            }
+                        ?>                        
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>

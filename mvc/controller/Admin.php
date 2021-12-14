@@ -129,37 +129,38 @@ class Admin extends Controller
         echo json_encode($data);
     }
 
-    function submitBill($id){
+    function submitBill($id)
+    {
         $objBill = $this->getModel("HoaDonDB");
         $result = array();
         $result['SMS'] = 'Lỗi khi cập nhật';
-        if($objBill->updateBillStatus_Cus($id,'TT03')){
+        if ($objBill->updateBillStatus_Cus($id, 'TT03')) {
             $result['SMS'] = 'Cập nhật thành công';
         }
 
         echo json_encode($result);
     }
 
-    function getCusBillAndDetailBill(){
-        if(!isset($_SESSION['account'])){
+    function getCusBillAndDetailBill()
+    {
+        if (!isset($_SESSION['account'])) {
             echo json_encode(array());
-            return;    
+            return;
         }
         $obj = $this->getModel('HoaDonDB');
         $objSale = $this->getModel("KhuyenMaiDB");
-        
+
         $data = $obj->getBillByCusId("KH01");
-        foreach($data as $key=>$value){
+        foreach ($data as $key => $value) {
             $sumBill = 0;
-            foreach($obj->getBillDetailById($value['MAHD']) as $subvalue){
-                $sumBill += $subvalue['GIA']*$subvalue['SOLUONG']*(1-$subvalue['PHANTRAMGIAM']/100);
+            foreach ($obj->getBillDetailById($value['MAHD']) as $subvalue) {
+                $sumBill += $subvalue['GIA'] * $subvalue['SOLUONG'] * (1 - $subvalue['PHANTRAMGIAM'] / 100);
             }
 
             $saleId = $value['MAKM'];
-            
+
             $sale = $objSale->getSaleById($saleId);
-            $data[$key]['LAST_PRICE'] = (1-$sale['PHANTRAMGIAM']/100)*$sumBill;
-            
+            $data[$key]['LAST_PRICE'] = (1 - $sale['PHANTRAMGIAM'] / 100) * $sumBill;
         }
 
         echo json_encode($data);
@@ -235,21 +236,22 @@ class Admin extends Controller
         echo json_encode($result);
     }
 
-    function saveInfoAccount($name,$address,$phone,$sex){
+    function saveInfoAccount($name, $address, $phone, $sex)
+    {
         $objCustomer = $this->getModel("KhachHangDB");
         $cusId = $_SESSION['account']['MAKH'];
         $customer = array(
-            'id'=>$cusId,
-            'name'=>$name,
-            'address'=>$address,
-            'phone'=>$phone,
-            'sex'=>$sex
+            'id' => $cusId,
+            'name' => $name,
+            'address' => $address,
+            'phone' => $phone,
+            'sex' => $sex
         );
 
         $result = array();
 
         $result['SMS'] = 'Cập nhật không thành công';
-        if($objCustomer->updateInformationCustomer($customer)){
+        if ($objCustomer->updateInformationCustomer($customer)) {
             $result['SMS'] = 'Cập nhật thành công';
         }
         echo json_encode($result);
@@ -959,6 +961,7 @@ class Admin extends Controller
 
     function addToCart($idProduct)
     {
+        $result = array();
         $cart = array();
         if (isset($_SESSION['cart'])) {
             $cart = $_SESSION['cart'];
@@ -974,7 +977,8 @@ class Admin extends Controller
             foreach ($cart as $key => $value) {
                 if ($value['MASP'] == $idProduct) {
                     if ($product['SOLUONG'] < $value['amount'] + 1) {
-                        echo 'Không đủ số lượng';
+                        $result['SMS'] = 'Không đủ số lượng';
+                        echo json_encode($result);
                         return;
                     }
                     $cart[$key]['amount'] += 1;
@@ -988,12 +992,12 @@ class Admin extends Controller
                 $product['amount'] = 1;
                 $cart[] = $product;
             }
-            
         }
 
         $_SESSION['cart'] = $cart;
 
-        echo 'Thêm thành công';
+        $result['SMS'] = 'Thêm thành công';
+        echo json_encode($result);
     }
 
     function getCart()
@@ -1009,11 +1013,11 @@ class Admin extends Controller
         echo json_encode($_SESSION['cart']);
     }
 
-    function getSale(){
-        if(isset($_SESSION['sale'])){
+    function getSale()
+    {
+        if (isset($_SESSION['sale'])) {
             echo json_encode($_SESSION['sale']);
-        }
-        else{
+        } else {
             echo json_encode(array());
         }
     }
@@ -1072,27 +1076,25 @@ class Admin extends Controller
 
         if (!isset($_SESSION['account'])) {
             $result['SMS'] = 'NOT_LOGIN';
-        }
-        else if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+        } else if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
             $result['SMS'] = 'Giỏ hàng rỗng';
-        }
-        else{
+        } else {
             //Duyet tat ca san pham trong gio hang check so luong
             $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
             $objProduct = $this->getModel('SanPhamDB');
-            foreach($cart as $key=>$value){
+            foreach ($cart as $key => $value) {
                 $product = $objProduct->getProductById($value['MASP']);
                 $cart[$key]['ERROR'] = '';
-                
-                if($product['SOLUONG'] < $value['amount']){
-                    $cart[$key]['ERROR'] = "Số lượng tối đa ".$product['SOLUONG'];
+
+                if ($product['SOLUONG'] < $value['amount']) {
+                    $cart[$key]['ERROR'] = "Số lượng tối đa " . $product['SOLUONG'];
                     $valid = false;
                 }
             }
             $_SESSION['cart'] = $cart;
         }
 
-        if($valid){
+        if ($valid) {
             $objBill = $this->getModel('HoaDonDB');
             $billId = $objBill->createNextBillId();
             $cus = $_SESSION['account'];
@@ -1102,56 +1104,73 @@ class Admin extends Controller
             $saleId = $_SESSION['sale']['MAKM'];
             $day = date('Y/m/d');
             $time = date('H:i:s');
-            foreach($cart as $value){
-                $sum += $value['GIA']*$value['amount'];
+            foreach ($cart as $value) {
+                $sum += $value['GIA'] * $value['amount'];
             }
             //Tao hoa don
             $billQry = "INSERT INTO `hoadon`(`MAHD`,`MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`, `MAKM`) VALUES ('$billId',NULL,'$cusId','$day','$time',$sum,'TT01','$saleId');";
 
             //Tao chi tiet hoa don
-            $detailQry = "";
-            foreach($cart as $value){
+            $detailQry = "INSERT INTO `ct_hoadon`(`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUES";
+            foreach ($cart as $value) {
                 $proId = $value['MASP'];
                 $proNumber = $value['amount'];
                 $proPrice = $value['GIA'];
                 $proSale = $value['PHANTRAMGIAM'];
-                $detailQry .= "INSERT INTO `ct_hoadon`(`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUES ('$billId','$proId',$proNumber,$proPrice,$proSale);";
+                $detailQry .= " ('$billId','$proId',$proNumber,$proPrice,$proSale),";
             }
 
-            if($objBill->addBillAndDetail($billQry,$detailQry)){
-                $result['SMS'] = 'Thêm thành công';
+            $detailQry = substr($detailQry,0,strlen($detailQry)-1).';';
+            
+            if ($objBill->addBillAndDetail($billQry, $detailQry)) {
+                $result['SMS'] = 'Đặt hàng thành công';
                 //tru so luong san pham trong kho
                 $objProduct = $this->getModel('SanPhamDB');
-                if($objProduct->updateNumberListProduct($cart)){
+                if ($objProduct->updateNumberListProduct($cart)) {
                     //Xoa gio hang
                     unset($_SESSION['cart']);
                 }
-                
-            }
-            else{
+            } else {
                 $result['SMS'] = 'Thêm hóa đơn thất bại';
-                echo $billQry.'<br>';
-                echo $detailQry;
+                $result['Error'] = $billQry. '\n'. $detailQry;
             }
         }
         echo json_encode($result);
     }
 
-    function checkCart(){
+    function checkCart()
+    {
         if (isset($_SESSION['cart'])) {
             $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
             $objProduct = $this->getModel('SanPhamDB');
-            foreach($cart as $key=>$value){
+            foreach ($cart as $key => $value) {
                 $product = $objProduct->getProductById($value['MASP']);
                 $cart[$key]['ERROR'] = '';
-                
-                if($product['SOLUONG'] < $value['amount']){
-                    $cart[$key]['ERROR'] = "Số lượng tối đa ".$product['SOLUONG'];
+
+                if ($product['SOLUONG'] < $value['amount']) {
+                    $cart[$key]['ERROR'] = "Số lượng tối đa " . $product['SOLUONG'];
                     $valid = false;
                 }
             }
             $_SESSION['cart'] = $cart;
         }
+    }
+
+    function countCart()
+    {
+        $result = array();
+        if (!isset($_SESSION['cart'])) {
+            $result['COUNT'] = 0;
+        } else {
+            $count = 0;
+            foreach ($_SESSION['cart'] as $value) {
+                $count += $value['amount'];
+            }
+
+            $result['COUNT'] = $count;
+        }
+
+        echo json_encode($result);
     }
 
     /* ============================================================== */

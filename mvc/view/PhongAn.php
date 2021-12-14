@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,10 +14,11 @@
     <script src="./processFunc.js"></script>
     <title>Phòng ăn</title>
 </head>
+
 <body>
-<div class="header">
+    <div class="header">
         <div class="address">
-            <i class="fa fa-map-marker" > Hồ Chí Minh, Việt Nam</i>
+            <i class="fa fa-map-marker"> Hồ Chí Minh, Việt Nam</i>
             <i class="fa fa-envelope"> milfuniture@gmail.com</i>
         </div>
     </div>
@@ -50,23 +52,24 @@
                     </li>
                 </ul>
             </div>
+            <?php if (isset($_SESSION['account'])) {
+                echo "<div style='margin-top:2rem;'> Hello ," . $_SESSION['account']['TENKH'] . '</div>';
+            } ?>
+
             <div class="user-nav">
-                <p style="float: left;font-size: 13px;">
-                </p>
                 <div class="dropdown">
-                    <?php if (isset($_SESSION['account'])) {
-                        echo "Hello ," . $_SESSION['account']['TENKH'];
-                    } ?>
                     <i class="fa fa-user"></i><i class="fa fa-angle-down"></i>
-                    <div class="dropdown-content user">
-                    <?php if (!isset($_SESSION['account'])) {
-                        echo '<a href="./DangNhap">Đăng nhập</a>';
-                        echo '<a href="./DangKy">Đăng ký</a>';
-                    } ?>
-                        
-                        <a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                        <a href="./LichSuGioHang">Lịch sử</a>
-                        <a href="./TrangChu/Logout">Đăng xuất</a>
+                    <div class="dropdown-content user" style="margin-top: -0.5rem;">
+                        <?php
+                        if (!isset($_SESSION['account'])) {
+                            echo '<a href="./DangNhap">Đăng nhập</a>';
+                            echo '<a href="./DangKy">Đăng ký</a>';
+                        } else {
+                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="./LichSuGioHang">Lịch sử</a>
+                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
@@ -90,10 +93,10 @@
         <img src="/CuaHangNoiThat/public/image/BANNER_PHONGAN.jepg" alt="">
     </div>
     <h2 class="title">
-            <span>PHÒNG ĂN</span>
+        <span>PHÒNG ĂN</span>
     </h2>
     <p class="content">
-    Mỗi khoảnh khắc quây quần bên bàn ăn luôn là những phút giây đầm ấm tuyệt đẹp. Với chất liệu mẫu mã đa dạng cùng thiết kế độc đáo, từng sản phẩm của Cozy hướng tới kiến tạo không gian sang trọng nhưng cũng vô cùng đầm ấm và tinh tế.
+        Mỗi khoảnh khắc quây quần bên bàn ăn luôn là những phút giây đầm ấm tuyệt đẹp. Với chất liệu mẫu mã đa dạng cùng thiết kế độc đáo, từng sản phẩm của Cozy hướng tới kiến tạo không gian sang trọng nhưng cũng vô cùng đầm ấm và tinh tế.
     <div style="width: 80%;margin-left: 10%;margin-top: 1rem;">
         <h2 style="font-weight: bolder;">Tìm kiếm</h2>
         <div class="form-row">
@@ -169,16 +172,16 @@
                     for (var key in data) {
                         $obj = data[key];
                         $xhtml += ' <div class="product-item">' +
-                            '<a href="">' +
+                            '<a href="./ChiTietSanPham/SanPham/' + $obj.MASP + '">' +
                             '<img src="./public/image/HINHANH/' + $obj.HINHANH + '" alt="">' +
                             '<p class="product-name">' + $obj.TENSP + '<sup style="color: red;font-size: 1.2rem;"> -' + $obj.PHANTRAMGIAM + '%</sup></p>' +
                             '</a>' +
-                            '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div>';
+                            '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div></div>';
                         if ($obj.PHANTRAMGIAM != 0) {
                             $xhtml += '<div style="font-size: 20px;">Giá khuyến mãi: <div class="price" style="color: red;">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100)) + ' <sup>đ</sup></div>';
                         }
                         $xhtml += '<button onclick="addToCart(\'' + $obj.MASP + '\');" class="product-name" style="background-color: white;color: red;font-weight: 900;float: right;border-radius: 0.3rem;">Thêm vào giỏ</button>' +
-                            '</div>';
+                            '</div></div>';
                     }
 
                     $("#product-container-id").html($xhtml);
@@ -243,16 +246,16 @@
                         }
 
                         $xhtml += ' <div class="product-item">' +
-                            '<a href="">' +
+                            '<a href="./ChiTietSanPham/SanPham/' + $obj.MASP + '">' +
                             '<img src="./public/image/HINHANH/' + $obj.HINHANH + '" alt="">' +
                             '<p class="product-name">' + $obj.TENSP + '<sup style="color: red;font-size: 1.2rem;"> -' + $obj.PHANTRAMGIAM + '%</sup></p>' +
                             '</a>' +
-                            '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div>';
+                            '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div></div>';
                         if ($obj.PHANTRAMGIAM != 0) {
                             $xhtml += '<div style="font-size: 20px;">Giá khuyến mãi: <div class="price" style="color: red;">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100)) + ' <sup>đ</sup></div>';
                         }
                         $xhtml += '<button onclick="addToCart(\'' + $obj.MASP + '\');" class="product-name" style="background-color: white;color: red;font-weight: 900;float: right;border-radius: 0.3rem;">Thêm vào giỏ</button>' +
-                            '</div>';
+                            '</div></div>';
                     }
 
                     $("#product-container-id").html($xhtml);
@@ -269,9 +272,21 @@
             $.ajax({
                 url: './Admin/addToCart/' + $productId,
                 success: function(data) {
-                    alert(data);
+                    var data = JSON.parse(data);
+                    alert(data.SMS);
+                    loadCountCart();
                 }
             });
+        }
+
+        function loadCountCart() {
+            $.ajax({
+                url: './Admin/countCart',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    $("#counter").html(data.COUNT)
+                }
+            })
         }
     </script>
 </body>
