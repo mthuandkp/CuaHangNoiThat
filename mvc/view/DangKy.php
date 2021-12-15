@@ -90,45 +90,66 @@
             </div>
         </div>
     </nav>
-    <form action="">
-        <fieldset>
+    <fieldset>
             <legend><i class="fa fa-user-circle-o" aria-hidden="true"></i></legend>
-            <p>ĐĂNG KÝ</p>
-            <label for="">Họ và tên: </label>
-            <input type="text" id="name" name="name">
-            <label for="" style="width: 100%;">Giới Tính: </label>
-            <select id="sex" style="width: 25rem;padding: 0.5rem 9rem 0.5rem 1rem;margin: 1rem auto 1rem auto;display: block;">
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
-            </select>
-            <label for="">Tên đăng nhập:</label>
-            <input type="text" id="uname" name="uname">
-            <label for="">Mật khẩu:</label>
-            <input type="password" id="pass" name="pass">
-            <label for="">Xác nhận mật khẩu:</label>
-            <input type="password" id="passconfirm" name="pass">
-            <label for="">Số điện thoại: </label>
-            <input type="text" id="pnumber" name="pnumber">
-            <label for="">Địa chỉ:</label>
-            <input type="text" id="address" name="address">
-            <p style="width: 100%;text-align: center;font-size: 1.3rem;color: red;" id="sms"></p>
-            <input type="button" value="ĐĂNG KÝ" class="btn-reg" onclick="register()">
+            <p>Đăng ký tài khoản</p>
+            <label for="exampleInputEmail1">Tên Khách Hàng</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="nameCus">
+            </div>
+            <label for="exampleInputEmail1">Ngày Sinh</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="date" class="form-control" id="birthday">
+            </div>
+            <label for="exampleInputEmail1">Tên Đăng Nhập</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="unameCus">
+            </div>
+            <label for="exampleInputEmail1">Mật Khẩu</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="password" class="form-control" id="passCus">
+            </div>
+            <label for="exampleInputEmail1">Nhập Lại Mật Khẩu</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="password" class="form-control" id="passConfirmCus">
+            </div>
+            <label for="exampleInputEmail1">Địa chỉ</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="addressCus">
+            </div>
+            <label for="exampleInputEmail1">Số điện thoại</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="phoneCus">
+            </div>
+            <label for="exampleInputEmail1">Giới tính</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <select style="font-family: 'Times New Roman', Times, serif;" class="form-control" id="sexCus">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+            </div>
+            <p id="sms" style="font-size: 1.4rem;color: red;"></p>
+            <button style="float: right;margin-right: 10%;font-size: 1.5rem;width: 10rem;color: white;font-family: 'Times New Roman', Times, serif;margin: 1rem;" onclick="register();" class="btn btn-primary">Lưu</button>
         </fieldset>
-    </form>
 
     <script>
         function register() {
-            $name = $("#name").val();
-            $uname = $("#uname").val();
-            $pass = $("#pass").val();
-            $phone = $("#pnumber").val();
-            $address = $("#address").val();
-            $passc = $("#passconfirm").val();
-            $sex = $("#sex").val();
+            $name = $("#nameCus").val();
+            $uname = $("#unameCus").val();
+            $pass = $("#passCus").val();
+            $phone = $("#phoneCus").val();
+            $address = $("#addressCus").val();
+            $passc = $("#passConfirmCus").val();
+            $sex = $("#sexCus").val();
+            $birthday = $("#birthday").val();
+
             $("#sms").html('')
 
             if($name == ''){
-                $("#sms").html('Họ và tên không được để trống');
+                $("#sms").html('Tên khách hàng không được để trống');
+            }
+            else if($birthday == ''){
+                $("#sms").html('Vui lòng chọn ngày sinh');                
             }
             else if($uname == '' || !$uname.includes('@gmail.com')){
                 $("#sms").html('Tên đăng nhập phải là email (@gmail.com)');                
@@ -149,7 +170,7 @@
                 $("#sms").html('Địa chỉ không được để trống');                
             }
             else{
-                $account = [$name,$uname,$pass,$phone,$address,$sex];
+                $account = [$name,$uname,$pass,$phone,$address,$sex,$birthday];
                 $.ajax({
                     url:'/CuaHangNoiThat/Admin/registerNewAccount/' + JSON.stringify($account),
                     success : function(data){

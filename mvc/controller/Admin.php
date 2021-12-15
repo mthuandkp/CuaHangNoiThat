@@ -253,16 +253,18 @@ class Admin extends Controller
         echo json_encode($result);
     }
 
-    function saveInfoAccount($name, $address, $phone, $sex)
+    function saveInfoAccount($data)
     {
+        $data = json_decode($data);
         $objCustomer = $this->getModel("KhachHangDB");
         $cusId = $_SESSION['account']['MAKH'];
         $customer = array(
             'id' => $cusId,
-            'name' => $name,
-            'address' => $address,
-            'phone' => $phone,
-            'sex' => $sex
+            'name' => $data[0],
+            'address' => $data[1],
+            'phone' => $data[2],
+            'sex' => $data[3],
+            'birthday'=>$data[4]
         );
 
         $result = array();
@@ -1334,7 +1336,8 @@ class Admin extends Controller
                 'SDT' => $data[3],
                 'TRANGTHAI' => true,
                 'DIEMTL' => 0,
-                'GIOITINH'=>$data[5]
+                'GIOITINH'=>$data[5],
+                'NGAYSINH'=>$data[6]
             );
 
             if ($objCus->addNewCustomer($customer)) {

@@ -98,6 +98,10 @@
             <div class="form-group" style="width: 80%;margin-left:10%;">
                 <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="nameCus" value="<?php echo $data['TENKH']; ?>">
             </div>
+            <label for="exampleInputEmail1">Ngày Sinh</label>
+            <div class="form-group" style="width: 80%;margin-left:10%;">
+                <input style="font-family: 'Times New Roman', Times, serif;" type="date" class="form-control" id="birthday" value="<?php echo $data['NGAYSINH']; ?>">
+            </div>
             <label for="exampleInputEmail1">Địa chỉ</label>
             <div class="form-group" style="width: 80%;margin-left:10%;">
                 <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="addressCus" value="<?php echo $data['DIACHI']; ?>">
@@ -126,6 +130,7 @@
             $address = $("#addressCus").val();
             $phone = $("#phoneCus").val();
             $sex = $("#sexCus").val();
+            $birthday = $("#birthday").val();
 
             if ($name == '') {
                 alert("Tên khách hàng không được để trống")
@@ -140,9 +145,9 @@
                 return
             }
 
-            const arr = new Array($name, $address, $phone, $sex);
+            const arr = new Array($name, $address, $phone, $sex,$birthday);
             $.ajax({
-                url: '/CuaHangNoiThat/Admin/saveInfoAccount/' + $name + '/' + $address + '/' + $phone + '/' + $sex,
+                url: '/CuaHangNoiThat/Admin/saveInfoAccount/'+ JSON.stringify(arr),
                 success: function(data) {
                     var data = JSON.parse(data);
                     alert(data.SMS);

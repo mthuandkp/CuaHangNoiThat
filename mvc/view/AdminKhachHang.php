@@ -109,6 +109,7 @@
                         '<th scope="col">#</th>' +
                         '<th scope="col">Mã Khách Hàng</th>' +
                         '<th scope="col">Tên Khách Hàng</th>' +
+                        '<th scope="col">Ngày Sinh</th>' +
                         '<th scope="col">Giới Tính</th>' +
                         '<th scope="col">Tên Đăng Nhập</th>' +
                         '<th scope="col">Địa Chỉ</th>' +
@@ -124,6 +125,7 @@
                             '<th scope="row">' + ($i + 1) + '</th>' +
                             '<td>' + data[$i].MAKH + '</td>' +
                             '<td>' + data[$i].TENKH + '</td>' +
+                            '<td>' + data[$i].NGAYSINH + '</td>' +
                             '<td>' + data[$i].GIOITINH + '</td>' +
                             '<td>' + data[$i].TENDN + '</td>' +
                             '<td>' + data[$i].DIACHI + '</td>' +
@@ -167,21 +169,21 @@
                     success: function(data) {
                         var data = JSON.parse(data);
                         $xhtml = '<thead>' +
-                            '<tr>' +
-                            '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Khách Hàng</th>' +
-                            '<th scope="col">Tên Khách Hàng</th>' +
-                            '<th scope="col">Giới Tính</th>' +
-                            '<th scope="col">Tên đăng nhập</th>' +
-                            '<th scope="col">Địa Chỉ</th>' +
-                            '<th scope="col">SĐT</th>' +
-                            '<th scope="col">Trạng thái</th>' +
-                            '<th scope="col">Điểm tích lũy</th>' +
-                            '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
-                            '</tr>' +
-                            '</thead>' +
-                            '<tbody>';
-
+                        '<tr>' +
+                        '<th scope="col">#</th>' +
+                        '<th scope="col">Mã Khách Hàng</th>' +
+                        '<th scope="col">Tên Khách Hàng</th>' +
+                        '<th scope="col">Ngày Sinh</th>' +
+                        '<th scope="col">Giới Tính</th>' +
+                        '<th scope="col">Tên Đăng Nhập</th>' +
+                        '<th scope="col">Địa Chỉ</th>' +
+                        '<th scope="col">SĐT</th>' +
+                        '<th scope="col">Trạng Thái</th>' +
+                        '<th scope="col">Điểm Tích Lũy</th>' +
+                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
                         for ($i = 0; $i < data.length; $i++) {
                             $check = false;
                             if (convertStringToEnglish(data[$i].MAKH).includes($searchValue)) {
@@ -210,19 +212,20 @@
                                 continue;
                             }
                             $xhtml += '<tr>' +
-                                '<th scope="row">' + ($i + 1) + '</th>' +
-                                '<td>' + data[$i].MAKH + '</td>' +
-                                '<td>' + data[$i].TENKH + '</td>' +
-                                '<td>' + data[$i].GIOITINH + '</td>' +
-                                '<td>' + data[$i].TENDN + '</td>' +
-                                '<td>' + data[$i].DIACHI + '</td>' +
-                                '<td>' + data[$i].SDT + '</td>' +
-                                '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
-                                '<td>' + data[$i].DIEMTL + '</td>' +
-                                '<td>' +
-                                '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
-                                '</td>' +
-                                '</tr>';
+                            '<th scope="row">' + ($i + 1) + '</th>' +
+                            '<td>' + data[$i].MAKH + '</td>' +
+                            '<td>' + data[$i].TENKH + '</td>' +
+                            '<td>' + data[$i].NGAYSINH + '</td>' +
+                            '<td>' + data[$i].GIOITINH + '</td>' +
+                            '<td>' + data[$i].TENDN + '</td>' +
+                            '<td>' + data[$i].DIACHI + '</td>' +
+                            '<td>' + data[$i].SDT + '</td>' +
+                            '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
+                            '<td>' + data[$i].DIEMTL + '</td>' +
+                            '<td>' +
+                            '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
+                            '</td>' +
+                            '</tr>';
                         }
                         $xhtml += '</tbody>';
                         $("#tableContent").html($xhtml);
@@ -281,20 +284,21 @@
                     //console.log(data);
                     
                     $xhtml = '<thead>' +
-                            '<tr>' +
-                            '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Khách Hàng</th>' +
-                            '<th scope="col">Tên Khách Hàng</th>' +
-                            '<th scope="col">Giới Tính</th>' +
-                            '<th scope="col">Tên đăng nhập</th>' +
-                            '<th scope="col">Địa Chỉ</th>' +
-                            '<th scope="col">SĐT</th>' +
-                            '<th scope="col">Trạng thái</th>' +
-                            '<th scope="col">Điểm tích lũy</th>' +
-                            '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
-                            '</tr>' +
-                            '</thead>' +
-                            '<tbody>';
+                        '<tr>' +
+                        '<th scope="col">#</th>' +
+                        '<th scope="col">Mã Khách Hàng</th>' +
+                        '<th scope="col">Tên Khách Hàng</th>' +
+                        '<th scope="col">Ngày Sinh</th>' +
+                        '<th scope="col">Giới Tính</th>' +
+                        '<th scope="col">Tên Đăng Nhập</th>' +
+                        '<th scope="col">Địa Chỉ</th>' +
+                        '<th scope="col">SĐT</th>' +
+                        '<th scope="col">Trạng Thái</th>' +
+                        '<th scope="col">Điểm Tích Lũy</th>' +
+                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
                     for ($i = 0; $i < data.length; $i++) {
 
                         if ($idCustomer != '#' && !convertStringToEnglish(data[$i].MAKH).includes($idCustomer)) {
@@ -322,19 +326,20 @@
                             continue;
                         }
                         $xhtml += '<tr>' +
-                                '<th scope="row">' + ($i + 1) + '</th>' +
-                                '<td>' + data[$i].MAKH + '</td>' +
-                                '<td>' + data[$i].TENKH + '</td>' +
-                                '<td>' + data[$i].GIOITINH + '</td>' +
-                                '<td>' + data[$i].TENDN + '</td>' +
-                                '<td>' + data[$i].DIACHI + '</td>' +
-                                '<td>' + data[$i].SDT + '</td>' +
-                                '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
-                                '<td>' + data[$i].DIEMTL + '</td>' +
-                                '<td>' +
-                                '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
-                                '</td>' +
-                                '</tr>';                        
+                            '<th scope="row">' + ($i + 1) + '</th>' +
+                            '<td>' + data[$i].MAKH + '</td>' +
+                            '<td>' + data[$i].TENKH + '</td>' +
+                            '<td>' + data[$i].NGAYSINH + '</td>' +
+                            '<td>' + data[$i].GIOITINH + '</td>' +
+                            '<td>' + data[$i].TENDN + '</td>' +
+                            '<td>' + data[$i].DIACHI + '</td>' +
+                            '<td>' + data[$i].SDT + '</td>' +
+                            '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
+                            '<td>' + data[$i].DIEMTL + '</td>' +
+                            '<td>' +
+                            '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
+                            '</td>' +
+                            '</tr>';                  
                     }
 
 

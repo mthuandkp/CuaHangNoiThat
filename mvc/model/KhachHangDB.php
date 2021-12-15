@@ -45,8 +45,9 @@ class KhachHangDB extends ConnectionDB
         $address = $customer['address'];
         $phone = $customer['phone'];
         $sex = $customer['sex'];
+        
 
-        $qry = "UPDATE `khachhang` SET `TENKH`='$name',`GIOITINH`='$sex',`DIACHI`='$address',`SDT`='$phone' WHERE `MAKH` = '$id';";
+        $qry = "UPDATE `khachhang` SET `TENKH`='$name',`GIOITINH`='$sex',`DIACHI`='$address',`SDT`='$phone',`NGAYSINH`='$customer[birthday]' WHERE `MAKH` = '$id';";
 
         if(mysqli_query($this->conn,$qry)){
             $cus = $this->getCutomerById($id);
@@ -82,7 +83,7 @@ class KhachHangDB extends ConnectionDB
         $cusStatus = $customer['TRANGTHAI'];
         $cusPoints = $customer['DIEMTL'];
 
-        $qry = "INSERT INTO khachhang (MAKH, TENKH,GIOITINH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI, DIEMTL) VALUES ('$cusId', '$cusName','$customer[GIOITINH]', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus, $cusPoints);";
+        $qry = "INSERT INTO khachhang (MAKH, TENKH,NGAYSINH,GIOITINH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI, DIEMTL) VALUES ('$cusId', '$cusName','$customer[NGAYSINH]','$customer[GIOITINH]', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus, $cusPoints);";
         if (mysqli_query($this->conn, $qry) == false) {
             return false;
         }
