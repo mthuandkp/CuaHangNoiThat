@@ -378,6 +378,14 @@ legend {
     border-radius: 3px;
 }
 
+#passconfirm {
+    display: block;
+    margin: 0 auto 1rem auto;
+    padding: 0.5rem 9rem 0.5rem 1rem;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+}
+
 .btn-log {
     display: block;
     margin: auto;

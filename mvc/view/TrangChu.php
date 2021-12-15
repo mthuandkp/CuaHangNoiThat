@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./my-css.css">
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
     <title>Trang Chủ</title>
 </head>
 
@@ -23,8 +23,8 @@
     </div>
     <nav class="navbar sticky-top navbar-expand-md navbar-light ">
         <div class="container-fluid">
-            <a class="navar-branch" style="cursor: pointer;" href="./TrangChu">
-                <img src="./public/image/logo.png" alt="logo" height="60px">
+            <a class="navar-branch" style="cursor: pointer;" href="/CuaHangNoiThat/TrangChu">
+                <img src="/CuaHangNoiThat/public/image/logo.png" alt="logo" height="60px">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
@@ -32,22 +32,22 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav mx-auto " id="lsp">
                     <li class="nav-item active">
-                        <a class="nav-link a active" style="cursor: pointer;" href="./TrangChu">TRANG CHỦ</a>
+                        <a class="nav-link a active" style="cursor: pointer;" href="/CuaHangNoiThat/TrangChu">TRANG CHỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="./TrangTri">TRANG TRÍ</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/TrangTri">TRANG TRÍ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="./PhongNgu">PHÒNG NGỦ</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongNgu">PHÒNG NGỦ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="./PhongLamViec">PHÒNG LÀM VIỆC</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongLamViec">PHÒNG LÀM VIỆC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="./PhongKhach">PHÒNG KHÁCH</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongKhach">PHÒNG KHÁCH</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link a" style="cursor: pointer;" href="./PhongAn">PHÒNG ĂN</a>
+                        <a class="nav-link a" style="cursor: pointer;" href="/CuaHangNoiThat/PhongAn">PHÒNG ĂN</a>
                     </li>
                 </ul>
             </div>
@@ -61,13 +61,14 @@
                     <div class="dropdown-content user" style="margin-top: -0.5rem;">
                         <?php 
                             if (!isset($_SESSION['account'])) {
-                                echo '<a href="./DangNhap">Đăng nhập</a>';
-                                echo '<a href="./DangKy">Đăng ký</a>';
+                                echo '<a href="/CuaHangNoiThat/DangNhap">Đăng nhập</a>';
+                                echo '<a href="/CuaHangNoiThat/DangKy">Đăng ký</a>';
                             }
                             else{
-                                echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                                <a href="./LichSuGioHang">Lịch sử</a>
-                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                                echo '<a href="/CuaHangNoiThat/ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="/CuaHangNoiThat/DoiMatKhau">Đổi mật khẩu</a>
+                                <a href="/CuaHangNoiThat/LichSuGioHang">Lịch sử</a>
+                                <a href="/CuaHangNoiThat/TrangChu/Logout">Đăng xuất</a>';
                             }
                         ?>                        
                     </div>
@@ -90,7 +91,7 @@
         </div>
     </nav>
     <div class="banner">
-        <img src="./public/image/BANNER_CHINH_1.jpg" alt="">
+        <img src="/CuaHangNoiThat/public/image/BANNER_CHINH_1.jpg" alt="">
     </div>
     <h2 class="title">
         <span>Nội thất cho ngôi nhà hiện đại</span>
@@ -103,32 +104,32 @@
     </p>
     <div class="category-container">
         <div class="category">
-            <a href="./TrangTri">
-                <img src="./public/image/cate-5.jpg" alt="cate-1">
+            <a href="/CuaHangNoiThat/TrangTri">
+                <img src="/CuaHangNoiThat/public/image/cate-5.jpg" alt="cate-1">
                 <p>Trang trí</p>
             </a>
         </div>
         <div class="category">
-            <a href="./PhongNgu">
-                <img src="./public/image/cate-4.jpg" alt="cate-2">
+            <a href="/CuaHangNoiThat/PhongNgu">
+                <img src="/CuaHangNoiThat/public/image/cate-4.jpg" alt="cate-2">
                 <p>Phòng ngủ</p>
             </a>
         </div>
         <div class="category">
-            <a href="./PhongLamViec">
-                <img src="./public/image/cate-3.jpg" alt="cate-3">
+            <a href="/CuaHangNoiThat/PhongLamViec">
+                <img src="/CuaHangNoiThat/public/image/cate-3.jpg" alt="cate-3">
                 <p>Phòng làm việc</p>
             </a>
         </div>
         <div class="category">
-            <a href="./PhongKhach">
-                <img src="./public/image/cate-2.jpg" alt="cate-4">
+            <a href="/CuaHangNoiThat/PhongKhach">
+                <img src="/CuaHangNoiThat/public/image/cate-2.jpg" alt="cate-4">
                 <p>Phòng khách</p>
             </a>
         </div>
         <div class="category">
-            <a href="./PhongAn">
-                <img src="./public/image/cate-1.jpg" alt="cate-5">
+            <a href="/CuaHangNoiThat/PhongAn">
+                <img src="/CuaHangNoiThat/public/image/cate-1.jpg" alt="cate-5">
                 <p>Phòng ăn</p>
             </a>
         </div>
@@ -143,10 +144,10 @@
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-                <img src="./public/image/Banner_phu_2.jpg" alt="1" width="100%" height="100%">
+                <img src="/CuaHangNoiThat/public/image/Banner_phu_2.jpg" alt="1" width="100%" height="100%">
             </div>
             <div class="carousel-item">
-                <img src="./public/image/banner_phu_3.jpg" alt="2" width="100%" height="100%">
+                <img src="/CuaHangNoiThat/public/image/banner_phu_3.jpg" alt="2" width="100%" height="100%">
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselId" role="button" data-slide="prev">
@@ -160,7 +161,7 @@
     </div><br><br>
     <div class="info-container">
         <div class="info">
-            <img src="./public/image/Banner_phu_1.jpg" alt="">
+            <img src="/CuaHangNoiThat/public/image/Banner_phu_1.jpg" alt="">
         </div>
         <div class="info">
             <h2>THIẾT KẾ HIỆN ĐẠI</h2><br>
@@ -173,7 +174,7 @@
     </div><br>
     <div class="footer-container">
         <div class="footer">
-            <img src="./public/image/logo.png" alt="">
+            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
         </div>
         <div class="footer">
             <a href="">GIAO HÀNG</a><br>

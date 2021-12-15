@@ -101,8 +101,10 @@ class KhachHangDB extends ConnectionDB
         return false;
     }
     //Cap nhat tendangnhap va matkhau
-    function updateAccountCutomer($id, $username, $password)
+    function updateAccountCutomer($id, $password)
     {
+        $qry = "UPDATE `khachhang` SET `MATKHAU`='$password' WHERE `MAKH`='$id';";
+        return mysqli_query($this->conn,$qry);
     }
 
     function exportExcel()

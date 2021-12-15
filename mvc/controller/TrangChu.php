@@ -22,4 +22,8 @@ class TrangChu extends Controller
     function clear(){
         session_destroy();
     }
+
+    function DoiMatKhau(){
+        $this->View("DoiMatKhau");
+    }
 }

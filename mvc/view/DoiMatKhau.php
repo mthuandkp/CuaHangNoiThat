@@ -10,8 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./my-css.css">
-    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="../my-css.css">
+    <title>Đổi mật khẩu</title>
 </head>
 
 <body>
@@ -92,61 +92,52 @@
     </nav>
     <fieldset>
         <legend><i class="fa fa-user-circle-o" aria-hidden="true"></i></legend>
-        <p>ĐĂNG NHẬP</p>
-        <input type="text" id="uname" name="uname" placeholder="a@gmail.com">
-        <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorUname">Tên đăng nhập không hợp lệ</p>
-        <input type="password" id="pass" name="pass" placeholder="*********">
-        <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorPass">Mật khẩu không hợp lệ</p>
-        <p id="errorMessage" style="margin-top: 0;padding-top: 0;"></p>
-        <input type="submit" id="submitbtn" value="ĐĂNG NHẬP" class="btn-log">
-        <div class="reg">Bạn chưa có tài khoản? <a href="./DangKy">Đăng ký</a></div>
+        <p>ĐỔI MẬT KHẨU</p>
+        <input type="password" id="uname" name="uname" placeholder="Mật khẩu hiện tại">
+        <input type="password" id="pass" name="pass" placeholder="Mật khẩu mới">
+        <input type="password" id="passconfirm" placeholder="Xác nhận mật khẩu mới">
+        
+
+        <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="sms"></p>
+        <input type="submit" id="submitbtn" value="ĐỔI MẬT KHẨU" class="btn-log">
     </fieldset>
 
 </body>
 <script>
-    $(document).ready(function() {
-        $("#errorUname").hide();
-        $("#errorPass").hide();
-    });
-
     $("#submitbtn").click(function() {
-        $("#errorUname").hide();
-        $("#errorPass").hide();
-        $("#errorMessage").hide();
-
         $uname = $("#uname").val();
         $pass = $("#pass").val();
+        $pass_confirm = $("#passconfirm").val();
 
-        if ($uname === "" || !$uname.includes("@gmail.com")) {
-            $("#errorUname").show();
+        if ($uname === "") {
+            $("#sms").html("Vui lòng nhập mật khẩu hiện tại");
             return;
         }
         if ($pass === "") {
-            $("#errorPass").show();
+            $("#sms").html("Vui lòng nhập mật khẩu mới");
+            return;
+        }
+        if($pass_confirm === ""){
+            $("#sms").html("Vui lòng nhập lại mật khẩu mới");
+            return;
+        }
+        if($pass != $pass_confirm){
+            $("#sms").html("Xác nhận mật khẩu không chính xác");
             return;
         }
 
         $.ajax({
-            url: './Admin/checkLoginCustomer/' + $uname + '/' + $pass,
+            url: '../Admin/changePassword/' + $uname + '/' + $pass+ '/' + $pass_confirm,
             method: 'POST',
-            data: {
-                url: window.location.href
-            },
             success: function(data) {
-                var data = JSON.parse(data);
-                $result = data.RESULT;
-                if ($result === "NOT_EXISTS") {
-                    $("#errorMessage").html("Tài khoản không tồn tại");
-                    $("#errorMessage").show();
-                } else if ($result === "WRONG_PASSWORD") {
-                    $("#errorMessage").html("Mật khẩu không chính xác");
-                    $("#errorMessage").show();
-                } else if($result === 'BLOCK'){
-                    $("#errorMessage").html("Tài khoản bạn đã bị khóa. Vui lòng liên hệ mildstore@gmail.com để biết thêm chi tiết");
-                    $("#errorMessage").show();
+                var data = JSON.parse(data);console.log(data)
+                var sms = data.SMS;
+                if(sms ==='SUCCESS'){
+                    alert("Thay đổi mật khẩu thành công. Vui lòng đăng nhập lại")
+                    window.location.href="../DangNhap"
                 }
-                 else {
-                    window.location.href = "./" + data.URL;
+                else{
+                    $("#sms").html(sms);
                 }
             }
         });

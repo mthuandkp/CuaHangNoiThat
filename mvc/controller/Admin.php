@@ -574,6 +574,7 @@ class Admin extends Controller
     function updateInfoStaff()
     {
         $staff = $_POST['data'];
+        $staff['MATKHAU'] = md5($staff['MATKHAU']);
         $objStaff = $this->getModel('NhanVienDB');
         if ($objStaff->updateInformationStaff($staff)) {
             echo 'Cập nhật thành công';
@@ -1282,6 +1283,31 @@ class Admin extends Controller
         $result['BILL'] = $listBill;
         $result['RECEIPT'] = $listReceipt;
 
+        echo json_encode($result);
+    }
+
+    function changePassword($pass,$newPass,$newPassConfirm){
+        $idCus = $_SESSION['account']['MAKH'];
+        $objCus = $this->getModel("KhachHangDB");
+        $cus = $objCus->getCutomerById($idCus);
+        $result = array();
+
+        if(md5($pass) != $cus['MATKHAU']){
+            $result['SMS'] = 'Mật khẩu hiện tại không chính xác';
+        }
+        else{
+            //ma hoa md5
+            $newPass = md5($newPass);
+            if($objCus->updateAccountCutomer($idCus,$newPass)){
+                $result['SMS'] = 'SUCCESS';
+                if(isset($_SESSION['account'])){
+                    unset($_SESSION['account']);
+                }
+            }
+            else{
+                $result['SMS'] = 'Lỗi khi thay đổi mật khẩu';
+            }
+        }
         echo json_encode($result);
     }
 }
