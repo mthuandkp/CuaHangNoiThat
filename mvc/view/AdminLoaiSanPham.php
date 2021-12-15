@@ -24,7 +24,7 @@
 <body>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <a href="/CuaHangNoiThat/Admin/ThemLoaiSanPham"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm loại sản phẩm</button></a>
+        <!-- <a href="/CuaHangNoiThat/Admin/ThemLoaiSanPham"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm loại sản phẩm</button></a> -->
         <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
         <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
             <input type="text" class="form-control" id="searchValue" placeholder="Nhập thông tin loại sản phẩm..." style="float: right;width: 20rem;">
