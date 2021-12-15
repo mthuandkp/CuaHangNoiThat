@@ -70,6 +70,20 @@ class SanPhamDB extends ConnectionDB
         }
         return false;
     }
+    //Cap nhat so luong san pham
+    function updateNumberListProduct_Receipt($productArr)
+    {
+        $qry = "";
+
+        foreach ($productArr as $value) {
+            $currentProduct = $this->getProductById($value['MASP']);
+            $qry .= "UPDATE `noithat` SET `SOLUONG`=($value[SOLUONG]+$currentProduct[SOLUONG]) WHERE `MASP`='$value[MASP]';";
+        }
+        if (mysqli_multi_query($this->conn, $qry)) {
+            return true;
+        }
+        return false;
+    }
     //Xoa san pham
     function disableProductStatus($idProduct)
     {

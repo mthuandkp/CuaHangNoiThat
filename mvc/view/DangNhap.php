@@ -125,7 +125,7 @@
         }
 
         $.ajax({
-            url: '/CuaHangNoiThat/Admin/checkLoginCustomer/' + $uname + '/' + $pass,
+            url: './Admin/checkLoginCustomer/' + $uname + '/' + $pass,
             method: 'POST',
             data: {
                 url: window.location.href
@@ -139,7 +139,11 @@
                 } else if ($result === "WRONG_PASSWORD") {
                     $("#errorMessage").html("Mật khẩu không chính xác");
                     $("#errorMessage").show();
-                } else {
+                } else if($result === 'BLOCK'){
+                    $("#errorMessage").html("Tài khoản bạn đã bị khóa. Vui lòng liên hệ mildstore@gmail.com để biết thêm chi tiết");
+                    $("#errorMessage").show();
+                }
+                 else {
                     window.location.href = "./" + data.URL;
                 }
             }

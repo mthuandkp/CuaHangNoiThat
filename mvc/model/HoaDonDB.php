@@ -29,6 +29,20 @@ class HoaDonDB extends ConnectionDB
         return $data;
     }
 
+    function getBillByYear($year){
+        $data = $this->getAllBill();
+        $result = array();
+
+        foreach($data as $value){
+            $date = explode('-',$value['NGAYLAP'])[0];
+            if($date == $year){
+                $result[] = $value;
+            }
+        }
+
+        return $result;
+    }
+
     //Lay chi tiet hoa don
     function getBillDetailById($billId)
     {

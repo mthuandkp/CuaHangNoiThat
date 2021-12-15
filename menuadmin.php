@@ -1,42 +1,52 @@
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0099ff;">
-    <a class="navbar-brand" href="./">MILD STORE ADMIN</a>
+    <a class="navbar-brand" href="/CuaHangNoiThat/Admin">MILD STORE ADMIN</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav" style="float: left;">
         <li class="nav-item active">
-          <a class="nav-link" href="./">Trang Chủ</a>
+          <a class="nav-link" href="/CuaHangNoiThat/Admin">Trang Chủ</a>
         </li>
-        <li class="nav-item dropdown active">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Admin Quản Lý
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="./SanPham">Quản lý Sản Phẩm</a>
-            <a class="dropdown-item" href="./HoaDon">Quản lý Hóa Đơn</a>
-            <a class="dropdown-item" href="./PhieuNhap">Quản lý Phiếu Nhập</a>
-            <a class="dropdown-item" href="./NhanVien">Quản lý Nhân Viên</a>
-            <a class="dropdown-item" href="./KhachHang">Quản lý Khách Hàng </a>
-            <a class="dropdown-item" href="./KhuyenMai">Quản lý Khuyến Mãi</a>
-            <a class="dropdown-item" href="./LoaiSanPham">Quản lý Loại Sản Phẩm</a>
-            <a class="dropdown-item" href="./NhaCungCap">Quản lý Nhà Cung Cấp</a>
-          </div>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="./ThongKe">Thống kê</a>
-        </li>
+        <?php
+          if(isset($_SESSION['staff'])){
+            echo '<li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Admin Quản Lý
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/SanPham">Quản lý Sản Phẩm</a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/HoaDon">Quản lý Hóa Đơn</a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/PhieuNhap">Quản lý Phiếu Nhập</a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/NhanVien">Quản lý Nhân Viên</a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/KhachHang">Quản lý Khách Hàng </a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/KhuyenMai">Quản lý Khuyến Mãi</a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/LoaiSanPham">Quản lý Loại Sản Phẩm</a>
+              <a class="dropdown-item" href="/CuaHangNoiThat/Admin/NhaCungCap">Quản lý Nhà Cung Cấp</a>
+            </div>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/CuaHangNoiThat/Admin/ThongKe">Thống kê</a>
+          </li>';
+          }
+        ?>
       </ul>
     </div>
     <div>
-      
-      <a href="./DangNhap" style="float: right;">
-        <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: green;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Nhập</button>
-      </a>
-      <a href="./DangNhap" style="float: right;">
+      <?php
+      if (isset($_SESSION['staff'])) {
+        echo '<a href="/CuaHangNoiThat/Admin/DangXuat" style="float: right;">
         <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: red;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Xuất</button>
-      </a>
-      <h4 style="float: right;margin-right: 1rem;color:white">Hello Admin</h4>
+      </a><h4 style="float: right;margin-right: 1rem;color:white">'.$_SESSION['staff']['TENNV'].'</h4>';
+      }
+      else{
+        echo '<a href="/CuaHangNoiThat/Admin/DangNhap" style="float: right;">
+        <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: green;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Nhập</button>
+      </a>';
+      }
+      ?>
+      
+      
     </div>
 
   </nav>

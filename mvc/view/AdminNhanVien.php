@@ -156,6 +156,7 @@
                 url: '/CuaHangNoiThat/Admin/getAllStaff',
                 success: function(data) {
                     var data = JSON.parse(data);
+                    console.log(data);
                     
                     $xhtml = '<thead>' +
                         '<tr>' +

@@ -10,6 +10,12 @@ class NhanVienDB extends ConnectionDB
         $qry = "SELECT * FROM `nhanvien` WHERE `MANV`='$staffId';";
         return mysqli_fetch_assoc(mysqli_query($this->conn, $qry));
     }
+
+    function getStaffByUser($staffId)
+    {
+        $qry = "SELECT * FROM `nhanvien` WHERE `TENDN`='$staffId';";
+        return mysqli_fetch_assoc(mysqli_query($this->conn, $qry));
+    }
     //Lay tat ca nhan vien
     function getAllStaff($isDisable = false)
     {
@@ -18,11 +24,6 @@ class NhanVienDB extends ConnectionDB
         $rs = mysqli_query($this->conn, $qry);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;
-        }
-
-        //Encrypt base64 password
-        foreach($data as $key=>$value){
-            $data[$key]['MATKHAU'] = base64_decode($value['MATKHAU']);
         }
         return $data;
     }

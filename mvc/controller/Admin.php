@@ -3,9 +3,22 @@ class Admin extends Controller
 {
     function display()
     {
+        $objProduct = $this->getModel('SanPhamDB');
+        $objBill = $this->getModel('HoaDonDB');
+        $objCustomer = $this->getModel('KhachHangDB');
+        $objStaff = $this->getModel('NhanVienDB');
+
+        $result = array(
+            'countProduct'=>count($objProduct->getAllProduct()),
+            'countBill'=>count($objBill->getAllBill()),
+            'countCustomer'=>count($objCustomer->getAllCustomer()),
+            'countStaff'=>count($objStaff->getAllStaff())
+        );
+
         require_once('./menuadmin.php');
-        $this->View('AdminTrangChu', 'Trang Chủ');
+        $this->View('AdminTrangChu', 'Trang Chủ',$result);
     }
+
     /* ===========================HOA DON================================ */
     function HoaDon()
     {
@@ -197,6 +210,10 @@ class Admin extends Controller
 
     function block_unblockCutomer($id)
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
+            return;
+        }
         $objCus = $this->getModel('KhachHangDB');
         if ($objCus->block_unblockCutomer($id)) {
             echo '0';
@@ -226,8 +243,8 @@ class Admin extends Controller
                 $result['RESULT'] = "SUCCESS";
                 $result['DATA'] = $cus;
                 $_SESSION['account'] = $cus;
-                if (isset($_GET['return']) && $_GET['return'] != '') {
-                    $result['URL'] = $_GET['return'];
+                if($cus['TRANGTHAI'] == 0){
+                    $result['RESULT'] = "BLOCK";
                 }
             } else {
                 $result['RESULT'] = "WRONG_PASSWORD";
@@ -265,6 +282,10 @@ class Admin extends Controller
     }
     function ThemKhuyenMai()
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./KhuyenMai";</script>';
+            return;
+        }
         require_once('./menuadmin.php');
         $this->View('AdminThemKhuyenMai', 'Admin Thêm Khuyến mãi');
     }
@@ -275,6 +296,10 @@ class Admin extends Controller
     }
     function SuaKhuyenMai($id)
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../KhuyenMai";</script>';
+            return;
+        }
         $objSale = $this->getModel('KhuyenMaiDB');
         $sale = $objSale->getSaleById($id);
         require_once('./menuadmin.php');
@@ -317,11 +342,19 @@ class Admin extends Controller
     }
     function ThemLoaiSanPham()
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./LoaiSanPham";</script>';
+            return;
+        }
         require_once('./menuadmin.php');
         $this->View('AdminThemLoaiSanPham', 'Admin Thêm Loại Sản Phẩm');
     }
     function SuaLoaiSanPham($id)
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../LoaiSanPham";</script>';
+            return;
+        }
         $objType = $this->getModel('LoaiSanPhamDB');
         $typeProduct = $objType->getProductTypeById($id);
         require_once('./menuadmin.php');
@@ -397,6 +430,10 @@ class Admin extends Controller
     /*============================== NHA CUNG CAP ============================ */
     function NhaCungCap()
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
+            return;
+        }
         require_once('./menuadmin.php');
         $this->View('AdminNhaCungCap', 'Admin Nhà Cung Cấp');
     }
@@ -487,6 +524,10 @@ class Admin extends Controller
     /* =========================NHAN VIEN===================================*/
     function NhanVien()
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
+            return;
+        }
         $obj = $this->getModel('QuyenDB');
         $data = array();
         $data['Right'] = $obj->getAllRight();
@@ -623,6 +664,10 @@ class Admin extends Controller
     /* ========================== PHIEU NHAP==================================*/
     function PhieuNhap()
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
+            return;
+        }
         require_once('./menuadmin.php');
         $this->View('AdminPhieuNhap', 'Admin Phiếu Nhập');
     }
@@ -718,7 +763,7 @@ class Admin extends Controller
         }
 
         if (!empty($existProduct)) {
-            $result = $objProduct->updateNumberListProduct($existProduct);
+            $result = $objProduct->updateNumberListProduct_Receipt($existProduct);
             if (!$result) {
                 echo 'ERROR_ADD_EXIST';
                 return;
@@ -881,6 +926,9 @@ class Admin extends Controller
     }
     function SuaSanPham($id)
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../SanPham";</script>';
+        }
         $data = array();
         $objProduct = $this->getModel("SanPhamDB");
         $objTypeProduct = $this->getModel("LoaiSanPhamDB");
@@ -929,6 +977,10 @@ class Admin extends Controller
 
     function disableProductStatus()
     {
+        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+            echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../SanPham";</script>';
+            return;
+        }
         $productId = $_POST['id'];
         $objProduct = $this->getModel("SanPhamDB");
         if ($objProduct->disableProductStatus($productId)) {
@@ -1181,11 +1233,55 @@ class Admin extends Controller
     function ThongKe()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminThongKe');
+        $this->View('AdminThongKe','Admin Thống Kê');
     }
     function DangNhap()
     {
         require_once('./menuadmin.php');
-        $this->View('DangNhap');
+        $this->View('AdminDangNhap');
+    }
+
+    function DangXuat(){
+        if (isset($_SESSION['staff'])) {
+            unset($_SESSION['staff']);
+        }
+        echo '<script>window.location.href="./";</script>';
+    }
+
+    function checkLoginAdmin($user, $pass)
+    {
+        $objCustomer = $this->getModel('NhanVienDB');
+        $cus = $objCustomer->getStaffByUser($user);
+        $pass = hash('md5', $pass);
+        $result = array();
+        if (empty($cus)) {
+            $result['RESULT'] = "NOT_EXISTS";
+        } else {
+            if ($pass == $cus['MATKHAU']) {
+                $result['RESULT'] = "SUCCESS";
+                $result['DATA'] = $cus;
+                $_SESSION['staff'] = $cus;
+                if($cus['TRANGTHAI'] == 0){
+                    $result['RESULT'] = "BLOCK";
+                }
+            } else {
+                $result['RESULT'] = "WRONG_PASSWORD";
+            }
+        }
+        echo json_encode($result);
+    }
+
+    function statisticBillAdnReceipt($year){
+        $objBill = $this->getModel('HoaDonDB');
+        $objReceipt = $this->getModel('PhieuNhapDB');
+
+        $listBill = $objBill->getBillByYear($year);
+        $listReceipt = $objReceipt->getReceiptByYear($year);
+
+        $result = array();
+        $result['BILL'] = $listBill;
+        $result['RECEIPT'] = $listReceipt;
+
+        echo json_encode($result);
     }
 }

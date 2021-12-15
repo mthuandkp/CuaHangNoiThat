@@ -25,6 +25,20 @@ class PhieuNhapDB extends ConnectionDB
         
         return $data;
     }
+
+    function getReceiptByYear($year){
+        $data = $this->getAllReceipt();
+        $result = array();
+
+        foreach($data as $value){
+            $date = explode('-',$value['NGAYLAP'])[0];
+            if($date == $year){
+                $result[] = $value;
+            }
+        }
+
+        return $result;
+    }
     //Lay chi tiet phieu nhap
     function getAllReceiptDetail(){
         $data = array();

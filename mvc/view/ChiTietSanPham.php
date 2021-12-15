@@ -62,12 +62,12 @@
                     <div class="dropdown-content user" style="margin-top: -0.5rem;">
                         <?php
                         if (!isset($_SESSION['account'])) {
-                            echo '<a href="./DangNhap">Đăng nhập</a>';
-                            echo '<a href="./DangKy">Đăng ký</a>';
+                            echo '<a href="../../DangNhap">Đăng nhập</a>';
+                            echo '<a href="../../DangKy">Đăng ký</a>';
                         } else {
-                            echo '<a href="./ThayDoiThongTin">Thay đổi thông tin</a>
-                                <a href="./LichSuGioHang">Lịch sử</a>
-                                <a href="./TrangChu/Logout">Đăng xuất</a>';
+                            echo '<a href="../../ThayDoiThongTin">Thay đổi thông tin</a>
+                                <a href="../../LichSuGioHang">Lịch sử</a>
+                                <a href="../../TrangChu/Logout">Đăng xuất</a>';
                         }
                         ?>
                     </div>
@@ -117,7 +117,7 @@
     </h2>
     <div class="wrapper">
         <div class="wrapper-item">
-            <img src="/CuaHangNoiThat/public/image/THIET_KE.jpg" alt="">
+            <img src="../../public/image/THIET_KE.jpg" alt="">
             <div class="text">
                 <h3>THIẾT KẾ ĐẲNG CẤP</h3>
                 <p>Nội thất MILD được sáng lập dựa trên tâm huyết và tài năng của các nhà thiết kế đến từ Ý, cái nôi của ngành mỹ học, thời trang, thiết kế, các sản phẩm về da và công nghệ thuộc da hàng đầu thế giới.
@@ -126,7 +126,7 @@
             </div>
         </div>
         <div class="wrapper-item">
-            <img src="/CuaHangNoiThat/public/image/CHAT_LUONG.jpg" alt="">
+            <img src="../../public/image/CHAT_LUONG.jpg" alt="">
             <div class="text">
                 <h3>CHẤT LƯỢNG ĐỈNH CAO</h3>
                 <p>Các sản phẩm được phân phối bởi MILD phải trải qua các công đoạn kiểm tra chất lượng vô cùng gắt gao.
@@ -140,7 +140,7 @@
     </div>
     <div class="footer-container">
         <div class="footer">
-            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
+            <img src="../../public/image/logo.png" alt="">
         </div>
         <div class="footer">
             <a href="">GIAO HÀNG</a><br>
