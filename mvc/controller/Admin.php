@@ -9,14 +9,14 @@ class Admin extends Controller
         $objStaff = $this->getModel('NhanVienDB');
 
         $result = array(
-            'countProduct'=>count($objProduct->getAllProduct()),
-            'countBill'=>count($objBill->getAllBill()),
-            'countCustomer'=>count($objCustomer->getAllCustomer()),
-            'countStaff'=>count($objStaff->getAllStaff())
+            'countProduct' => count($objProduct->getAllProduct()),
+            'countBill' => count($objBill->getAllBill()),
+            'countCustomer' => count($objCustomer->getAllCustomer()),
+            'countStaff' => count($objStaff->getAllStaff())
         );
 
         require_once('./menuadmin.php');
-        $this->View('AdminTrangChu', 'Trang Chủ',$result);
+        $this->View('AdminTrangChu', 'Trang Chủ', $result);
     }
 
     /* ===========================HOA DON================================ */
@@ -243,7 +243,7 @@ class Admin extends Controller
                 $result['RESULT'] = "SUCCESS";
                 $result['DATA'] = $cus;
                 $_SESSION['account'] = $cus;
-                if($cus['TRANGTHAI'] == 0){
+                if ($cus['TRANGTHAI'] == 0) {
                     $result['RESULT'] = "BLOCK";
                 }
             } else {
@@ -1173,8 +1173,8 @@ class Admin extends Controller
                 $detailQry .= " ('$billId','$proId',$proNumber,$proPrice,$proSale),";
             }
 
-            $detailQry = substr($detailQry,0,strlen($detailQry)-1).';';
-            
+            $detailQry = substr($detailQry, 0, strlen($detailQry) - 1) . ';';
+
             if ($objBill->addBillAndDetail($billQry, $detailQry)) {
                 $result['SMS'] = 'Đặt hàng thành công';
                 //tru so luong san pham trong kho
@@ -1185,7 +1185,7 @@ class Admin extends Controller
                 }
             } else {
                 $result['SMS'] = 'Thêm hóa đơn thất bại';
-                $result['Error'] = $billQry. '\n'. $detailQry;
+                $result['Error'] = $billQry . '\n' . $detailQry;
             }
         }
         echo json_encode($result);
@@ -1234,7 +1234,7 @@ class Admin extends Controller
     function ThongKe()
     {
         require_once('./menuadmin.php');
-        $this->View('AdminThongKe','Admin Thống Kê');
+        $this->View('AdminThongKe', 'Admin Thống Kê');
     }
     function DangNhap()
     {
@@ -1242,7 +1242,8 @@ class Admin extends Controller
         $this->View('AdminDangNhap');
     }
 
-    function DangXuat(){
+    function DangXuat()
+    {
         if (isset($_SESSION['staff'])) {
             unset($_SESSION['staff']);
         }
@@ -1262,7 +1263,7 @@ class Admin extends Controller
                 $result['RESULT'] = "SUCCESS";
                 $result['DATA'] = $cus;
                 $_SESSION['staff'] = $cus;
-                if($cus['TRANGTHAI'] == 0){
+                if ($cus['TRANGTHAI'] == 0) {
                     $result['RESULT'] = "BLOCK";
                 }
             } else {
@@ -1272,7 +1273,8 @@ class Admin extends Controller
         echo json_encode($result);
     }
 
-    function statisticBillAdnReceipt($year){
+    function statisticBillAdnReceipt($year)
+    {
         $objBill = $this->getModel('HoaDonDB');
         $objReceipt = $this->getModel('PhieuNhapDB');
 
@@ -1286,26 +1288,59 @@ class Admin extends Controller
         echo json_encode($result);
     }
 
-    function changePassword($pass,$newPass,$newPassConfirm){
+    function changePassword($pass, $newPass, $newPassConfirm)
+    {
         $idCus = $_SESSION['account']['MAKH'];
         $objCus = $this->getModel("KhachHangDB");
         $cus = $objCus->getCutomerById($idCus);
         $result = array();
 
-        if(md5($pass) != $cus['MATKHAU']){
+        if (md5($pass) != $cus['MATKHAU']) {
             $result['SMS'] = 'Mật khẩu hiện tại không chính xác';
-        }
-        else{
+        } else {
             //ma hoa md5
             $newPass = md5($newPass);
-            if($objCus->updateAccountCutomer($idCus,$newPass)){
+            if ($objCus->updateAccountCutomer($idCus, $newPass)) {
                 $result['SMS'] = 'SUCCESS';
-                if(isset($_SESSION['account'])){
+                if (isset($_SESSION['account'])) {
                     unset($_SESSION['account']);
                 }
-            }
-            else{
+            } else {
                 $result['SMS'] = 'Lỗi khi thay đổi mật khẩu';
+            }
+        }
+        echo json_encode($result);
+    }
+
+    function registerNewAccount($data)
+    {
+        $data = json_decode($data);
+        $result = array();
+        //Ma hoa password
+        $data[2] = md5($data[2]);
+        $objCus = $this->getModel('KhachHangDB');
+        //Kiem tra ton tai
+        $cus = $objCus->getCutomerByUser($data[1]);
+        if (!empty($cus)) {
+            $result['SMS'] = 'Tên đăng nhập đã được sử dụng';
+        } else {
+            $id = $objCus->createNextCustomerId();
+            $customer = array(
+                'MAKH' => $id,
+                'TENKH' => $data[0],
+                'TENDN' => $data[1],
+                'MATKHAU' => $data[2],
+                'DIACHI' => $data[4],
+                'SDT' => $data[3],
+                'TRANGTHAI' => true,
+                'DIEMTL' => 0,
+                'GIOITINH'=>$data[5]
+            );
+
+            if ($objCus->addNewCustomer($customer)) {
+                $result['SMS'] = 'SUCCESS';
+            } else {
+                $result['SMS'] = 'Đăng ký tài khoản thất bại';
             }
         }
         echo json_encode($result);

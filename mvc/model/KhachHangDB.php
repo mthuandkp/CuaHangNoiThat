@@ -21,7 +21,7 @@ class KhachHangDB extends ConnectionDB
 
         $qry = "SELECT * FROM khachhang WHERE TENDN ='$customerUser';";
         $rs = mysqli_query($this->conn, $qry);
-        while ($row =  mysqli_fetch_assoc($rs)) {
+        if ($row =  mysqli_fetch_assoc($rs)) {
            return $row;
         }
         return array();
@@ -81,8 +81,8 @@ class KhachHangDB extends ConnectionDB
         $cusPhone = $customer['SDT'];
         $cusStatus = $customer['TRANGTHAI'];
         $cusPoints = $customer['DIEMTL'];
-        $qry = "INSERT INTO khachhang (MAKH, TENKH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI, DIEMTL)
-                   VALUES ('$cusId', '$cusName', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus, $cusPoints);";
+
+        $qry = "INSERT INTO khachhang (MAKH, TENKH,GIOITINH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI, DIEMTL) VALUES ('$cusId', '$cusName','$customer[GIOITINH]', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus, $cusPoints);";
         if (mysqli_query($this->conn, $qry) == false) {
             return false;
         }
