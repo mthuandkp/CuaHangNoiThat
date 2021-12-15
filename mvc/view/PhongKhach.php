@@ -10,8 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./my-css.css">
-    <script src="./processFunc.js"></script>
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
+    <script src="/CuaHangNoiThat/processFunc.js"></script>
     <title>Phòng khách</title>
 </head>
 
@@ -74,7 +74,7 @@
                         ?>                        
                     </div>
                 </div>
-                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cart'])) {
@@ -92,7 +92,7 @@
         </div>
     </nav>
     <div class="banner">
-        <img src="./public/image/BANNER_PHONGKHACH.jpg" alt="">
+        <img src="/CuaHangNoiThat/public/image/BANNER_PHONGKHACH.jpg" alt="">
     </div>
     <h2 class="title">
         <span>PHÒNG KHÁCH</span>
@@ -143,7 +143,7 @@
     </div>
     <div class="footer-container">
         <div class="footer">
-            <img src="./public/image/logo.png" alt="">
+            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
         </div>
         <div class="footer">
             <a href="">GIAO HÀNG</a><br>
@@ -167,15 +167,15 @@
     <script>
         $(document).ready(function() {
             $.ajax({
-                url: './Admin/getAllProductByType/LSP04',
+                url: '/CuaHangNoiThat/Admin/getAllProductByType/LSP04',
                 success: function(data) {
                     var data = JSON.parse(data);
                     $xhtml = '';
                     for (var key in data) {
                         $obj = data[key];
                         $xhtml += ' <div class="product-item">' +
-                            '<a href="./ChiTietSanPham/SanPham/' + $obj.MASP + '">' +
-                            '<img src="./public/image/HINHANH/' + $obj.HINHANH + '" alt="">' +
+                            '<a href="/CuaHangNoiThat/ChiTietSanPham/SanPham/' + $obj.MASP + '">' +
+                            '<img src="/CuaHangNoiThat/public/image/HINHANH/' + $obj.HINHANH + '" alt="">' +
                             '<p class="product-name">' + $obj.TENSP + '<sup style="color: red;font-size: 1.2rem;"> -' + $obj.PHANTRAMGIAM + '%</sup></p>' +
                             '</a>' +
                             '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div></div>';
@@ -225,7 +225,7 @@
             }
 
             $.ajax({
-                url: './Admin/getAllProductByType/LSP04',
+                url: '/CuaHangNoiThat/Admin/getAllProductByType/LSP04',
                 success: function(data) {
                     var data = JSON.parse(data);
                     $xhtml = '';
@@ -248,8 +248,8 @@
                         }
 
                         $xhtml += ' <div class="product-item">' +
-                            '<a href="./ChiTietSanPham/SanPham/' + $obj.MASP + '">' +
-                            '<img src="./public/image/HINHANH/' + $obj.HINHANH + '" alt="">' +
+                            '<a href="/CuaHangNoiThat/ChiTietSanPham/SanPham/' + $obj.MASP + '">' +
+                            '<img src="/CuaHangNoiThat/public/image/HINHANH/' + $obj.HINHANH + '" alt="">' +
                             '<p class="product-name">' + $obj.TENSP + '<sup style="color: red;font-size: 1.2rem;"> -' + $obj.PHANTRAMGIAM + '%</sup></p>' +
                             '</a>' +
                             '<div style="font-size: 20px;">Giá gốc: <div class="price">' + formatter.format($obj.GIA) + ' <sup>đ</sup></div></div>';
@@ -272,7 +272,7 @@
                 return;
             }
             $.ajax({
-                url: './Admin/addToCart/' + $productId,
+                url: '/CuaHangNoiThat/Admin/addToCart/' + $productId,
                 success: function(data) {
                     var data = JSON.parse(data);
                     alert(data.SMS);
@@ -283,7 +283,7 @@
 
         function loadCountCart() {
             $.ajax({
-                url: './Admin/countCart',
+                url: '/CuaHangNoiThat/Admin/countCart',
                 success: function(data) {
                     var data = JSON.parse(data);
                     $("#counter").html(data.COUNT)

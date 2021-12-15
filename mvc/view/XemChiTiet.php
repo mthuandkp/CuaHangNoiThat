@@ -10,8 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../my-css.css">
-    <script src="../../processFunc.js"></script>
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
+    <script src="/CuaHangNoiThat/processFunc.js"></script>
 
     <title><?php echo $title; ?></title>
 </head>
@@ -113,7 +113,7 @@
         foreach ($data['detail'] as $value) {
             echo '<tr>
                 <td>' . $value['TENSP'] . '</td>
-                <td><img src="../../public/image/HINHANH/' . $value['HINHANH'] . '" alt="no image" style="width: 15rem;height:10rem;"></td>
+                <td><img src="/CuaHangNoiThat/public/image/HINHANH/' . $value['HINHANH'] . '" alt="no image" style="width: 15rem;height:10rem;"></td>
                 <td>' . number_format($value['GIA']) . ' VNĐ</td>
                 <td>' . $value['SOLUONG'] . '</td>
                 <td>' . number_format($value['GIA'] * $value['SOLUONG']) . ' VNĐ</td>
@@ -146,7 +146,7 @@
     </table>
     <div class="footer-container">
         <div class="footer">
-            <img src="../../public/image/logo.png" alt="">
+            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
         </div>
         <div class="footer">
             <a href="">GIAO HÀNG</a><br>

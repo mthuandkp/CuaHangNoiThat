@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./my-css.css">
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
     <title>Đăng nhập</title>
 </head>
 
@@ -73,7 +73,7 @@
                         ?>                        
                     </div>
                 </div>
-                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cart'])) {
@@ -99,7 +99,7 @@
         <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorPass">Mật khẩu không hợp lệ</p>
         <p id="errorMessage" style="margin-top: 0;padding-top: 0;"></p>
         <input type="submit" id="submitbtn" value="ĐĂNG NHẬP" class="btn-log">
-        <div class="reg">Bạn chưa có tài khoản? <a href="./DangKy">Đăng ký</a></div>
+        <div class="reg">Bạn chưa có tài khoản? <a href="/CuaHangNoiThatDangKy">Đăng ký</a></div>
     </fieldset>
 
 </body>
@@ -127,7 +127,7 @@
         }
 
         $.ajax({
-            url: './Admin/checkLoginCustomer/' + $uname + '/' + $pass,
+            url: '/CuaHangNoiThat/Admin/checkLoginCustomer/' + $uname + '/' + $pass,
             method: 'POST',
             data: {
                 url: window.location.href

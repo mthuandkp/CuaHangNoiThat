@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../my-css.css">
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
     <title>Đổi mật khẩu</title>
 </head>
 
@@ -127,14 +127,14 @@
         }
 
         $.ajax({
-            url: '../Admin/changePassword/' + $uname + '/' + $pass+ '/' + $pass_confirm,
+            url: '/CuaHangNoiThat/Admin/changePassword/' + $uname + '/' + $pass+ '/' + $pass_confirm,
             method: 'POST',
             success: function(data) {
                 var data = JSON.parse(data);console.log(data)
                 var sms = data.SMS;
                 if(sms ==='SUCCESS'){
                     alert("Thay đổi mật khẩu thành công. Vui lòng đăng nhập lại")
-                    window.location.href="../DangNhap"
+                    window.location.href="/CuaHangNoiThat/DangNhap"
                 }
                 else{
                     $("#sms").html(sms);

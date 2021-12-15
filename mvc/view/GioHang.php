@@ -10,8 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./my-css.css">
-    <script src="./processFunc.js"></script>
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
+    <script src="/CuaHangNoiThat/processFunc.js"></script>
 
     <title>Giỏ Hàng</title>
 </head>
@@ -75,7 +75,7 @@
                         ?>                        
                     </div>
                 </div>
-                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cart'])) {
@@ -100,7 +100,7 @@
     </div>
     <div class="footer-container">
         <div class="footer">
-            <img src="./public/image/logo.png" alt="">
+            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
         </div>
         <div class="footer">
             <a href="">GIAO HÀNG</a><br>
@@ -124,7 +124,7 @@
     <script>
         function loadCart() {
             $.ajax({
-                url: './Admin/getCart',
+                url: '/CuaHangNoiThat/Admin/getCart',
                 success: function(data) {
                     var data = JSON.parse(data);
                     $xhtml = '<tr>' +
@@ -139,7 +139,7 @@
                         $obj = data[key];
                         $sum += $obj.GIA * (1 - $obj.PHANTRAMGIAM / 100) * $obj.amount;
                         $xhtml += '<tr>' +
-                            '<td><img src="./public/image/HINHANH/' + $obj.HINHANH + '" alt=""></td>' +
+                            '<td><img src="/CuaHangNoiThat/public/image/HINHANH/' + $obj.HINHANH + '" alt=""></td>' +
                             '<td>' +
                             '<p style="margin: 0;">' + $obj.TENSP + ' (-' + $obj.PHANTRAMGIAM + '%)</p>' +
                             '</td>' +
@@ -159,7 +159,7 @@
                             '</tr>';
                     }
                     $.ajax({
-                        url: './Admin/getSale',
+                        url: '/CuaHangNoiThat/Admin/getSale',
                         success: function(subdata) {
                             var subdata = JSON.parse(subdata);
                             if (subdata === undefined || subdata.length == 0 || data.length == 0 || data === undefined) {
@@ -243,7 +243,7 @@
             } else if ($number <= 0) {
                 if (confirm('Số lượng sản phẩm phải lớn hơn 0. Bạn có muốn xóa sản phẩm này không ?')) {
                     $.ajax({
-                        url: './Admin/deleteCartItem/' + $id,
+                        url: '/CuaHangNoiThat/Admin/deleteCartItem/' + $id,
                         success: function(data) {
                             alert(data);
                         }
@@ -255,7 +255,7 @@
                 }
             } else {
                 $.ajax({
-                    url: './Admin/checkNumberCart/' + $id + '/' + $number,
+                    url: '/CuaHangNoiThat/Admin/checkNumberCart/' + $id + '/' + $number,
                     success: function(data) {
                         var data = JSON.parse(data);
                         if (data.SMS != "success") {
@@ -271,7 +271,7 @@
         function deleteCartItem($id) {
             if (confirm('Bạn có muốn xóa sản phẩm này không ?')) {
                 $.ajax({
-                    url: './Admin/deleteCartItem/' + $id,
+                    url: '/CuaHangNoiThat/Admin/deleteCartItem/' + $id,
                     success: function(data) {
                         alert(data);
                     }
@@ -282,13 +282,13 @@
 
         function orderCart() {
             $.ajax({
-                url: './Admin/orderCart',
+                url: '/CuaHangNoiThat/Admin/orderCart',
                 success: function(data) {
                     var data = JSON.parse(data);
                     console.log(data);
                     if (data.SMS == "NOT_LOGIN") {
                         alert("Vui lòng đăng nhập để tiếp tục");
-                        window.location.href = "./DangNhap?return=GioHang"
+                        window.location.href = "/CuaHangNoiThat/DangNhap?return=GioHang"
                     } else {
                         alert(data.SMS);
                     }

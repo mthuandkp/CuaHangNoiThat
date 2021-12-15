@@ -10,8 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./my-css.css">
-    <script src="./processFunc.js"></script>
+    <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
+    <script src="/CuaHangNoiThat/processFunc.js"></script>
 
     <title>Lịch sử mua hàng</title>
 </head>
@@ -75,7 +75,7 @@
                         ?>                        
                     </div>
                 </div>
-                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cart'])) {
@@ -100,7 +100,7 @@
     </table>
     <div class="footer-container">
         <div class="footer">
-            <img src="./public/image/logo.png" alt="">
+            <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
         </div>
         <div class="footer">
             <a href="">GIAO HÀNG</a><br>
@@ -123,7 +123,7 @@
 
     <script>
         function viewDetail($id) {
-            window.location.href = "./LichSuGioHang/XemChiTiet/" + $id;
+            window.location.href = "/CuaHangNoiThat/LichSuGioHang/XemChiTiet/" + $id;
         }
 
         function submitBill($id) {
@@ -132,7 +132,7 @@
             }
 
             $.ajax({
-                url: './Admin/submitBill/' + $id,
+                url: '/CuaHangNoiThat/Admin/submitBill/' + $id,
                 success: function(data) {
                     var data = JSON.parse(data);
                     alert(data.SMS);
@@ -145,7 +145,7 @@
 
         function loadTable() {
             $.ajax({
-                url: './Admin/getCusBillAndDetailBill',
+                url: '/CuaHangNoiThat/Admin/getCusBillAndDetailBill',
                 success: function(data) {
                     var data = JSON.parse(data);
                     $xhtml = '<tr>' +
