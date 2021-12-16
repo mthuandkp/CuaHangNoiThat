@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th12 15, 2021 lúc 10:15 PM
+-- Thời gian đã tạo: Th12 16, 2021 lúc 08:51 AM
 -- Phiên bản máy phục vụ: 5.7.36-0ubuntu0.18.04.1
 -- Phiên bản PHP: 7.2.34-26+ubuntu18.04.1+deb.sury.org+1
 
@@ -115,6 +115,7 @@ INSERT INTO `hoadon` (`MAHD`, `MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATR
 CREATE TABLE `khachhang` (
   `MAKH` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `TENKH` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `NGAYSINH` date DEFAULT NULL,
   `GIOITINH` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `TENDN` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `MATKHAU` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -128,10 +129,11 @@ CREATE TABLE `khachhang` (
 -- Đang đổ dữ liệu cho bảng `khachhang`
 --
 
-INSERT INTO `khachhang` (`MAKH`, `TENKH`, `GIOITINH`, `TENDN`, `MATKHAU`, `DIACHI`, `SDT`, `TRANGTHAI`, `DIEMTL`) VALUES
-('KH01', 'Phạm Nguyễn Minh Thuận', 'Nam', 'a@gmail.com', '202cb962ac59075b964b07152d234b70', 'Bến Tre,Việt Nam', '0123456789', 1, 1),
-('KH02', 'lijllmkmlk', 'Nữ', 'b@gmail.com', '202cb962ac59075b964b07152d234b70', 'sacas', '0123452007', 0, 1),
-('KH03', 'Michelle Arthur', 'Nam', 'root@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Ấp Bình Thạnh 1,xã Thạnh Trị,huyện Bình Đại', '0843739379', 1, 0);
+INSERT INTO `khachhang` (`MAKH`, `TENKH`, `NGAYSINH`, `GIOITINH`, `TENDN`, `MATKHAU`, `DIACHI`, `SDT`, `TRANGTHAI`, `DIEMTL`) VALUES
+('KH01', 'Phạm Nguyễn Minh Thuận', '2001-01-03', 'Nam', 'a@gmail.com', '202cb962ac59075b964b07152d234b70', 'Bến Tre,Việt Nam', '0123456789', 1, 1),
+('KH02', 'lijllmkmlk', '2001-01-01', 'Nữ', 'b@gmail.com', '202cb962ac59075b964b07152d234b70', 'sacas', '0123452007', 0, 1),
+('KH03', 'Michelle Arthur', '2001-01-01', 'Nam', 'root@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Ấp Bình Thạnh 1,xã Thạnh Trị,huyện Bình Đại', '0843739379', 1, 0),
+('KH04', 'Phạm Nguyễn Minh Thuận', '2001-01-28', 'Nam', 'pnmthuan@gmail.com', '202cb962ac59075b964b07152d234b70', 'Bến Tre', '0843739379', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -198,9 +200,9 @@ CREATE TABLE `nhacungcap` (
 
 INSERT INTO `nhacungcap` (`MANCC`, `TENNCC`, `DIACHI`, `SDT`, `TRANGTHAI`) VALUES
 ('NCC01', 'Nhà Cung Cấp 1', 'TPHCM', '0843739379', 1),
-('NCC02', 'Nhà Cung Cấp 2', 'Tiền Giang ', '0978456123', 1),
-('NCC03', 'Nhà Cung Cấp 03', 'Bến Tre', '0843739379', 1),
-('NCC04', 'Nhà Cung Cấp 04', 'Kiên Giang ', '0843739379', 1);
+('NCC02', 'Nhà Cung Cấp 2', 'Tiền Giang ', '0978456123', 0),
+('NCC03', 'Nhà Cung Cấp 3', 'Bến Tre', '0843739379', 1),
+('NCC04', 'Nhà Cung Cấp 4', 'Kiên Giang ', '0843739379', 1);
 
 -- --------------------------------------------------------
 
@@ -226,11 +228,11 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES
-('NV00', 'Nhan vien test', '2021-10-03', 'Nam', 'Ben Tre Viet Nam', '0843739379', '1', 'testuser', '202cb962ac59075b964b07152d234b70', 0),
-('NV01', 'nHÂN vIÊN 1', '2021-10-04', 'Nam', 'dsvsdvds', '0974158320', '1', 'sdvsdvs', '81dc9bdb52d04dc20036dbd8313ed055', 1),
-('NV02', 'Pham Nguyen Minh Thuan', '2001-01-28', 'Nam', 'Bến Tre Việt Nam', '0843739379', '1', 'thuan123', '202cb962ac59075b964b07152d234b70', 1),
-('NV03', 'sdssacsac', '2021-11-16', 'Nam', 'ascascssca', '0843739379', '1', 'thuan', '202cb962ac59075b964b07152d234b70', 1),
-('NV04', 'fdfdfbfb', '2021-11-08', 'Nam', 'fdbfdbfd', '0843739666', '1', 'dvsds', '202cb962ac59075b964b07152d234b70', 1);
+('NV00', 'Quản trị viên', '2000-01-01', 'Nam', 'TP.HCM', '088123456', '1', 'root', '202cb962ac59075b964b07152d234b70', 1),
+('NV01', 'nHÂN vIÊN 1', '2021-10-04', 'Nam', 'dsvsdvds', '0974158320', '2', 'sdvsdvs', '81dc9bdb52d04dc20036dbd8313ed055', 1),
+('NV02', 'Pham Nguyen Minh Thuan', '2001-01-28', 'Nam', 'Bến Tre Việt Nam', '0843739379', '2', 'thuan123', '202cb962ac59075b964b07152d234b70', 1),
+('NV03', 'sdssacsac', '2021-11-16', 'Nam', 'ascascssca', '0843739379', '2', 'thuan', '202cb962ac59075b964b07152d234b70', 1),
+('NV04', 'fdfdfbfb', '2021-11-08', 'Nam', 'fdbfdbfd', '0843739666', '2', 'dvsds', '202cb962ac59075b964b07152d234b70', 1);
 
 -- --------------------------------------------------------
 
