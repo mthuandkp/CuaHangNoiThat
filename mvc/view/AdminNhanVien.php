@@ -156,7 +156,6 @@
                 url: '/CuaHangNoiThat/Admin/getAllStaff',
                 success: function(data) {
                     var data = JSON.parse(data);
-                    console.log(data);
                     
                     $xhtml = '<thead>' +
                         '<tr>' +
@@ -189,7 +188,7 @@
                             '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
-                            if(data[$i].TRANGTHAI == 1){
+                            if(data[$i].TRANGTHAI == 1 && data[$i].MAQUYEN != 1 && data[$i].STAFF_LOGIN != data[$i].MANV){
                             $xhtml+= '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
                             '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
                             '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Nhân Viên</button>' +
@@ -290,7 +289,7 @@
                             '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
-                            if(data[$i].TRANGTHAI == 1){
+                            if(data[$i].TRANGTHAI == 1 && data[$i].MAQUYEN != 1 && data[$i].STAFF_LOGIN != data[$i].MANV){
                             $xhtml+= '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
                             '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
                             '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Nhân Viên</button>' +
@@ -442,14 +441,14 @@
                             '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
-                            if(data[$i].TRANGTHAI == 1){
+                            if(data[$i].TRANGTHAI == 1 && data[$i].MAQUYEN != 1 && data[$i].STAFF_LOGIN != data[$i].MANV){
                             $xhtml+= '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
                             '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
                             '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Nhân Viên</button>' +
                             '</a>'
                             }
 
-                            $xhtml+='</td></tr>';                        
+                            $xhtml+='</td></tr>';                 
                     }
 
 

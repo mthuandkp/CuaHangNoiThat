@@ -569,6 +569,7 @@ class Admin extends Controller
         //getRightById
         foreach ($data as $key => $value) {
             $data[$key]['RIGHT'] = $objRight->getRightById($value['MAQUYEN']);
+            $data[$key]['STAFF_LOGIN'] = $_SESSION['staff']['MANV'];
         }
         echo json_encode($data);
     }

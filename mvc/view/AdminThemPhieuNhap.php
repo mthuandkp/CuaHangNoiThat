@@ -44,7 +44,9 @@
             <select class="form-control" id="supplierId">
                 <?php
                 foreach ($data['NCC'] as $value) {
-                    echo "<option value='$value[MANCC]'>$value[TENNCC]</option>";
+                    if ($value['TRANGTHAI']) {
+                        echo "<option value='$value[MANCC]'>$value[TENNCC]</option>";
+                    }
                 }
                 ?>
             </select>

@@ -44,9 +44,7 @@
       <select class="form-control" id="rightStaff">
         <?php
         foreach ($data['Right'] as $value) {
-          if ($value['MAQUYEN'] == $data['Staff']['MAQUYEN']) {
-            echo "<option value='$value[MAQUYEN]' selected>$value[TENQUYEN]</option>";
-          } else {
+          if ($value['MAQUYEN'] != '1'){
             echo "<option value='$value[MAQUYEN]'>$value[TENQUYEN]</option>";
           }
         }
