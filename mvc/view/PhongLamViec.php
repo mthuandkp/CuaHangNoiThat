@@ -134,6 +134,16 @@
                     <option value="1">Được Giảm Giá</option>
                 </select>
             </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="checkSortProduct">
+                    <label class="form-check-label" for="autoSizingCheck">Sắp xếp</label>
+                </div>
+                <select class="form-control" id="inputSortProduct">
+                    <option value="1">Tăng dần</option>
+                    <option value="0">Giảm dần</option>
+                </select>
+            </div>
             <div style="width: 91%;">
                 <button id="searchProduct" style="width: 15rem;float: right;font-size: 1.2rem;font-weight: bolder;" class="btn btn-primary">Tìm kiếm </button>
             </div>
@@ -199,6 +209,7 @@
             $minPrice = "@";
             $maxPrice = '@';
             $sale = "@";
+            $sort = "@";
 
             if ($("#checkProductName").is(":checked")) {
                 $name = convertStringToEnglish($("#inputProductName").val());
@@ -225,12 +236,44 @@
             if ($("#checkStatusDecreaseProduct").is(":checked")) {
                 $sale = $("#inputStatusDecreaseProduct").val();
             }
+            if ($("#checkSortProduct").is(":checked")) {
+                $sort = $("#inputSortProduct").val();
+            }
 
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getAllProductByType/LSP03',
                 success: function(data) {
                     var data = JSON.parse(data);
                     $xhtml = '';
+
+                    //Sort aray
+                    switch ($sort) {
+                        case '0': {
+                            for (var i = 0; i < data.length - 1; i++) {
+                                for (var j = i + 1; j < data.length; j++) {
+                                    if (parseInt(data[i].GIA) < parseInt( data[j].GIA)) {
+                                        var tmp = data[i];
+                                        data[i] = data[j]
+                                        data[j] = tmp
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                        case '1': {
+                            for (var i = 0; i < data.length - 1; i++) {
+                                for (var j = i + 1; j < data.length; j++) {
+                                    if (parseInt(data[i].GIA) > parseInt(data[j].GIA)) {
+                                        var tmp = data[i];
+                                        data[i] = data[j]
+                                        data[j] = tmp
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
                     for (var key in data) {
                         $obj = data[key];
                         if ($name != '@' && !convertStringToEnglish($obj.TENSP).includes($name)) {
