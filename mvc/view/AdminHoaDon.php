@@ -251,6 +251,9 @@
         });
         // Bat su kien xac nhan hoa don
         function confirmBill($id) {
+            if(!confirm("Bạn có chăc chắn xác nhận hóa đơn này không ?")){
+                return;
+            }
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/updateBillStatus',
                 data: {
@@ -268,6 +271,9 @@
         }
 
         function destroyBill($id){
+            if(!confirm("Bạn có chắc chắn hủy hóa đơn này không ?")){
+                return;
+            }
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/updateBillStatus/TT05',
                 data: {

@@ -23,7 +23,7 @@
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Tên Loại Sản Phẩm</label>
-      <input type="text" class="form-control" value="<?php echo $data['MALOAI']?>" id="nameType">
+      <input type="text" class="form-control" value="<?php echo $data['TENLOAI']?>" id="nameType" readonly>
     </div>
     <label for="exampleInputEmail1">Mô Tả</label>
     <textarea style="width: 100%;" rows="5" id="descriptionType"><?php echo $data['MOTA']?></textarea>

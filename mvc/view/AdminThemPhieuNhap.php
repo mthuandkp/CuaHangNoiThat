@@ -63,8 +63,8 @@
     <div style="width: 64%;margin-left: 1rem;font-size: 1.5rem;background-color: white;padding: 2rem;border-radius: 1rem;color:#0066cc;margin-top: 2rem;float: left;height: 32rem;">
         <h2 style="width: 100%;color: #0066cc;font-weight: 600;text-align: center;">Thêm Chi Tiết Phiếu Nhập</h2>
         <div style="width: 40%;border: 1px solid black;padding-left: 1rem;">
-        <label for="">Đọc Excel</label>
-        <input type="file" name="readfile" class="form-control-file" id="readDetailFromFile" style="width: auto;margin-bottom: 1rem;" multiple>
+            <label for="">Đọc Excel</label>
+            <input type="file" name="readfile" class="form-control-file" id="readDetailFromFile" style="width: auto;margin-bottom: 1rem;" multiple>
         </div>
         <div class="form-row">
             <div class="form-group col-md-2">
@@ -72,6 +72,7 @@
                     <label class="form-check-label" for="autoSizingCheck">Mã Sản Phẩm</label>
                 </div>
                 <input type="text" class="form-control" id="inputProductId">
+                <button style="font-size: 1rem;width: 100%;background-color: white;font-weight: bolder;" onclick="createAutoId();">Tạo mã tự động</button>
             </div>
             <div class="form-group col-md-4">
                 <div class="form-check mb-2">
@@ -142,6 +143,11 @@
         $(document).ready(function() {
             $("#inputProductId").change(function() {
                 $idProduct = $("#inputProductId").val();
+                if ($idProduct.substring(0, 2) != 'SP') {
+                    alert('Mã sản phẩm phải có dạng SPxxx. Với xxx là số nguyên');
+                    $("#inputProductId").val("");
+                    return;
+                }
 
                 //Kiem tra trong Chi tiet PN
                 for ($i = 0; $i < detailReceipt.length; $i++) {
@@ -154,6 +160,7 @@
                 //Kiem tra trong CSDL
 
                 var productArray = <?php echo json_encode($data['Product']) ?>;
+                var nextId = <?php echo json_encode($data['NEXT_ID']) ?>;
                 for ($i = 0; $i < productArray.length; $i++) {
                     if (productArray[$i].MASP == $idProduct) {
                         if (confirm("Mã sản phẩm " + $idProduct + " đã tồn tại trong CSDL. Bạn có muốn tự động điền thông tin của sản phẩm này không ?")) {
@@ -173,8 +180,8 @@
                             $("#inputProductType").prop("disabled", true);
                             $("#inputProductPrice").prop("readonly", true);
                             $("#inputProductImage").prop("readonly", true);
-                            
-                            
+
+
 
                             //Lay du lieu tu csdl
                             $idProduct = productArray[$i]['MASP'];
@@ -185,8 +192,8 @@
                             $("#inputProductNumber").focus();
 
                         } else {
-                            alert("Vui lòng chọn mã Sản phẩm khác");
-                            $("#inputProductId").val("");
+                            alert("Hệ thống tự điền mã sản phẩm mới");
+                            $("#inputProductId").val(nextId);
                             $("#inputProductId").focus();
                         }
                         return;
@@ -291,7 +298,7 @@
                     return;
                 }
             }
-            
+
             //Them vao chi tiet
             var newItem = {
                 MASP: $idProduct,
@@ -336,16 +343,17 @@
                     data: form_data,
                     type: 'post',
                     success: function(data) {
-                        var data = JSON.parse(data);console.log(data)
+                        var data = JSON.parse(data);
+                        console.log(data)
                         var currentImage = $("#inputProductImage").val();
-                        
+
                         //get name image
-                        $index = currentImage.length-1;
-                        while($index > 0 && currentImage[$index] != '/' && currentImage[$index] != '\\'){
+                        $index = currentImage.length - 1;
+                        while ($index > 0 && currentImage[$index] != '/' && currentImage[$index] != '\\') {
                             $index--;
                         }
 
-                        currentImage = data[1]+(currentImage.substring($index+1));
+                        currentImage = data[1] + (currentImage.substring($index + 1));
                         if (data[0] == 0) {
                             alert("Thêm ảnh thành công");
                             $("#currentImage").val(currentImage);
@@ -378,7 +386,7 @@
             $("#inputProductImage").prop("readonly", false);
             $("#containerImage").show();
             $("#containerCurentImage").hide();
-            
+
 
 
         }
@@ -487,8 +495,7 @@
                 $("#inputProductPrice").prop("readonly", true);
                 $("#containerImage").hide();
                 $("#containerCurentImage").hide();
-            }
-            else{
+            } else {
                 //hien thi cac muc da lay thong tin
                 $("#inputProductId").prop("readonly", false);
                 $("#inputProductName").prop("readonly", false);
@@ -519,16 +526,16 @@
             $supId = $("#supplierId").val();
 
             $.ajax({
-                url:'/CuaHangNoiThat/Admin/AddReceiptToDb',
-                data:{
-                    staffid:$idStaff,
-                    supplierId:$supId,
-                    data : detailReceipt
+                url: '/CuaHangNoiThat/Admin/AddReceiptToDb',
+                data: {
+                    staffid: $idStaff,
+                    supplierId: $supId,
+                    data: detailReceipt
                 },
-                method:'post',
-                success: function(result){
+                method: 'post',
+                success: function(result) {
                     console.log(result);
-                    if(parseInt(result) == 0){
+                    if (parseInt(result) == 0) {
                         alert('Thêm Phiếu Nhập thành công ');
                         detailReceipt = new Array();
                         refreshInput();
@@ -546,6 +553,7 @@
                 $extension = $file.substring($file.length - 4);
                 if ($extension != 'xlsx') {
                     alert('Chỉ chấp nhận file excel (.xlsx)');
+                    $("#readDetailFromFile").val('');
                     return;
                 }
                 var file_data = $('#readDetailFromFile').prop('files')[0];
@@ -560,29 +568,29 @@
                     type: 'post',
                     success: function(data) {
                         var data = JSON.parse(data);
+                        console.log(data)
                         var dataItem = data[0];
                         var dataCount = data[1];
 
-                        if (countObj(dataItem) == 0) {
-                            return;
-                        }
-
-                        for(var key in dataItem){
-                            for(var subKey in detailReceipt){
-                                if(detailReceipt[subKey].MASP == dataItem[key].MASP){
-                                    detailReceipt[subKey].SOLUONG = parseInt(detailReceipt[subKey].SOLUONG) + parseInt(dataItem[key].SOLUONG);
-                                    dataItem[key].SOLUONG = 0;
+                        if (countObj(dataItem) != 0) {
+                            for (var key in dataItem) {
+                                for (var subKey in detailReceipt) {
+                                    if (detailReceipt[subKey].MASP == dataItem[key].MASP) {
+                                        detailReceipt[subKey].SOLUONG = parseInt(detailReceipt[subKey].SOLUONG) + parseInt(dataItem[key].SOLUONG);
+                                        dataItem[key].SOLUONG = 0;
+                                    }
+                                }
+                                if (dataItem[key].SOLUONG != 0) {
+                                    detailReceipt.push(dataItem[key]);
                                 }
                             }
-                            if (dataItem[key].SOLUONG != 0) {
-                                detailReceipt.push(dataItem[key]);
-                            }
-                        }
 
-                        loadTable();
+                            loadTable();
+
+                        }                        
 
                         $message = 'Tổng số dòng đã đọc : ' + dataCount.sumRow + "\n";
-                        $message += 'Tổng số dòng sau khi lọc trùng : ' + dataCount.sumFilterRow + "\n";
+                        $message += 'Tổng số dòng sau khi lọc : ' + dataCount.sumFilterRow + "\n";
                         $message += 'Tổng số dòng hợp lệ : ' + dataCount.sumValidRow + "\n";
                         $message += 'Tổng số dòng không hợp lệ : ' + dataCount.sumInvalidRow + "\n";
                         $message += 'Tổng số sản phẩm mới : ' + dataCount.sumNewRow + "\n";
@@ -602,11 +610,26 @@
             return count;
         }
 
-        function changeCurrentImage(){
+        function changeCurrentImage() {
             $("#containerImage").show();
             $("#containerCurentImage").hide();
             $("#inputProductImage").val("");
             $("#currentImage").val("");
+        }
+
+        function createAutoId() {
+            if ($("#inputProductId").val() != '') {
+                alert("Vui lòng xóa mã SP hiện tại");
+                return;
+            }
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/createAutoProductId',
+                success: function(data) {
+
+                    var data = JSON.parse(data);
+                    $("#inputProductId").val(data.ID);
+                }
+            })
         }
     </script>
 </body>

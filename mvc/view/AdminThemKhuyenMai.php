@@ -69,6 +69,7 @@
         method:'post',
         data:{data:$obj},
         success: function(data){
+          
           alert(data);
         }
       });

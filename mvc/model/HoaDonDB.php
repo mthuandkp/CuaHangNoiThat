@@ -97,7 +97,7 @@ class HoaDonDB extends ConnectionDB
     function getBilByCustomerId($cusId)
     {
         $data = array();
-        $query = "SELECT * FROM hoadon WHERE MaKH = '" . $cusId . "'";
+        $query = "SELECT * FROM hoadon WHERE MAKH = '" . $cusId . "'";
         $rs = mysqli_query($this->conn, $query);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;

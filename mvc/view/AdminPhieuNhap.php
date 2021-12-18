@@ -130,7 +130,7 @@
                         for ($i = 0; $i < data.length; $i++) {
                             $xhtml += '<tr><th scope="row">' + ($i + 1) + '</th>' +
                                 '<td>' + data[$i].MAPN + '</td>' +
-                                '<td>' + data[$i].TENNV + '</td>' +
+                                '<td>('+data[$i].MANV+')' + data[$i].TENNV + '</td>' +
                                 '<td>' + data[$i].TENNCC + '</td>' +
                                 '<td>' + data[$i].NGAYLAP + '</td>' +
                                 '<td>' + data[$i].GIOLAP + '</td>' +

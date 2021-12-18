@@ -50,7 +50,7 @@ class KhuyenMaiDB extends ConnectionDB
     //Them khuyen mai
     function addNewSale($sale){
         $nextId = $this->createNextSaleId();
-        $qry = "INSERT INTO `khuyenmai`(`MAKM`, `NGAYBD`, `NGAYKT`, `PHANTRAMGIAM`) VALUES ('$nextId','$sale[NGAYBD]','$sale[NGAYKT]',$sale[PHANTRAMGIAM]);";
+        $qry = "INSERT INTO `khuyenmai`(`MAKM`, `NGAYBD`, `NGAYKT`, `PHANTRAMGIAM`,`TRANGTHAI`) VALUES ('$nextId','$sale[NGAYBD]','$sale[NGAYKT]',$sale[PHANTRAMGIAM],1);";
         if (mysqli_query($this->conn, $qry)) {
             return true;
         }

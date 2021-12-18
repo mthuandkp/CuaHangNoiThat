@@ -644,10 +644,21 @@ class Admin extends Controller
         }
     }
 
+    function addNewStaffWithId(){
+        $staff = $_POST['data'];
+        $objStaff = $this->getModel('NhanVienDB');
+        if ($objStaff->addNewStaffWithId($staff)) {
+            echo 0;
+        } else {
+            echo -1;
+        }
+    }
+
     function readExcelStaff()
     {
         $objSupplier = $this->getModel("NhanVienDB");
         $data = $objSupplier->readExcel($_FILES['file']);
+        
 
         //print_r($data);
         //Check valid data
@@ -714,6 +725,7 @@ class Admin extends Controller
         $data['NCC'] = $objSupplier->getAllSupplier();
         $data['TypeProduct'] = $objTypeProduct->getAllProductType();
         $data['Product'] = $objProduct->getAllProduct();
+        $data['NEXT_ID'] = $objProduct->createNextproductId();
         require_once('./menuadmin.php');
         $this->View('AdminThemPhieuNhap', 'Admin Thêm Phiếu Nhập', $data);
     }
@@ -748,6 +760,7 @@ class Admin extends Controller
         $data = $objReceipt->getAllReceipt();
         foreach ($data as $key => $value) {
             $data[$key]['TENNV'] = $objStaff->getStaffById($value['MANV'])['TENNV'];
+            
             $data[$key]['TENNCC'] = $objSupplier->getSupplierById($value['MANCC'])['TENNCC'];
         }
 
@@ -875,7 +888,6 @@ class Admin extends Controller
         }
 
         $countArray['sumFilterRow'] = count($data);
-
         //Kiem tra hop le du lieu
         foreach ($data as $key => $value) {
             if ($value['MASP'] == '' || strpos($value['MASP'], "SP") === false || strlen($value['MASP']) <= 2) {
@@ -915,7 +927,7 @@ class Admin extends Controller
             }
         }
 
-        //Kiem tra tinh dung dan cua san pham da co  trong db
+        //Kiem tra tinh dung dan cua san pham da co trong db
         foreach ($data as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             if (!empty($product)) {
@@ -1270,6 +1282,14 @@ class Admin extends Controller
         }
 
         echo json_encode($result);
+    }
+
+    function createAutoProductId(){
+        $objProduct = $this->getModel("SanPhamDB");
+        
+        echo json_encode(array(
+            'ID'=>$objProduct->createNextProductId()
+        ));         
     }
 
     /* ============================================================== */

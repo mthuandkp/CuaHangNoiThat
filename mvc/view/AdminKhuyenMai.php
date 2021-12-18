@@ -76,7 +76,7 @@
                                 '</tr>';
                             }
                             else{
-                                $xhtml += '<td>Mã hết hiệu lực</td>';
+                                $xhtml += '<td>Mã không có hiệu lực</td>';
                             }
 
                             
@@ -149,11 +149,15 @@
 
 
         function deleteSale($id) {
+            if(!confirm("Bạn có muốn xóa khuyến mãi này ?")){
+                return;
+            }
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/disabledSale/' + $id,
                 success: function(data) {
                     var data = JSON.parse(data);
                     alert(data.SMS);
+                    loadTable();
                 }
             })
         }

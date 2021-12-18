@@ -44,7 +44,7 @@
       <select class="form-control" id="rightStaff">
         <?php
         foreach ($data['Right'] as $value) {
-          if ($value['MAQUYEN'] != '1'){
+          if ($value['MAQUYEN'] != '1') {
             echo "<option value='$value[MAQUYEN]'>$value[TENQUYEN]</option>";
           }
         }
@@ -177,7 +177,7 @@
 
               for (var subkey in dataDB) {
                 $subobj = dataDB[subkey];
-                if ($obj.MANVode.localeCompare($subobj.MANVode) == 0) {
+                if ($obj.MANV.localeCompare($subobj.MANV) == 0) {
                   $check = true;
                   break;
                 }
@@ -186,9 +186,9 @@
               //Neu da ton tai MANV
               if ($check) {
                 $sms = 'Nhân viên này đã tồn tại trong cơ sở dữ liệu\nBạn có muốn ghi đè:\n' +
-                  '{' + $subobj.MANV + ',' + $subobj.TENNV + ',' + $subobj.NGAYSINH + ',' + $subobj.GIOITINH + ',' + $subobj.DIACHI +',' + $subobj.SDT +',' + $subobj.MAQUYEN +',' + $subobj.TENDN +',' + $subobj.MATKHAU +'}' +
+                  '{' + $subobj.MANV + ',' + $subobj.TENNV + ',' + $subobj.NGAYSINH + ',' + $subobj.GIOITINH + ',' + $subobj.DIACHI + ',' + $subobj.SDT + ',' + $subobj.MAQUYEN + ',' + $subobj.TENDN + ',' + $subobj.MATKHAU + '}' +
                   '\nThành : \n' +
-                  '{' + $obj.MANV + ',' + $obj.TENNV + ',' + $obj.NGAYSINH + ',' + $obj.GIOITINH + ',' + $obj.DIACHI +',' + $obj.SDT +',' + $obj.MAQUYEN +',' + $obj.TENDN +',' + $obj.MATKHAU +'}' +
+                  '{' + $obj.MANV + ',' + $obj.TENNV + ',' + $obj.NGAYSINH + ',' + $obj.GIOITINH + ',' + $obj.DIACHI + ',' + $obj.SDT + ',' + $obj.MAQUYEN + ',' + $obj.TENDN + ',' + $obj.MATKHAU + '}' +
                   '\nhay không ?';
 
                 if (confirm($sms)) {
@@ -196,10 +196,43 @@
                 }
               } else {
                 $sms = 'Bạn có muốn thêm mới Nhân Viên này hay không ?\n' +
-                '{' + $subobj.MANV + ',' + $subobj.TENNV + ',' + $subobj.NGAYSINH + ',' + $subobj.GIOITINH + ',' + $subobj.DIACHI +',' + $subobj.SDT +',' + $subobj.MAQUYEN +',' + $subobj.TENDN +',' + $subobj.MATKHAU +'}';
+                  '{' + $obj.MANV + ',' + $obj.TENNV + ',' + $obj.NGAYSINH + ',' + $obj.GIOITINH + ',' + $obj.DIACHI + ',' + $obj.SDT + ',' + $obj.MAQUYEN + ',' + $obj.TENDN + ',' + $obj.MATKHAU + '}';
 
                 if (confirm($sms)) {
-                  //addNewStaff_wtihData($obj);
+                  $obj = {
+                    'MANV':$obj.MANV,
+                    'TENNV': $obj.MANV,
+                    'NGAYSINH': $obj.NGAYSINH,
+                    'GIOITINH': $obj.GIOITINH,
+                    'DIACHI': $obj.DIACHI,
+                    'SDT': $obj.SDT,
+                    'MAQUYEN': $obj.MAQUYEN,
+                    'TENDN': $obj.TENDN,
+                    'MATKHAU': $obj.MATKHAU
+                  }
+
+                  $.ajax({
+                    url: '/CuaHangNoiThat/Admin/addNewStaffWithId',
+                    method: 'post',
+                    data: {
+                      data: $obj
+                    },
+                    success: function(data) {
+                      if (data == 0) {
+                        alert('Thêm Nhân Viên thành công');
+                        $("#nameStaff").val("");
+                        $("#birthdayStaff").val("");
+                        $("#sexStaff").val('Nam');
+                        $("#addressStaff").val("");
+                        $("#phoneStaff").val("");
+                        $("#rightStaff").val(1);
+                        $("#usernameStaff").val("");
+                        $("#passwordStaff").val("");
+                      } else {
+                        alert('Không thể thêm');
+                      }
+                    }
+                  });
                 }
               }
             }
