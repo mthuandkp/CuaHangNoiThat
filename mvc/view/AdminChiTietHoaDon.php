@@ -36,14 +36,16 @@
                 <th scope="col">Tên Sản Phẩm</th>
                 <th scope="col">Hình Ảnh</th>
                 <th scope="col">Số Lượng</th>
-                <th scope="col">Đơn Giá</th>
                 <th scope="col">Phần Trăm Giảm</th>
+                <th scope="col">Đơn Giá</th>
                 <th scope="col">Thành Tiền</th>
 
             </tr>
         </thead>
         <tbody>
             <?php
+            $sale = $data['sale'];
+            $data = $data['data'];
             $count = 1;
             $sumNumber = 0;
             $sumPrice = 0;
@@ -56,10 +58,10 @@
                 <th scope="row">' . $count++ . '</th>
                 <td>' . $value['MASP'] . '</td>
                 <td>' . $value['TENSP'] . '</td>
-                <td><img style="width: 10rem;height: 5rem;" src="/CuaHangNoiThat/public/image/' . $value['HINHANH'] . '" alt=""></td>
+                <td><img style="width: 10rem;height: 5rem;" src="/CuaHangNoiThat/public/image/HINHANH/' . $value['HINHANH'] . '" alt=""></td>
                 <td>' . $value['SOLUONG'] . '</td>
-                <td>' . number_format($value['GIA']) . ' VNĐ</td>
                 <td>' . $value['PHANTRAMGIAM'] . '%</td>
+                <td>' . number_format($value['GIA']) . ' VNĐ</td>
                 <td style="font-weight:800;">' . number_format($value['GIA'] * $value['SOLUONG'] * (1 - ($value['PHANTRAMGIAM'] / 100))) . ' VNĐ</td>
             </tr>';
             }
@@ -67,9 +69,22 @@
             <td colspan="8"></td>
             </tr><tr>
             <th scope="row" colspan="4">Tổng</th>
-            <th scope="row">'.$sumNumber.'</th>
-            <th scope="row" colspan="2">'.number_format($sumPrice).' VNĐ</th>
+            <th scope="row" colspan="2">'.$sumNumber.'</th>
+            <th scope="row">'.number_format($sumPrice).'  VNĐ</th>
             <th scope="row">'.number_format($sumPriceSale).' VNĐ</th>
+            </tr>';
+            echo '<tr>
+            <th scope="row" colspan="4">Khuyến Mãi</th>
+            <th scope="row">'.$sale['MAKM'].'</th>
+            <th scope="row">'.$sale['NGAYBD'].' - '.$sale['NGAYKT'].'</th>
+            <th scope="row" >'.$sale['PHANTRAMGIAM'].' %</th>
+            <th scope="row"> - '.number_format($sumPriceSale*$sale['PHANTRAMGIAM']/100).' VNĐ</th>
+            </tr>';
+            echo '<tr>
+            <th scope="row" colspan="4">Thành Tiền</th>
+            <th scope="row"></th>
+            <th scope="row" colspan="2"></th>
+            <th scope="row">'.number_format($sumPriceSale*(1-$sale['PHANTRAMGIAM']/100)).' VNĐ</th>
             </tr>';
             ?>
 

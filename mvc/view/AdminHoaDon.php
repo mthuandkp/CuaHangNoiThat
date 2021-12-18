@@ -63,9 +63,7 @@
                 <select class="form-control" id="inputBillStatus">
                     <option value="TT01">CHỜ XÁC NHẬN</option>
                     <option value="TT02">ĐÃ XÁC NHẬN</option>
-                    <option value="TT03">ĐANG GIAO HÀNG</option>
-                    <option value="TT04">ĐÃ GIAO HÀNG</option>
-                    <option value="TT05">ĐÃ NHẬN</option>
+                    <option value="TT03">ĐÃ NHẬN</option>
                 </select>
             </div>
         </div>
@@ -154,7 +152,7 @@
                             xhtml += '<tr>' +
                                 '<th scope="row">' + (i + 1) + '</th>' +
                                 '<td>' + data[i]['MAHD'] + '</td>' +
-                                '<td>' + data[i]['TENNV'] + '</td>' +
+                                '<td>('+data[i]['MANV']+')' + data[i]['TENNV'] + '</td>' +
                                 '<td>' + data[i]['TENKH'] + '</td>' +
                                 '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                                 '<td>' + data[i]['GIOLAP'] + '</td>' +
@@ -165,6 +163,7 @@
                                 '<td>';
                             if (data[i].MATRANGTHAI == 'TT01') {
                                 xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
+                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                             }
 
                             xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
@@ -222,7 +221,7 @@
                             xhtml += '<tr>' +
                                 '<th scope="row">' + (i + 1) + '</th>' +
                                 '<td>' + data[i]['MAHD'] + '</td>' +
-                                '<td>' + data[i]['TENNV'] + '</td>' +
+                                '<td>('+data[i]['MANV']+')' + data[i]['TENNV'] + '</td>' +
                                 '<td>' + data[i]['TENKH'] + '</td>' +
                                 '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                                 '<td>' + data[i]['GIOLAP'] + '</td>' +
@@ -233,6 +232,7 @@
                                 '<td>';
                             if (data[i].MATRANGTHAI == 'TT01') {
                                 xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
+                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                             }
 
                             xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
@@ -253,6 +253,23 @@
         function confirmBill($id) {
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/updateBillStatus',
+                data: {
+                    'id': $id
+                },
+                method: "post",
+                success: function(result) {
+                    console.log(result);
+                    if (result == 0) {
+                        alert("Cập nhật trạng thái Hóa Đơn thành công");
+                        loadTable();
+                    }
+                }
+            });
+        }
+
+        function destroyBill($id){
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/updateBillStatus/TT05',
                 data: {
                     'id': $id
                 },
@@ -305,7 +322,7 @@
                         '</tr>' +
                         '<tr>' +
                         '<td style="font-weight:800;padding-right:3rem;">Tên Nhân Viên: </td>' +
-                        '<td>' + bill.TENNV + '</td>' +
+                        '<td>('+bill.MANV+') ' + bill.TENNV + '</td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td style="font-weight:800;padding-right:3rem;">Tên Khách Hàng: </td>' +
@@ -330,7 +347,9 @@
                         '</tr>';
                     $sumPrice = 0;
                     $sumNumber = 0;
+                    $sum = 0;
                     for ($i = 0; $i < detail.length; $i++) {
+                        $sum += parseInt(detail[$i].GIA) * parseInt(detail[$i].SOLUONG);
                         $sumNumber += parseInt(detail[$i].SOLUONG);
                         $sumPrice += parseInt(detail[$i].GIA) * parseInt(detail[$i].SOLUONG) * (1 - (detail[$i].PHANTRAMGIAM / 100));
                         $xhtml += '<tr>' +
@@ -346,13 +365,20 @@
                         '<th scope="col" colspan="6"></th>' +
                         '</tr>' +
                         '<tr>' +
-                        '<th scope="col" colspan="2">Tổng</th>' +
-                        '<td colspan="2">' + $sumNumber + '<td>' +
-                        '<th scope="col">' + formatter.format($sumPrice) + '</th>' +
+                        '<th scope="col">Tổng</th>' +
+                        '<td></td>'+
+                        '<td>'+formatter.format($sumNumber)+'</td>'+
+                        '<td></td>'+
+                        '<td>'+formatter.format($sum)+'</td>'+
+                        '<th scope="col">'+formatter.format($sumPrice)+'</th>' +
                         '</tr>' +
                         '<tr>' +
-                        '<th scope="col" colspan="5">Giảm giá</th>' +
-                        '<td colspan="2">' + bill.SALE.PHANTRAMGIAM + '%<td>' +
+                        '<th scope="col" colspan="1">Giảm giá</th>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td>' + bill.SALE.MAKM +'</td>' +
+                        '<td>' + bill.SALE.PHANTRAMGIAM + '%</td>' +
+                        '<td> - ' + formatter.format(((bill.SALE.PHANTRAMGIAM / 100)) * $sumPrice) + '</td>' +
                         '</tr>' +
                         '<tr>' +
                         '<th scope="col" colspan="5">Thành Tiền</th>' +
@@ -464,7 +490,7 @@
                         xhtml += '<tr>' +
                             '<th scope="row">' + (i + 1) + '</th>' +
                             '<td>' + data[i]['MAHD'] + '</td>' +
-                            '<td>' + data[i]['TENNV'] + '</td>' +
+                            '<td>('+data[i]['MANV']+')' + data[i]['TENNV'] + '</td>' +
                             '<td>' + data[i]['TENKH'] + '</td>' +
                             '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                             '<td>' + data[i]['GIOLAP'] + '</td>' +
@@ -475,6 +501,7 @@
                             '<td>';
                         if (data[i].MATRANGTHAI == 'TT01') {
                             xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
+                            xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                         }
 
                         xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +

@@ -63,7 +63,7 @@ class NhanVienDB extends ConnectionDB
     //Them nhan vien
     function addNewStaff($staff){
         $id = $this->createNextStaffId();
-        $hashPassword = base64_encode($staff['MATKHAU']);
+        $hashPassword = md5($staff['MATKHAU']);
         $sql = "INSERT INTO `nhanvien`(`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES ('$id','$staff[TENNV]','$staff[NGAYSINH]','$staff[GIOITINH]','$staff[DIACHI]','$staff[SDT]','$staff[MAQUYEN]','$staff[TENDN]','$hashPassword',true);";
 
         if(mysqli_query($this->conn, $sql)){

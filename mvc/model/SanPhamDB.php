@@ -36,7 +36,7 @@ class SanPhamDB extends ConnectionDB
     function addNewProduct($productArr)
     {
         //('','','',,,'',true,0)
-        $qry = "INSERT INTO `noithat`(`MASP`, `TENSP`, `MALOAI`, `GIA`, `SOLUONG`, `HINHANH`, `TRANGTHAI`, `PHAMTRAMGIAM`) VALUES ";
+        $qry = "INSERT INTO `noithat`(`MASP`, `TENSP`, `MALOAI`, `GIA`, `SOLUONG`, `HINHANH`, `TRANGTHAI`, `PHANTRAMGIAM`) VALUES ";
         foreach ($productArr as $value) {
             $qry .= "('$value[MASP]','$value[TENSP]','$value[MALOAI]',$value[GIA],$value[SOLUONG],'$value[HINHANH]',true,0),";
         }
@@ -49,7 +49,7 @@ class SanPhamDB extends ConnectionDB
     //Cap nhat thong tin san pham
     function updateInformationProduct($product)
     {
-        $qry = "UPDATE `noithat` SET `TENSP`='$product[TENSP]',`MALOAI`='$product[MALOAI]',`GIA`=$product[GIA],`SOLUONG`=$product[SOLUONG],`HINHANH`='$product[HINHANH]',`PHANTRAMGIAM`=$product[PHANTRAMGIAM] WHERE `MASP`='$product[MASP]';";
+        $qry = "UPDATE `noithat` SET `TENSP`='$product[TENSP]',`MALOAI`='$product[MALOAI]',`GIA`=$product[GIA],`HINHANH`='$product[HINHANH]',`PHANTRAMGIAM`=$product[PHANTRAMGIAM] WHERE `MASP`='$product[MASP]';";
 
         if (mysqli_query($this->conn, $qry)) {
             return true;
@@ -100,7 +100,7 @@ class SanPhamDB extends ConnectionDB
 
     function uploadImage($data, $time)
     {
-        $directory = "./public/image/";
+        $directory = "./public/image/HINHANH/";
         //return $data;
         if (move_uploaded_file($data['tmp_name'], $directory . $time . $data['name'])) {
             return true;

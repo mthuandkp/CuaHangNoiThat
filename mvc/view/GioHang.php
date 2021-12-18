@@ -96,7 +96,7 @@
         <span>GIỎ HÀNG</span>
     </h2><br>
     <div style="width: 80%;margin-left: 10%;">
-        <table style="width: 100%;" class="shopping-cart" id="shopping-cart-id"></table>
+        <table class="table" style="width: 100%;" id="shopping-cart-id"></table>
     </div>
     <div class="footer-container">
         <div class="footer">
@@ -128,7 +128,7 @@
                 success: function(data) {
                     var data = JSON.parse(data);
                     $xhtml = '<tr>' +
-                        '<th>Hình ảnh</th>' +
+                        '<th scope="col">Hình ảnh</th>' +
                         '<th>Tên sản phẩm</th>' +
                         '<th>Giá</th>' +
                         '<th>Số lượng</th>' +
@@ -153,8 +153,8 @@
                         }
                         $xhtml += '</td>' +
                             '<td><input id="number-product-item-' + $obj.MASP + '" type="number" onchange="changeNumberCart(\'' + $obj.MASP + '\');" placeholder="1" class="number" value="' + $obj.amount + '"><i class="fa fa-trash" onclick="deleteCartItem(\'' + $obj.MASP + '\')"></i><p style="color:red;">' + $obj.ERROR + '</p></td>' +
-                            '<td>' +
-                            '<div class="price">' + formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100) * $obj.amount) + ' <sup>đ</sup></div>' +
+                            '<td scope="col">' +
+                           formatter.format($obj.GIA * (1 - $obj.PHANTRAMGIAM / 100) * $obj.amount)+
                             '</td>' +
                             '</tr>';
                     }
@@ -167,8 +167,7 @@
                                     '<td colspan="3">' +
                                     '</td>' +
                                     '<td colspan="2" style="text-align: end;">' +
-                                    '<div class="total-price">' +
-                                    formatter.format($sum) + '<sup>đ</sup>' +
+                                    '<div class="total-price">' +formatter.format($sum) + '<sup>đ</sup>' +
                                     '</div>' +
                                     '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
                                     '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
@@ -176,21 +175,6 @@
                                     '</tr>';
 
                             } else {
-                                /*$xhtml += '<tr>' +
-                                '<td colspan="3">' +
-                                '</td>' +
-                                '<td colspan="2" style="text-align: end;">' +
-                                '<div class="total-price" style="text-decoration: line-through;">' +
-                                formatter.format($sum) + '<sup>đ</sup>' +
-                                '</div>' +
-                                '<div class="total-price">' +
-                                formatter.format($sum*(1-subdata.PHANTRAMGIAM/100)) + ' (-'+subdata.PHANTRAMGIAM+'%)<sup>đ</sup>' +
-                                '</div><p>(' +subdata.NGAYBD+' đến '+subdata.NGAYKT+')</p>' +
-                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
-                                '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
-                                '</td>' +
-                                '</tr>';*/
-
                                 $xhtml += '<tr>' +
                                     '<td>Tổng</td>' +
                                     '<td></td>' +
@@ -217,10 +201,9 @@
                                 '</div>' +
                                 '</td>' +
                                 '</tr>' +
-                                '<tr>' +
-                                '<td colspan="4"></td>' +
+                                '<tr><td colspan="4"></td>' +
                                 '<td>' +
-                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p><input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn"></p>' +
+                                '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p><input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
                                 '</td>' +
                                 '</tr>';
                             }

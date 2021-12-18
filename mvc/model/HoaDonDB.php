@@ -81,17 +81,17 @@ class HoaDonDB extends ConnectionDB
     function createNextBillId()
     {
         $data = $this->getAllBill();
-        $lastBillId = empty($data) ? 0 : end($data)['MAHD'];
+        $lastBillId = empty($data) ? array() : end($data);
         
-        if (strlen($lastBillId) == 0) {
+        if (empty($lastBillId)) {
             return 'HD01';
         }
-        $nextId = (int)substr($lastBillId, 2) + 1;
+        $nextId = substr($lastBillId['MAHD'], 2) + 1;
         
         if (strlen($nextId) < 2) {
             $nextId = '0' . $nextId;
         }
-        return substr($lastBillId, 0, 2) . $nextId;
+        return substr($lastBillId['MAHD'], 0, 2) . $nextId;
     }
     //Lay hoadon theo khach hang
     function getBilByCustomerId($cusId)
@@ -165,9 +165,9 @@ class HoaDonDB extends ConnectionDB
         return false;
     }
 
-    function updateBillStatus($id)
+    function updateBillStatus($id,$staffId,$status)
     {
-        $qry = "UPDATE `hoadon` SET `MATRANGTHAI`='TT02' WHERE `MAHD`='$id';";
+        $qry = "UPDATE `hoadon` SET `MATRANGTHAI`='$status',`MANV`='$staffId' WHERE `MAHD`='$id';";
         if (mysqli_query($this->conn, $qry)) {
             return true;
         }

@@ -103,24 +103,26 @@
             <th>Hình ảnh</th>
             <th>Giá</th>
             <th>Số Lượng</th>
-            <th>Tổng</th>
             <th>Giảm Giá / Sản Phẩm</th>
+            <th>Tổng</th>
             <th>Thành tiền</th>
         </tr>
 
         <?php
         $sumSale = 0;
+        $sum = 0;
         foreach ($data['detail'] as $value) {
             echo '<tr>
                 <td>' . $value['TENSP'] . '</td>
                 <td><img src="/CuaHangNoiThat/public/image/HINHANH/' . $value['HINHANH'] . '" alt="no image" style="width: 15rem;height:10rem;"></td>
                 <td>' . number_format($value['GIA']) . ' VNĐ</td>
                 <td>' . $value['SOLUONG'] . '</td>
-                <td>' . number_format($value['GIA'] * $value['SOLUONG']) . ' VNĐ</td>
                 <td> - ' . number_format($value['GIA'] * ($value['PHANTRAMGIAM'] / 100)) . ' VNĐ (' . $value['PHANTRAMGIAM'] . '%) x ' . $value['SOLUONG'] . '</td>
+                <td>' . number_format($value['GIA'] * $value['SOLUONG']) . ' VNĐ</td>
                 <th>' . number_format($value['GIA'] * (1 - $value['PHANTRAMGIAM'] / 100) * $value['SOLUONG']) . ' VNĐ</th>
             </tr>';
             $sumSale += $value['GIA'] * (1 - $value['PHANTRAMGIAM'] / 100) * $value['SOLUONG'];
+            $sum += $value['GIA'] * $value['SOLUONG'];
         }
         ?>
 
@@ -129,7 +131,8 @@
         </tr>
         <tr>
             <th>Tổng:</th>
-            <td colspan="5"></td>
+            <td colspan="4"></td>
+            <td><?php echo number_format($sum) ?> VNĐ</td>
             <th><?php echo number_format($sumSale) ?> VNĐ</th>
         </tr>
         <tr>

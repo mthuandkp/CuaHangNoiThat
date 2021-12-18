@@ -336,8 +336,7 @@
                     data: form_data,
                     type: 'post',
                     success: function(data) {
-                        var data = JSON.parse(data);
-                        console.log(data);
+                        var data = JSON.parse(data);console.log(data)
                         var currentImage = $("#inputProductImage").val();
                         
                         //get name image
@@ -346,7 +345,7 @@
                             $index--;
                         }
 
-                        currentImage = currentImage.substring($index+1);
+                        currentImage = data[1]+(currentImage.substring($index+1));
                         if (data[0] == 0) {
                             alert("Thêm ảnh thành công");
                             $("#currentImage").val(currentImage);

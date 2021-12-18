@@ -14,9 +14,11 @@ class KhuyenMaiDB extends ConnectionDB
         $qry = "SELECT * FROM khuyenmai";
         $rs = mysqli_query($this->conn, $qry);
         while ($row = mysqli_fetch_assoc($rs)) {
-            if ($row['MAKM'] != 'KM00') {
+            /*if ($row['MAKM'] != 'KM00') {
                 $data[] = $row;
-            }
+            }*/
+
+            $data[] = $row;
         }
         return $data;
     }
@@ -57,14 +59,41 @@ class KhuyenMaiDB extends ConnectionDB
 
     function getSaleinCurrent(){
         $sale = $this->getAllSales();
-        $currrentTime = date("Y/m/d");
+        
+        $currrentTime = date("Y-m-d");
         
         foreach($sale as $value){
-            if($value['NGAYBD'] <= $currrentTime && $value['NGAYKT'] >= $currrentTime){
+            
+            /*if($value['NGAYBD'] <= $currrentTime && $value['NGAYKT'] >= $currrentTime && $value['TRANGTHAI'] == 1 && $value['MAKM'] != 'KM00'){
+                
+            }*/
+
+            if($this->compareDate($currrentTime,$value['NGAYBD']) && $this->compareDate($value['NGAYKT'],$currrentTime) && $value['TRANGTHAI'] == 1 && $value['MAKM'] != 'KM00'){
                 return $value;
             }
         }
+        $sale[0]['NGAYBD'] = $sale[0]['NGAYKT'] = 'Không khuyến mãi';
+        return $sale[0];
+    }
 
-        return array();
+    function compareDate($date1,$date2){
+        $strDate1 = explode('-',$date1);
+        $strDate2 = explode('-',$date2);
+        $length = count($strDate1);
+
+        for($i = 0;$i < $length;$i++){
+            if((int)$strDate2[$i] > (int)$strDate1[$i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function disabledSale($id){
+        $qry = "UPDATE `khuyenmai` SET `TRANGTHAI`=false WHERE `MAKM` = '$id'";
+        if (mysqli_query($this->conn, $qry)) {
+            return true;
+        }
+        return false;
     }
 }

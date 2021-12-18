@@ -3,8 +3,8 @@
     class Run extends Controller{
         function display(){
             //model cần chạy
-            $obj = $this->getModel('NhanVienDB');
-            $rs = $obj->getAllStaff();
+            $obj = $this->getModel('HoaDonDB');
+            $rs = $obj->createNextBillId();
 
             echo '<pre>';
             print_r($rs);

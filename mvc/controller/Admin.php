@@ -28,13 +28,17 @@ class Admin extends Controller
     function XemChiTietHD($id)
     {
         $objBillDetail = $this->getModel('HoaDonDB');
+        $bill = $objBillDetail->getBillById($id)[0];
         $objProduct = $this->getModel('SanPhamDB');
+        $objSale = $this->getModel('KhuyenMaiDB');
         $data = $objBillDetail->getBillDetailById($id);
         foreach ($data as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             $data[$key]['TENSP'] = $product['TENSP'];
             $data[$key]['HINHANH'] = $product['HINHANH'];
         }
+        $data['data'] = $data;
+        $data['sale'] = $objSale->getSaleById($bill['MAKM']);
         require_once('./menuadmin.php');
         $this->View('AdminChiTietHoaDon', 'Admin Chi Tiết HĐ', $data);
     }
@@ -119,7 +123,7 @@ class Admin extends Controller
         echo json_encode($data);
     }
 
-    function updateBillStatus()
+    function updateBillStatus($status='TT02')
     {
 
         if (!isset($_POST['id'])) {
@@ -127,8 +131,9 @@ class Admin extends Controller
             return;
         }
         $id = $_POST['id'];
+        $idStaff = $_SESSION['staff']['MANV'];
         $objBill = $this->getModel("HoaDonDB");
-        if ($objBill->updateBillStatus($id)) {
+        if ($objBill->updateBillStatus($id,$idStaff,$status)) {
             echo 0;
             return;
         }
@@ -149,6 +154,17 @@ class Admin extends Controller
         $result['SMS'] = 'Lỗi khi cập nhật';
         if ($objBill->updateBillStatus_Cus($id, 'TT03')) {
             $result['SMS'] = 'Cập nhật thành công';
+        }
+
+        echo json_encode($result);
+    }
+
+    function destroyBill($id){
+        $objBill = $this->getModel("HoaDonDB");
+        $result = array();
+        $result['SMS'] = 'Lỗi khi hủy';
+        if ($objBill->updateBillStatus_Cus($id, 'TT04')) {
+            $result['SMS'] = 'Hủy thành công';
         }
 
         echo json_encode($result);
@@ -334,6 +350,19 @@ class Admin extends Controller
         } else {
             echo 'Không thể thêm';
         }
+    }
+
+    function disabledSale($id){
+        $objSale = $this->getModel('KhuyenMaiDB');
+        $result = array();
+
+        if ($objSale->disabledSale($id)) {
+           $result['SMS'] = 'Xóa thành công';
+        } else {
+            $result['SMS'] = 'Lỗi khi xóa';
+        }
+
+        echo json_encode($result);
     }
     /*===================================================================== */
     /*============================== LOAI SAN PHAM ============================ */
@@ -695,8 +724,19 @@ class Admin extends Controller
     }
     function XemCHiTietPhieuNhap($id)
     {
+        $objReceiptDetail = $this->getModel('PhieuNhapDB');
+        $objProduct = $this->getModel('SanPhamDB');
+        $objSale = $this->getModel('KhuyenMaiDB');
+        $data = $objReceiptDetail->getReceiptDetailById($id);
+        foreach ($data as $key => $value) {
+            $product = $objProduct->getProductById($value['MASP']);
+            $data[$key]['TENSP'] = $product['TENSP'];
+            $data[$key]['HINHANH'] = $product['HINHANH'];
+        }
+        $data['data'] = $data;
+
         require_once('./menuadmin.php');
-        $this->View('AdminChiTietPhieuNhap', 'Admin Chi Tiết Phiếu Nhập', $id);
+        $this->View('AdminChiTietPhieuNhap', 'Admin Chi Tiết Phiếu Nhập', $data);
     }
 
     function getAllReceipt()
@@ -1063,7 +1103,10 @@ class Admin extends Controller
             return;
         }
         $objSale = $this->getModel('KhuyenMaiDB');
-        $_SESSION['sale'] = $objSale->getSaleinCurrent();
+        $sale = $objSale->getSaleinCurrent();
+        $_SESSION['sale'] = $sale;
+        
+        
         $this->checkCart();
 
         echo json_encode($_SESSION['cart']);
@@ -1150,7 +1193,7 @@ class Admin extends Controller
             $_SESSION['cart'] = $cart;
         }
 
-        if ($valid) {
+        if (isset($_SESSION['account']) && isset($_SESSION['cart']) && !empty($_SESSION['cart']) && !empty($_SESSION['account']) && $valid) {
             $objBill = $this->getModel('HoaDonDB');
             $billId = $objBill->createNextBillId();
             $cus = $_SESSION['account'];
