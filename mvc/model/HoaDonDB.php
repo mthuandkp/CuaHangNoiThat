@@ -142,11 +142,10 @@ class HoaDonDB extends ConnectionDB
         return false;
     }
     //Them hoa don
-    function addBillAndDetail_Data($bill, $detail)
+    function addBillAndDetail_Data($bill, $detail,$pay)
     {
-        $query1 = "INSERT INTO `hoadon` (`MAHD`, `MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`) 
-        VALUES ('$bill[0]', '$bill[1]', '$bill[2]', '$bill[3]', '$bill[4]', '$bill[5]', '$bill[6]')";
-        //$rs1 = mysqli_query($this->conn, $query1);
+        $query1 = "INSERT INTO `hoadon` (`MAHD`, `MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`,`MAKM`,`PAYPAL`) 
+        VALUES ('$bill[0]', '$bill[1]', '$bill[2]', '$bill[3]', '$bill[4]', '$bill[5]', '$bill[6]',$pay)";
 
         $query2 = "INSERT INTO `ct_hoadon` (`MAHD`, `MASP`, `SOLUONG`, `GIA`) VALUES";
         foreach ($detail as $value) {

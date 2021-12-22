@@ -9,6 +9,7 @@ class TrangChu extends Controller
     function Logout()
     {
         unset($_SESSION['account']);
+        unset($_SESSION['cart']);
         echo '<script>window.location.href="../";alert("Đăng xuất thành công");</script>';
     }
 

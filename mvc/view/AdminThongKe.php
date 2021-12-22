@@ -51,6 +51,7 @@
       $.ajax({
         url: '/CuaHangNoiThat/Admin/statisticBillAdnReceipt/' + year,
         success: function(data) {
+          
           var data = JSON.parse(data);
           var bill = data.BILL;
           var receipt = data.RECEIPT;
@@ -79,7 +80,7 @@
             dataStatistic.push(tmp);
           }
 
-          data.addRows(dataStatistic)
+          data.addRows(dataStatistic);console.log(dataStatistic)
           var options = {
             chart: {
               title: 'Thống kê doanh thu trong tháng',

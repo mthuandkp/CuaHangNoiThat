@@ -145,6 +145,7 @@
                             '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
                             '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
                             '<th scope="col">Trạng Thái</th>' +
+                            '<th scope="col">Thanh toán online</th>' +
                             '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                             '</tr>' +
                             '</thead><tbody>';
@@ -160,9 +161,10 @@
                                 '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
                                 '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
                                 '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
+                                '<td>' + (data[i]['PAYPAL']==1 ? 'Có':'Không') + '</td>' +
                                 '<td>';
                             if (data[i].MATRANGTHAI == 'TT01') {
-                                xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
+                                xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xác nhận hóa đơn</button>';
                                 xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                             }
 

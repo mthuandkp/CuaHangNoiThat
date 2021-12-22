@@ -1007,6 +1007,11 @@ class Admin extends Controller
         echo json_encode($objProduct->getAllProduct());
     }
 
+    function getSaleProduct($number){
+        $objProduct = $this->getModel('SanPhamDB');
+        echo json_encode($objProduct->getSaleProduct($number));
+    }
+
     function uploadImage()
     {
         $filename = date("dmY_his");
@@ -1180,7 +1185,22 @@ class Admin extends Controller
         echo json_encode($result);
     }
 
-    function orderCart()
+    function confirmCart(){
+        $result = array();
+        $valid = true;
+
+        if (!isset($_SESSION['account'])) {
+            $result['SMS'] = 'NOT_LOGIN';
+        } else if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+            $result['SMS'] = 'EMPTY';
+        }
+        else{
+            $result['URL'] = '/CuaHangNoiThat/GioHang/ThanhToan';
+        }
+        echo json_encode($result);
+    }
+
+    function orderCart($pay)
     {
         $result = array();
         $valid = true;
@@ -1219,7 +1239,9 @@ class Admin extends Controller
                 $sum += $value['GIA'] * $value['amount'];
             }
             //Tao hoa don
-            $billQry = "INSERT INTO `hoadon`(`MAHD`,`MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`, `MAKM`) VALUES ('$billId',NULL,'$cusId','$day','$time',$sum,'TT01','$saleId');";
+            $billQry = "INSERT INTO `hoadon`(`MAHD`,`MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`, `MAKM`,`PAYPAL`) VALUES ('$billId',NULL,'$cusId','$day','$time',$sum,'TT01','$saleId',$pay);";
+
+            echo $billQry;
 
             //Tao chi tiet hoa don
             $detailQry = "INSERT INTO `ct_hoadon`(`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUES";
@@ -1232,7 +1254,7 @@ class Admin extends Controller
             }
 
             $detailQry = substr($detailQry, 0, strlen($detailQry) - 1) . ';';
-
+            
             if ($objBill->addBillAndDetail($billQry, $detailQry)) {
                 $result['SMS'] = 'Đặt hàng thành công';
                 //tru so luong san pham trong kho

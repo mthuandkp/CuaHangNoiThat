@@ -23,6 +23,20 @@ class SanPhamDB extends ConnectionDB
         }
         return $data;
     }
+
+    //Lay tat ca sanpham
+    function getSaleProduct($number)
+    {
+        $qry = "SELECT * FROM `noithat`;";
+        $data = array();
+        $rs = mysqli_query($this->conn, $qry);
+        while ($number > 0 && $row = mysqli_fetch_assoc($rs)) {
+            if ($row['PHANTRAMGIAM'] != 0) {
+                $data[] = $row;
+            }
+        }
+        return $data;
+    }
     //Tao ma sanpham tiep theo
     function createNextProductId()
     {

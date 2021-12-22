@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th12 16, 2021 lúc 08:51 AM
+-- Thời gian đã tạo: Th12 18, 2021 lúc 10:17 PM
 -- Phiên bản máy phục vụ: 5.7.36-0ubuntu0.18.04.1
 -- Phiên bản PHP: 7.2.34-26+ubuntu18.04.1+deb.sury.org+1
 
@@ -43,7 +43,7 @@ INSERT INTO `ct_hoadon` (`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUE
 ('HD01', 'SP05', 2, 80000, 5),
 ('HD02', 'SP05', 1, 80000, 5),
 ('HD03', 'SP05', 2, 80000, 5),
-('HD04', 'SP03', 1, 5302000, 0),
+('HD04', 'SP03', 1, 5302000, 4),
 ('HD04', 'SP30', 1, 355000, 0),
 ('HD04', 'SP53', 1, 155000, 0),
 ('HD05', 'SP29', 1, 255000, 0),
@@ -51,7 +51,8 @@ INSERT INTO `ct_hoadon` (`MAHD`, `MASP`, `SOLUONG`, `GIA`, `PHANTRAMGIAM`) VALUE
 ('HD06', 'SP29', 1, 255000, 0),
 ('HD06', 'SP30', 1, 355000, 0),
 ('HD07', 'SP08', 1, 15000, 2),
-('HD08', 'SP08', 1, 15000, 2);
+('HD08', 'SP08', 1, 15000, 2),
+('HD09', 'SP05', 1, 80000, 5);
 
 -- --------------------------------------------------------
 
@@ -73,7 +74,9 @@ CREATE TABLE `ct_phieunhap` (
 INSERT INTO `ct_phieunhap` (`MAPN`, `MASP`, `SOLUONG`, `GIA`) VALUES
 ('PN01', 'SP01', 20, 120000),
 ('PN01', 'SP25', 14, 87000),
-('PN02', 'SP02', 20, 250000);
+('PN02', 'SP02', 20, 250000),
+('PN03', 'SP1200', 23, 23000),
+('PN03', 'SP20', 50, 157000);
 
 -- --------------------------------------------------------
 
@@ -97,14 +100,15 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`MAHD`, `MANV`, `MAKH`, `NGAYLAP`, `GIOLAP`, `TONG`, `MATRANGTHAI`, `MAKM`) VALUES
-('HD01', NULL, 'KH01', '2021-01-11', '21:52:29', 520000, 'TT01', 'KM02'),
-('HD02', NULL, 'KH01', '2021-02-11', '22:04:35', 76000, 'TT03', 'KM00'),
-('HD03', NULL, 'KH01', '2021-03-11', '22:06:45', 160000, 'TT02', 'KM02'),
-('HD04', NULL, 'KH01', '2021-03-14', '20:48:49', 5812000, 'TT01', 'KM02'),
-('HD05', NULL, 'KH01', '2021-07-14', '20:58:29', 610000, 'TT01', 'KM02'),
-('HD06', NULL, 'KH01', '2020-07-14', '21:03:00', 610000, 'TT01', 'KM02'),
+('HD01', 'NV00', 'KH01', '2021-01-11', '21:52:29', 520000, 'TT02', 'KM02'),
+('HD02', 'NV00', 'KH01', '2021-02-11', '22:04:35', 76000, 'TT01', 'KM00'),
+('HD03', 'NV00', 'KH01', '2021-03-11', '22:06:45', 160000, 'TT02', 'KM02'),
+('HD04', 'NV00', 'KH01', '2021-03-14', '20:48:49', 5812000, 'TT01', 'KM02'),
+('HD05', 'NV00', 'KH01', '2021-07-14', '20:58:29', 610000, 'TT01', 'KM02'),
+('HD06', 'NV00', 'KH01', '2020-07-14', '21:03:00', 610000, 'TT01', 'KM02'),
 ('HD07', NULL, 'KH01', '2021-10-14', '21:04:51', 15000, 'TT01', 'KM02'),
-('HD08', NULL, 'KH01', '2021-12-14', '21:06:01', 15000, 'TT01', 'KM02');
+('HD08', NULL, 'KH01', '2021-12-14', '21:06:01', 15000, 'TT01', 'KM02'),
+('HD09', NULL, 'KH01', '2021-12-18', '09:29:19', 80000, 'TT01', 'KM03');
 
 -- --------------------------------------------------------
 
@@ -132,7 +136,7 @@ CREATE TABLE `khachhang` (
 INSERT INTO `khachhang` (`MAKH`, `TENKH`, `NGAYSINH`, `GIOITINH`, `TENDN`, `MATKHAU`, `DIACHI`, `SDT`, `TRANGTHAI`, `DIEMTL`) VALUES
 ('KH01', 'Phạm Nguyễn Minh Thuận', '2001-01-03', 'Nam', 'a@gmail.com', '202cb962ac59075b964b07152d234b70', 'Bến Tre,Việt Nam', '0123456789', 1, 1),
 ('KH02', 'lijllmkmlk', '2001-01-01', 'Nữ', 'b@gmail.com', '202cb962ac59075b964b07152d234b70', 'sacas', '0123452007', 0, 1),
-('KH03', 'Michelle Arthur', '2001-01-01', 'Nam', 'root@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Ấp Bình Thạnh 1,xã Thạnh Trị,huyện Bình Đại', '0843739379', 1, 0),
+('KH03', 'Michelle Arthur', '2001-01-01', 'Nam', 'root@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Ấp Bình Thạnh 1,xã Thạnh Trị,huyện Bình Đại', '0843739379', 0, 0),
 ('KH04', 'Phạm Nguyễn Minh Thuận', '2001-01-28', 'Nam', 'pnmthuan@gmail.com', '202cb962ac59075b964b07152d234b70', 'Bến Tre', '0843739379', 1, 0);
 
 -- --------------------------------------------------------
@@ -145,17 +149,20 @@ CREATE TABLE `khuyenmai` (
   `MAKM` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `NGAYBD` date NOT NULL,
   `NGAYKT` date NOT NULL,
-  `PHANTRAMGIAM` int(10) NOT NULL
+  `PHANTRAMGIAM` int(10) NOT NULL,
+  `TRANGTHAI` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `khuyenmai`
 --
 
-INSERT INTO `khuyenmai` (`MAKM`, `NGAYBD`, `NGAYKT`, `PHANTRAMGIAM`) VALUES
-('KM00', '1000-12-01', '3021-12-31', 0),
-('KM01', '2021-10-03', '2021-10-21', 5),
-('KM02', '2021-11-01', '2022-11-30', 15);
+INSERT INTO `khuyenmai` (`MAKM`, `NGAYBD`, `NGAYKT`, `PHANTRAMGIAM`, `TRANGTHAI`) VALUES
+('KM00', '1000-12-01', '3021-12-31', 0, 0),
+('KM01', '2021-10-03', '2021-10-21', 5, 1),
+('KM02', '2021-11-01', '2022-11-30', 16, 1),
+('KM03', '2021-12-01', '2021-12-30', 5, 1),
+('KM04', '2021-12-20', '2021-12-25', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -202,7 +209,8 @@ INSERT INTO `nhacungcap` (`MANCC`, `TENNCC`, `DIACHI`, `SDT`, `TRANGTHAI`) VALUE
 ('NCC01', 'Nhà Cung Cấp 1', 'TPHCM', '0843739379', 1),
 ('NCC02', 'Nhà Cung Cấp 2', 'Tiền Giang ', '0978456123', 0),
 ('NCC03', 'Nhà Cung Cấp 3', 'Bến Tre', '0843739379', 1),
-('NCC04', 'Nhà Cung Cấp 4', 'Kiên Giang ', '0843739379', 1);
+('NCC04', 'Nhà Cung Cấp 4', 'Kiên Giang ', '0843739379', 1),
+('NCC05', 'Nhà Cung Cấp TPHCM', 'TP HCM', '0843455652', 1);
 
 -- --------------------------------------------------------
 
@@ -229,10 +237,10 @@ CREATE TABLE `nhanvien` (
 
 INSERT INTO `nhanvien` (`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES
 ('NV00', 'Quản trị viên', '2000-01-01', 'Nam', 'TP.HCM', '088123456', '1', 'root', '202cb962ac59075b964b07152d234b70', 1),
-('NV01', 'nHÂN vIÊN 1', '2021-10-04', 'Nam', 'dsvsdvds', '0974158320', '2', 'sdvsdvs', '81dc9bdb52d04dc20036dbd8313ed055', 1),
+('NV01', 'nHÂN vIÊN 1', '2021-10-04', 'Nam', 'dsvsdvds', '0974158320', '2', 'sdvsdvs', '81dc9bdb52d04dc20036dbd8313ed055', 0),
 ('NV02', 'Pham Nguyen Minh Thuan', '2001-01-28', 'Nam', 'Bến Tre Việt Nam', '0843739379', '2', 'thuan123', '202cb962ac59075b964b07152d234b70', 1),
 ('NV03', 'sdssacsac', '2021-11-16', 'Nam', 'ascascssca', '0843739379', '2', 'thuan', '202cb962ac59075b964b07152d234b70', 1),
-('NV04', 'fdfdfbfb', '2021-11-08', 'Nam', 'fdbfdbfd', '0843739666', '2', 'dvsds', '202cb962ac59075b964b07152d234b70', 1);
+('NV55', 'NV55', '2021-02-02', 'Nam', 'TPHCM ', '0843739379', '2', 'hello', '202cb962ac59075b964b07152d234b70', 1);
 
 -- --------------------------------------------------------
 
@@ -260,13 +268,15 @@ INSERT INTO `noithat` (`MASP`, `TENSP`, `MALOAI`, `GIA`, `SOLUONG`, `HINHANH`, `
 ('SP02', 'Bàn phòng khách', 'LSP04', 250000, 90, 'ban.jpg', 1, 0),
 ('SP03', 'Bàn ghế bệt', 'LSP03', 5302000, 140, 'banghebet.jpg', 1, 0),
 ('SP04', 'Bàn trang điểm', 'LSP02', 50000, 120, 'bantrangdiem1.jpg', 1, 0),
-('SP05', 'Bộ 5 khung tranh treo tường', 'LSP01', 80000, 24, '5khungtranhtreotuong.jpg', 1, 5),
+('SP05', 'Bộ 5 khung tranh treo tường', 'LSP01', 80000, 23, '5khungtranhtreotuong.jpg', 1, 5),
 ('SP07', 'Bộ 11 khung tranh treo tường', 'LSP01', 80000, 35, '11khungtranhtreotuong.jpg', 1, 0),
 ('SP08', 'Đèn đọc sách', 'LSP01', 15000, 4, 'den.png', 1, 2),
 ('SP09', 'Đèn thả trần trang trí', 'LSP01', 45000, 80, 'den1.jpg', 1, 0),
 ('SP10', 'Đồng hồ Shouse', 'LSP01', 115000, 35, 'dongho1.jpg', 1, 0),
+('SP100', 'fhdvbj', 'LSP01', 223, 3, '3232', 0, 1),
 ('SP11', 'Đồng hồ treo tường', 'LSP01', 20000, 35, 'dongho.png', 1, 0),
 ('SP12', 'Ghế xích đu', 'LSP01', 555000, 5, 'ghexichdu.jpg', 1, 0),
+('SP1200', 'Chau cau trang tri', 'LSP01', 23000, 23, 'empty.png', 1, 0),
 ('SP13', 'Gương treo tường', 'LSP01', 5000, 35, 'guong.jpg', 1, 0),
 ('SP14', 'Thảm phòng khách loại 1', 'LSP01', 30000, 35, 'tham.jpg', 1, 0),
 ('SP15', 'Thảm phòng khách loại 2', 'LSP01', 25000, 35, 'tham1.jpg', 1, 0),
@@ -274,7 +284,7 @@ INSERT INTO `noithat` (`MASP`, `TENSP`, `MALOAI`, `GIA`, `SOLUONG`, `HINHANH`, `
 ('SP17', 'Thảm phòng khách loại 4', 'LSP01', 52000, 35, 'tham3.jpg', 1, 0),
 ('SP18', 'Xích đu hình bán cầu giọt nước', 'LSP01', 999000, 35, 'xichdubancau.jpg', 1, 0),
 ('SP19', 'Bàn trang điểm phòng ngủ loại 1', 'LSP02', 147000, 35, 'bantrangdiem.jpg', 1, 0),
-('SP20', 'Bàn trang điểm phòng ngủ loại 2', 'LSP02', 157000, 35, 'bantrangdiem1.jpg', 1, 0),
+('SP20', 'Bàn trang điểm phòng ngủ loại 2', 'LSP02', 157000, 85, 'bantrangdiem1.jpg', 1, 0),
 ('SP21', 'Giường ngủ loại 1', 'LSP02', 2530650, 35, 'giuong.jpg', 1, 0),
 ('SP22', 'Giường ngủ loại 2', 'LSP02', 2750000, 35, 'giuong1.jpg', 1, 0),
 ('SP23', 'Giường ngủ loại 3', 'LSP02', 3000000, 35, 'giuong2.jpg', 1, 0),
@@ -334,7 +344,8 @@ CREATE TABLE `phieunhap` (
 
 INSERT INTO `phieunhap` (`MAPN`, `MANV`, `MANCC`, `NGAYLAP`, `GIOLAP`, `TONG`) VALUES
 ('PN01', 'NV03', 'NCC02', '2021-12-15', '11:25:20', 3618000),
-('PN02', 'NV03', 'NCC01', '2021-12-15', '11:30:57', 5000000);
+('PN02', 'NV03', 'NCC01', '2021-12-15', '11:30:57', 5000000),
+('PN03', 'NV00', 'NCC01', '2021-12-18', '03:00:59', 8379000);
 
 -- --------------------------------------------------------
 
@@ -359,22 +370,24 @@ INSERT INTO `quyen` (`MAQUYEN`, `TENQUYEN`, `MOTA`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `trangthaigiaohang`
+-- Cấu trúc bảng cho bảng `trangthaidonhang`
 --
 
-CREATE TABLE `trangthaigiaohang` (
+CREATE TABLE `trangthaidonhang` (
   `MATRANGTHAI` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `MOTATRANGTHAI` varchar(200) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `trangthaigiaohang`
+-- Đang đổ dữ liệu cho bảng `trangthaidonhang`
 --
 
-INSERT INTO `trangthaigiaohang` (`MATRANGTHAI`, `MOTATRANGTHAI`) VALUES
-('TT01', 'CHỜ XÁC NHẬN'),
-('TT03', 'ĐÃ NHẬN'),
-('TT02', 'ĐÃ XÁC NHẬN');
+INSERT INTO `trangthaidonhang` (`MATRANGTHAI`, `MOTATRANGTHAI`) VALUES
+('TT05', 'Admin hủy hóa đơn'),
+('TT01', 'Chờ Xác Nhận'),
+('TT03', 'Đã nhận'),
+('TT02', 'Đã xác nhận'),
+('TT04', 'Khách Hàng hủy hóa đơn');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -461,9 +474,9 @@ ALTER TABLE `quyen`
   ADD PRIMARY KEY (`MAQUYEN`);
 
 --
--- Chỉ mục cho bảng `trangthaigiaohang`
+-- Chỉ mục cho bảng `trangthaidonhang`
 --
-ALTER TABLE `trangthaigiaohang`
+ALTER TABLE `trangthaidonhang`
   ADD PRIMARY KEY (`MATRANGTHAI`),
   ADD KEY `MOTATRANGTHAI` (`MOTATRANGTHAI`);
 
@@ -489,7 +502,7 @@ ALTER TABLE `ct_phieunhap`
 -- Các ràng buộc cho bảng `hoadon`
 --
 ALTER TABLE `hoadon`
-  ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`MATRANGTHAI`) REFERENCES `trangthaigiaohang` (`MATRANGTHAI`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`MATRANGTHAI`) REFERENCES `trangthaidonhang` (`MATRANGTHAI`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hoadon_ibfk_5` FOREIGN KEY (`MANV`) REFERENCES `nhanvien` (`MANV`),
   ADD CONSTRAINT `hoadon_ibfk_6` FOREIGN KEY (`MAKH`) REFERENCES `khachhang` (`MAKH`),
   ADD CONSTRAINT `hoadon_ibfk_7` FOREIGN KEY (`MAKM`) REFERENCES `khuyenmai` (`MAKM`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -12,7 +12,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/CuaHangNoiThat/my-css.css">
     <script src="/CuaHangNoiThat/processFunc.js"></script>
-    <title>Giỏ Hàng</title>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        paypal.Button.render({
+            // Configure environment
+            env: 'sandbox',
+            client: {
+                sandbox: 'ATS7UmLxz0243HbSNH9Q7NnFDW04fAMDNxtKuVBna0KYGNS8VMdHEFG4jbrrl8nhx_sce8wO8bdmrylS',
+                production: 'demo_production_client_id'
+            },
+            // Customize button (optional)
+            locale: 'en_US',
+            style: {
+                size: 'small',
+                color: 'gold',
+                shape: 'pill',
+            },
+
+            // Enable Pay Now checkout flow (optional)
+            commit: true,
+
+            // Set up a payment
+            payment: function(data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: $tong,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+            // Execute the payment
+            onAuthorize: function(data, actions) {
+                return actions.payment.execute().then(function() {
+                    // Show a confirmation message to the buyer
+                    window.alert('Cảm ơn đã mua hàng !!!');
+                    orderCartWithPayPal();
+                });
+            }
+        }, '#paypal-button');
+    </script>
+    <title>Thanh Toán</title>
 </head>
 
 <body>
@@ -91,11 +132,45 @@
         </div>
     </nav><br>
     <h2 class="title">
-        <span>GIỎ HÀNG</span>
+        <span>THANH TOÁN</span>
     </h2><br>
     <div style="width: 80%;margin-left: 10%;">
         <table class="table" style="width: 100%;" id="shopping-cart-id"></table>
+
     </div>
+
+    <table class="table" style="font-family: 'Times New Roman', Times, serif;width: 50%;margin-left: 10%;">
+        <tbody>
+            <tr>
+                <td>Địa chỉ nhận hàng</td>
+                <td>
+                    <?php echo $_SESSION['account']['DIACHI']; ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Phương thức thanh toán</td>
+                <td>
+                    <select name="" id="paypal_cart" style="width: 20rem;">
+                        <option value="1">Thanh toán khi nhận hàng</option>
+                        <option value="0">Thanh toán online</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="online_pay">
+                <td>Thanh toán qua paypal</td>
+                <td>
+                    <div id="paypal-button"></div>
+                </td>
+            </tr>
+            <tr id="offline_pay">
+                <td>Thanh toán qua khi nhận hàng</td>
+                <td>
+                    <button onclick="orderCart()" style="background-color: black;color: white;padding: 0 1rem 0 1rem;">Thanh toán</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <div class="footer-container">
         <div class="footer">
             <img src="/CuaHangNoiThat/public/image/logo.png" alt="">
@@ -120,7 +195,30 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $(".customer_input_address").hide();
+            $("#online_pay").hide();
+
+            $("#paypal_cart").change(function() {
+                $value = parseInt($("#paypal_cart").val());
+                switch ($value) {
+                    case 0: {
+                        $("#online_pay").show();
+                        $("#offline_pay").hide();
+                        break;
+                    }
+                    case 1: {
+                        $("#online_pay").hide();
+                        $("#offline_pay").show();
+
+                        break;
+                    }
+                }
+            })
+        })
+
         function loadCart() {
+            $tong=0;
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getCart',
                 success: function(data) {
@@ -167,8 +265,6 @@
                                     '<td colspan="2" style="text-align: end;">' +
                                     '<div class="total-price">' + formatter.format($sum) + '<sup>đ</sup>' +
                                     '</div>' +
-                                    '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p>' +
-                                    '<input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
                                     '</td>' +
                                     '</tr>';
 
@@ -198,14 +294,12 @@
                                     '<div class="total-price">' + formatter.format($sum * (1 - subdata.PHANTRAMGIAM / 100)) +
                                     '</div>' +
                                     '</td>' +
-                                    '</tr>' +
-                                    '<tr><td colspan="4"></td>' +
-                                    '<td>' +
-                                    '<p style="font-size: 12px;">Tiền vận chuyển tính khi thanh toán</p><input type="button" onclick="orderCart();" value="ĐẶT HÀNG" class="cart-btn">' +
-                                    '</td>' +
                                     '</tr>';
                             }
 
+                           
+                            $tong=Math.round($sum*(1-subdata.PHANTRAMGIAM/100)/23080); 
+                                                        
                             $("#shopping-cart-id").html($xhtml);
 
                         }
@@ -217,66 +311,47 @@
             loadCart();
         });
 
-        function changeNumberCart($id) {
-            $number = ($("#number-product-item-" + $id).val());
-            if (!Number.isInteger(parseInt($number)) || parseInt($number) != $number) {
-                loadCart();
-            } else if ($number <= 0) {
-                if (confirm('Số lượng sản phẩm phải lớn hơn 0. Bạn có muốn xóa sản phẩm này không ?')) {
-                    $.ajax({
-                        url: '/CuaHangNoiThat/Admin/deleteCartItem/' + $id,
-                        success: function(data) {
-                            alert(data);
-                        }
-                    })
-                    loadCart();
-                } else {
 
-                    loadCart();
-                }
-            } else {
-                $.ajax({
-                    url: '/CuaHangNoiThat/Admin/checkNumberCart/' + $id + '/' + $number,
-                    success: function(data) {
-                        var data = JSON.parse(data);
-                        if (data.SMS != "success") {
-                            alert(data.SMS);
-                        }
-                        loadCart();
 
-                    }
-                })
-            }
-        }
-
-        function deleteCartItem($id) {
-            if (confirm('Bạn có muốn xóa sản phẩm này không ?')) {
-                $.ajax({
-                    url: '/CuaHangNoiThat/Admin/deleteCartItem/' + $id,
-                    success: function(data) {
-                        alert(data);
-                    }
-                })
-                loadCart();
-            }
-        }
 
         function orderCart() {
             $.ajax({
-                url: '/CuaHangNoiThat/Admin/confirmCart',
+                url: '/CuaHangNoiThat/Admin/orderCart/0',
                 success: function(data) {
                     var data = JSON.parse(data);
                     console.log(data);
                     if (data.SMS == "NOT_LOGIN") {
                         alert("Vui lòng đăng nhập để tiếp tục");
                         window.location.href = "/CuaHangNoiThat/DangNhap?return=GioHang"
-                    }else if(data.SMS === "EMPTY"){
-                        alert('Giỏ hàng rỗng ');
+                    } else if(data.SMS === 'Đặt hàng thành công'){
+                        alert(data.SMS);
+                        window.location.href='/CuaHangNoiThat/TrangChu';
                     }
-                     else {
-                        window.location.href = data.URL;
+                    else{
+                        alert(data.SMS);
                     }
+                    
+                }
+            })
+        }
 
+        function orderCartWithPayPal(){
+            $.ajax({
+                url: '/CuaHangNoiThat/Admin/orderCart/1',
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    console.log(data);
+                    if (data.SMS == "NOT_LOGIN") {
+                        alert("Vui lòng đăng nhập để tiếp tục");
+                        window.location.href = "/CuaHangNoiThat/DangNhap?return=GioHang"
+                    } else if(data.SMS === 'Đặt hàng thành công'){
+                        alert(data.SMS);
+                        //window.location.href='/CuaHangNoiThat/TrangChu';
+                    }
+                    else{
+                        alert(data.SMS);
+                    }
+                    
                 }
             })
         }
