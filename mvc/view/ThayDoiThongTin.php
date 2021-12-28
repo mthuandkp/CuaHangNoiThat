@@ -151,6 +151,9 @@
                 success: function(data) {
                     var data = JSON.parse(data);
                     alert(data.SMS);
+                    if(data.SMS === 'Cập nhật thành công'){
+                        window.location.href = '/CuaHangNoiThat';
+                    }
                 }
             });
         }

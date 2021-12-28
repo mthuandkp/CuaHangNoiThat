@@ -81,9 +81,8 @@ class KhachHangDB extends ConnectionDB
         $cusAddr = $customer['DIACHI'];
         $cusPhone = $customer['SDT'];
         $cusStatus = $customer['TRANGTHAI'];
-        $cusPoints = $customer['DIEMTL'];
 
-        $qry = "INSERT INTO khachhang (MAKH, TENKH,NGAYSINH,GIOITINH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI, DIEMTL) VALUES ('$cusId', '$cusName','$customer[NGAYSINH]','$customer[GIOITINH]', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus, $cusPoints);";
+        $qry = "INSERT INTO khachhang (MAKH, TENKH,NGAYSINH,GIOITINH, TENDN, MATKHAU, DIACHI, SDT, TRANGTHAI) VALUES ('$cusId', '$cusName','$customer[NGAYSINH]','$customer[GIOITINH]', '$cusNameLogin', '$cusPass', '$cusAddr', '$cusPhone', $cusStatus);";
         if (mysqli_query($this->conn, $qry) == false) {
             return false;
         }
@@ -133,8 +132,7 @@ class KhachHangDB extends ConnectionDB
             ->setCellValue('D'.$numRow, 'Tên Đăng Nhập')
             ->setCellValue('E'.$numRow, 'Địa Chỉ')
             ->setCellValue('F'.$numRow, 'SĐT')
-            ->setCellValue('G'.$numRow, 'Trạng Thái')
-            ->setCellValue('H'.$numRow, 'Điểm Tích Lũy');
+            ->setCellValue('G'.$numRow, 'Trạng Thái');
             
 
             foreach($staffList as $value){
@@ -146,8 +144,7 @@ class KhachHangDB extends ConnectionDB
                 ->setCellValue('D'.$numRow, $value['TENDN'])
                 ->setCellValue('E'.$numRow, $value['DIACHI'])
                 ->setCellValue('F'.$numRow, $value['SDT'])
-                ->setCellValue('G'.$numRow, $value['TRANGTHAI'])
-                ->setCellValue('H'.$numRow, $value['DIEMTL']);
+                ->setCellValue('G'.$numRow, $value['TRANGTHAI']);
             }
 
             $objPHPExcel->setActiveSheetIndex(0);

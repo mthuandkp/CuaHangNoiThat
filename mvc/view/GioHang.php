@@ -273,7 +273,7 @@
                     }else if(data.SMS === "EMPTY"){
                         alert('Giỏ hàng rỗng ');
                     }
-                     else {
+                    else {
                         window.location.href = data.URL;
                     }
 

@@ -1195,7 +1195,25 @@ class Admin extends Controller
             $result['SMS'] = 'EMPTY';
         }
         else{
-            $result['URL'] = '/CuaHangNoiThat/GioHang/ThanhToan';
+             //Duyet tat ca san pham trong gio hang check so luong
+             $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
+             $objProduct = $this->getModel('SanPhamDB');
+             foreach ($cart as $key => $value) {
+                 $product = $objProduct->getProductById($value['MASP']);
+                 $cart[$key]['ERROR'] = '';
+ 
+                 if ($product['SOLUONG'] < $value['amount']) {
+                     $cart[$key]['ERROR'] = "Số lượng tối đa " . $product['SOLUONG'];
+                     $valid = false;
+                 }
+             }
+             $_SESSION['cart'] = $cart;
+             if($valid){
+                 $result['URL'] = '/CuaHangNoiThat/GioHang/ThanhToan';
+             }
+             else{
+                $result['URL'] = '/CuaHangNoiThat/GioHang/';
+             }
         }
         echo json_encode($result);
     }

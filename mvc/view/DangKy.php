@@ -101,7 +101,7 @@
             <div class="form-group" style="width: 80%;margin-left:10%;">
                 <input style="font-family: 'Times New Roman', Times, serif;" type="date" class="form-control" id="birthday">
             </div>
-            <label for="exampleInputEmail1">Tên Đăng Nhập</label>
+            <label for="exampleInputEmail1">Tên Đăng Nhập (@gmail.com)</label>
             <div class="form-group" style="width: 80%;margin-left:10%;">
                 <input style="font-family: 'Times New Roman', Times, serif;" type="text" class="form-control" id="unameCus">
             </div>

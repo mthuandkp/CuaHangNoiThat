@@ -346,7 +346,7 @@
                         window.location.href = "/CuaHangNoiThat/DangNhap?return=GioHang"
                     } else if(data.SMS === 'Đặt hàng thành công'){
                         alert(data.SMS);
-                        //window.location.href='/CuaHangNoiThat/TrangChu';
+                        window.location.href='/CuaHangNoiThat/TrangChu';
                     }
                     else{
                         alert(data.SMS);
@@ -354,6 +354,8 @@
                     
                 }
             })
+
+            loadCart();
         }
     </script>
 </body>

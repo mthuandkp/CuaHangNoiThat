@@ -62,8 +62,10 @@
                 </div>
                 <select class="form-control" id="inputBillStatus">
                     <option value="TT01">CHỜ XÁC NHẬN</option>
-                    <option value="TT02">ĐÃ XÁC NHẬN</option>
+                    <option value="TT02">ĐÃ XÁC NHẬN - ĐANG GIAO</option>
                     <option value="TT03">ĐÃ NHẬN</option>
+                    <option value="TT04">KHÁCH HÀNG HỦY</option>
+                    <option value="TT05">NHÂN VIÊN HỦY</option>
                 </select>
             </div>
         </div>
@@ -167,6 +169,9 @@
                                 xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xác nhận hóa đơn</button>';
                                 xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                             }
+                            else if(data[i].MATRANGTHAI == 'TT02'){
+                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';                               
+                            }
 
                             xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
                                 '<a href="/CuaHangNoiThat/Admin/XemChiTietHD/' + data[i].MAHD + '">' +
@@ -235,6 +240,8 @@
                             if (data[i].MATRANGTHAI == 'TT01') {
                                 xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
                                 xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
+                            }else if(data[i].MATRANGTHAI == 'TT02'){
+                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';                               
                             }
 
                             xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +

@@ -115,7 +115,6 @@
                         '<th scope="col">Địa Chỉ</th>' +
                         '<th scope="col">SĐT</th>' +
                         '<th scope="col">Trạng Thái</th>' +
-                        '<th scope="col">Điểm Tích Lũy</th>' +
                         '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                         '</tr>' +
                         '</thead>' +
@@ -131,7 +130,6 @@
                             '<td>' + data[$i].DIACHI + '</td>' +
                             '<td>' + data[$i].SDT + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
-                            '<td>' + data[$i].DIEMTL + '</td>' +
                             '<td>' +
                             '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
                             '</td>' +
@@ -179,7 +177,6 @@
                         '<th scope="col">Địa Chỉ</th>' +
                         '<th scope="col">SĐT</th>' +
                         '<th scope="col">Trạng Thái</th>' +
-                        '<th scope="col">Điểm Tích Lũy</th>' +
                         '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                         '</tr>' +
                         '</thead>' +
@@ -221,7 +218,6 @@
                             '<td>' + data[$i].DIACHI + '</td>' +
                             '<td>' + data[$i].SDT + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
-                            '<td>' + data[$i].DIEMTL + '</td>' +
                             '<td>' +
                             '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
                             '</td>' +
@@ -294,7 +290,6 @@
                         '<th scope="col">Địa Chỉ</th>' +
                         '<th scope="col">SĐT</th>' +
                         '<th scope="col">Trạng Thái</th>' +
-                        '<th scope="col">Điểm Tích Lũy</th>' +
                         '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                         '</tr>' +
                         '</thead>' +
@@ -335,7 +330,6 @@
                             '<td>' + data[$i].DIACHI + '</td>' +
                             '<td>' + data[$i].SDT + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã Khóa') + '</td>' +
-                            '<td>' + data[$i].DIEMTL + '</td>' +
                             '<td>' +
                             '<button onclick="block_unblock_Customer(\'' + data[$i].MAKH + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: ' + (data[$i].TRANGTHAI == 1 ? 'red' : 'green') + ';">' + (data[$i].TRANGTHAI == 1 ? 'Khóa Tài Khoản' : 'Mở khóa tài khoản') + '</button>' +
                             '</td>' +
