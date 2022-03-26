@@ -289,4 +289,16 @@ class PhieuNhapDB extends ConnectionDB
         }
         return $result;
     }
+
+
+    function getAllReceiptInMonth($month){
+        $data = $this->getAllReceipt();
+        $result = array();
+        foreach($data as $value){
+            if(strpos($value['NGAYLAP'],$month) !== false){
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
 }

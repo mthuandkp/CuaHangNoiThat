@@ -102,20 +102,14 @@
             return arr[1] + '/' + arr[0].slice(2)
         }
 
-        function printBillTOImage() {
-            html2canvas(document.querySelector("#statisticExport")).then(canvas => {
-                canvas.toBlob(function(blob) {
-                    saveAs(blob, "Bill_Receipt_TimeLine.png");
-                });
-            });
-        }
+        
     </script>
 </head>
 
 <body>
     <div>
-    <button class="btn btn-warning" onclick="window.location.href='/CuaHangNoiThat/Admin/ThongKe_2'">Trở về</button>
-        <button class="btn btn-primary" onclick="printBillTOImage()">Xuất Hình Ảnh</button>
+    <button class="btn btn-warning" onclick="window.location.href='/CuaHangNoiThat/Admin/ThongKe'">Trở về</button>
+        <button class="btn btn-primary" onclick="printToImage('#statisticExport','ThongKeTheoThoiGianTu_<?php echo $data['time']['from'];?>_den_<?php echo $data['time']['to'];?>')">Xuất Hình Ảnh</button>
     </div>
     <div style="width: 1200px;" id="statisticExport">
         <div style="width: 100%;background-color: lightgray;">

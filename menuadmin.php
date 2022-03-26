@@ -9,8 +9,8 @@
           <a class="nav-link" href="/CuaHangNoiThat/Admin">Trang Chủ</a>
         </li>
         <?php
-          if(isset($_SESSION['staff'])){
-            echo '<li class="nav-item dropdown active">
+        if (isset($_SESSION['staff'])) {
+          echo '<li class="nav-item dropdown active">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Admin Quản Lý
             </a>
@@ -28,7 +28,7 @@
           <li class="nav-item active">
             <a class="nav-link" href="/CuaHangNoiThat/Admin/ThongKe">Thống kê</a>
           </li>';
-          }
+        }
         ?>
       </ul>
     </div>
@@ -37,16 +37,15 @@
       if (isset($_SESSION['staff'])) {
         echo '<a href="/CuaHangNoiThat/Admin/DangXuat" style="float: right;">
         <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: red;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Xuất</button>
-      </a><h4 style="float: right;margin-right: 1rem;color:white">'.$_SESSION['staff']['TENNV'].'</h4>';
-      }
-      else{
+      </a><h4 style="float: right;margin-right: 1rem;color:white">' . $_SESSION['staff']['TENNV'] . '</h4>';
+      } else {
         echo '<a href="/CuaHangNoiThat/Admin/DangNhap" style="float: right;">
         <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: green;color:white;font-weight: 600;border-radius: 0.5rem;" type="submit">Đăng Nhập</button>
       </a>';
       }
       ?>
-      
-      
+
+
     </div>
 
   </nav>
@@ -55,6 +54,7 @@
 
   <!doctype html>
   <html lang="en">
+
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -77,13 +77,21 @@
     <script src="/CuaHangNoiThat/html2canvas.js"></script>
     <script>
       var formatter = new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
+        style: 'currency',
+        currency: 'VND',
 
-            // These options are needed to round to whole numbers if that's what you want.
-            //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-            //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+        // These options are needed to round to whole numbers if that's what you want.
+        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+      });
+
+      function printToImage(id,name) {
+        html2canvas(document.querySelector(id)).then(canvas => {
+          canvas.toBlob(function(blob) {
+            saveAs(blob, name+".png");
+          });
         });
+      }
     </script>
 
   </body>

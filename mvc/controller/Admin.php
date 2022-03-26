@@ -1372,11 +1372,7 @@ class Admin extends Controller
         $this->View('AdminThongKe', 'Admin Thống Kê');
     }
 
-    function ThongKe_2()
-    {
-        require_once('./menuadmin.php');
-        $this->View('AdminThongKe_2', 'Admin Thống Kê Nâng Cao');
-    }
+    
     function DangNhap()
     {
         require_once('./menuadmin.php');
@@ -1593,6 +1589,34 @@ class Admin extends Controller
         return $listBill;
     }
 
+    function statisticReceiptInMonth($time){
+        try {
+            $arrTime = explode('-', $time);
+           
+
+            if (count($arrTime) != 2 || !is_numeric($arrTime[0]) || !is_numeric($arrTime[1])) {
+                throw new Exception();
+            }
+
+
+            $objReceipt = $this->getModel("PhieuNhapDB");
+            //getBillDetailById
+            $listReceipt = $objReceipt->getAllReceiptInMonth($time);
+
+            foreach ($listReceipt as $key => $value) {
+                $listReceipt[$key]['DETAIL'] = $objReceipt->getReceiptDetailById($value['MAPN']);
+            }
+        } catch (Exception $ex) {
+            $sms = array(
+                'sms' => 'Input invalid, input must be have format mm-yyyy'
+            );
+
+            echo json_encode($sms);
+        }
+
+        return $listReceipt;
+    }
+
     function ThongKeTheoTG($from, $to)
     {
         $data['bill'] = $this->statisticBillByTime($from, $to);
@@ -1605,11 +1629,29 @@ class Admin extends Controller
 
     function ThongKeBanHang($time)
     {
-        $data['bill'] = $this->statisticBillInMonth($time);
+        $objProduct = $this->getModel("SanPhamDB");
+        $objTypeProduct = $this->getModel("LoaiSanPhamDB");
 
+        $data['bill'] = $this->statisticBillInMonth($time);
+        $data['product'] = $objProduct->getAllProduct();
+        $data['type_product'] = $objTypeProduct->getAllProductType();
         $data['time'] = $time;
 
         require_once('./menuadmin.php');
         $this->View('AdminThongKe_Sale', 'Thống kê bán hàng trong tháng', $data);
+    }
+
+    function ThongKeNhapHang($time)
+    {
+        $objProduct = $this->getModel("SanPhamDB");
+        $objTypeProduct = $this->getModel("LoaiSanPhamDB");
+
+        $data['receipt'] = $this->statisticReceiptInMonth($time);
+        $data['product'] = $objProduct->getAllProduct();
+        $data['type_product'] = $objTypeProduct->getAllProductType();
+        $data['time'] = $time;
+
+        require_once('./menuadmin.php');
+        $this->View('AdminThongKe_WareHouse', 'Thống kê nhập hàng trong tháng', $data);
     }
 }

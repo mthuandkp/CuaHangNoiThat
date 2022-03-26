@@ -101,3 +101,11 @@ function formatDateToddmmyyyy(date) {
     $year = input.substring(0, 4);
     return $day + '-' + $month + '-' + $year;
 }
+
+function printToImage($id) {
+    html2canvas(document.querySelector($id)).then(canvas => {
+        canvas.toBlob(function(blob) {
+            saveAs(blob, "Bill_Receipt_TimeLine.png");
+        });
+    });
+}
