@@ -47,8 +47,24 @@ class HoaDonDB extends ConnectionDB
     function getBillDetailById($billId)
     {
         $data = array();
-        $query = "SELECT * FROM ct_hoadon WHERE MAHD = '" . $billId . "'";
+        $query = "SELECT * FROM `ct_hoadon` WHERE MAHD = '" . $billId . "'";
         $rs = mysqli_query($this->conn, $query);
+        
+        while ($row = mysqli_fetch_array($rs)) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    function getBillDetailByIdStored($billId)
+    {
+        $data = array();
+        $query = "CALL `getBillDetailById`('$billId');";
+        $rs = mysqli_query($this->conn, $query);
+
+        echo '<br>';
+        print_r($rs);
+        
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;
         }
@@ -77,6 +93,41 @@ class HoaDonDB extends ConnectionDB
         }
         return $data;
     }
+
+    function getAllBillFT($from,$to)
+    {
+        $data = $this->getAllBill();
+        $result = array();
+        foreach($data as $value){
+            if(strtotime($from) <= strtotime($value['NGAYLAP']) && strtotime($to) >= strtotime($value['NGAYLAP'])){
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+
+    function getAllBillInMonth($month){
+        $data = $this->getAllBill();
+        $result = array();
+        foreach($data as $value){
+            if(strpos($value['NGAYLAP'],$month) !== false){
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+
+    function getAllBillStored($from,$to){
+        $data = array();
+        $query = "CALL `getAllBillFromTo`('$from', '$to');";
+        $rs = mysqli_query($this->conn, $query);
+
+        while ($row = mysqli_fetch_array($rs)) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
     //Tao ma hoa don tiep theo
     function createNextBillId()
     {

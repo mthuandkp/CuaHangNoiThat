@@ -83,6 +83,16 @@ class NhanVienDB extends ConnectionDB
         return false;
     }
 
+    function updateRightOfStaff($id,$right){
+        $qry = "UPDATE `nhanvien` SET `QUYEN`='$right' WHERE `MANV`='$id';";
+        
+        
+        if(mysqli_query($this->conn,$qry)){
+            return true;
+        }
+        return false;
+    }
+
     function exportExcel()
     {
         $result = array();

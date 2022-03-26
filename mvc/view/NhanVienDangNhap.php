@@ -18,7 +18,7 @@
     
     <fieldset>
         <legend><i class="fa fa-user-circle-o" aria-hidden="true"></i></legend>
-        <p>ĐĂNG NHẬP ADMIN</p>
+        <p>ĐĂNG NHẬP NHÂN VIÊN</p>
         <input type="text" id="uname" name="uname" placeholder="a@gmail.com">
         <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorUname">Tên đăng nhập không hợp lệ</p>
         <input type="password" id="pass" name="pass" placeholder="*********">
@@ -72,14 +72,13 @@
                     $("#errorMessage").show();
                 }
                 else if($result === 'NOT_ADMIN'){
-                    $("#errorMessage").html("Tài khoản của bạn không phải là admin");
-                    $("#errorMessage").show();
-                    $.ajax({
-                        url: '/CuaHangNoiThat/Admin/DangXuat'
-                    })
+                    window.location.href = "/CuaHangNoiThat/NhanVien";
                 }
                  else {
-                    window.location.href = "./";
+                    $("#errorMessage").html("Tài khoản của bạn không phải là Nhân viên");
+                    $("#errorMessage").show();
+                    
+                    
                 }
             }
         });

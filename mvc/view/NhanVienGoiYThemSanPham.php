@@ -23,18 +23,6 @@
 
 <body>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
-    <?php 
-        if (isset($_SESSION['staff'])) {
-            echo '<div style="width: 80%;margin-left: 10%;">
-            <a href="/CuaHangNoiThat/Admin/GoiYThemSP"><button type="button" class="btn btn-primary btn-lg optionButton">Gợi ý thêm sản phẩm</button></a>
-            <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
-            <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
-                <input type="text" class="form-control" id="searchValue" placeholder="Nhập thông tin sản phẩm..." style="float: right;width: 20rem;">
-            </div>
-        </div>  ';
-        }
-    ?>
-    
 
     <div style="width: 80%;margin-left: 10%;margin-top: 1rem;">
         <div class="form-row">
@@ -103,88 +91,13 @@
             </div>
             <button onclick="searchMultiValue();" type="submit" class="btn btn-primary">Tìm kiếm </button>
         </div>
-        <div>
-            <button type="button" class="btn btn-primary" onclick="sortData('GIA','UP');">Giá tăng dần</button>
-            <button type="button" class="btn btn-primary" onclick="sortData('GIA','DOWN');">Giá giảm dần</button>
-            <button type="button" class="btn btn-primary" onclick="sortData('SOLUONG','UP');">Số lượng tăng dần</button>
-            <button type="button" class="btn btn-primary" onclick="sortData('SOLUONG','DOWN');">Số lượng giảm dần</button>
-        </div>
+
     </div>
 
     <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;"></table>
 
-     <!-- Thong bao xuat excel thanh cong -->
-     <div id="openExportBill" style="width: 60%;background-color: #007bff; position: absolute; top: 25%; height: auto; padding: 2rem; border-radius: 1rem; color: white;left:20%;font-size: 1.3rem;border: 2px solid black;"></div>
-
-
     <script>
         loadTable();
-
-        function sortData($param,$type){
-            $.ajax({
-                url: '/CuaHangNoiThat/Admin/getAllProduct',
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    $xhtml = '<thead>' +
-                        '<tr>' +
-                        '<th scope="col">#</th>' +
-                        '<th scope="col">Mã Sản Phẩm</th>' +
-                        '<th scope="col" style="width: 20rem;">Tên Sản Phẩm</th>' +
-                        '<th scope="col">Loại</th>' +
-                        '<th scope="col">Giá</th>' +
-                        '<th scope="col">Số Lượng</th>' +
-                        '<th scope="col" style="width: 10rem;">Hình Ảnh</th>' +
-                        '<th scope="col">Trạng Thái</th>' +
-                        '<th scope="col">% Giảm</th>' +
-                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
-                        '</tr>' +
-                        '</thead><tbody>';
-
-
-                    // sort data
-                    for(var i = 0;i < data.length-1;i++){
-                        for(var j = i+1;j < data.length;j++){
-                            if($type == 'UP'){
-                                if(parseInt(data[i][$param]) > parseInt(data[j][$param])){
-                                    var tmp = data[i];
-                                    data[i] = data[j];
-                                    data[j] = tmp;
-                                }
-                            }
-                            else{
-                                if(parseInt(data[i][$param]) < parseInt(data[j][$param])){
-                                    var tmp = data[i];
-                                    data[i] = data[j];
-                                    data[j] = tmp;
-                                }
-                            }
-                        }
-                    }
-
-                    $count = 1;
-                    for (var key in data) {
-                        $obj = data[key];
-                        $xhtml += '<tr>' +
-                            '<th scope="row">' + ($count++) + '</th>' +
-                            '<td>' + $obj.MASP + '</td>' +
-                            '<td>' + $obj.TENSP + '</td>' +
-                            '<td>' + $obj.MALOAI + '</td>' +
-                            '<td>' + formatter.format($obj.GIA) + '</td>' +
-                            '<td>' + $obj.SOLUONG + '</td>' +
-                            '<td><img src="../public/image/HINHANH/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
-                            '<td>' + ($obj.TRANGTHAI == 1 ? 'Còn  CửaTrong Hàng' : 'Đã Xóa') + '</td>' +
-                            '<td>' + $obj.PHANTRAMGIAM + '%</td>';
-                        if ($obj.TRANGTHAI == 1) {
-                            $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/'+$obj.MASP+'"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\''+$obj.MASP+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
-                        }
-                        $xhtml += '</tr>';
-                    }
-
-                    $xhtml += '</tbody>';
-                    $("#tableContent").html($xhtml);
-                }
-            });
-        }
 
         function loadTable() {
             $.ajax({
@@ -209,18 +122,21 @@
                     $count = 1;
                     for (var key in data) {
                         $obj = data[key];
+                        if ($obj.SOLUONG > 10) {
+                            continue;
+                        }
                         $xhtml += '<tr>' +
                             '<th scope="row">' + ($count++) + '</th>' +
                             '<td>' + $obj.MASP + '</td>' +
                             '<td>' + $obj.TENSP + '</td>' +
                             '<td>' + $obj.MALOAI + '</td>' +
-                            '<td>' + formatter.format($obj.GIA) + '</td>' +
+                            '<td>' + $obj.GIA + '</td>' +
                             '<td>' + $obj.SOLUONG + '</td>' +
                             '<td><img src="../public/image/HINHANH/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
                             '<td>' + ($obj.TRANGTHAI == 1 ? 'Còn  CửaTrong Hàng' : 'Đã Xóa') + '</td>' +
                             '<td>' + $obj.PHANTRAMGIAM + '%</td>';
                         if ($obj.TRANGTHAI == 1) {
-                            $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/'+$obj.MASP+'"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\''+$obj.MASP+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
+                            $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/' + $obj.MASP + '"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\'' + $obj.MASP + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
                         }
                         $xhtml += '</tr>';
                     }
@@ -257,6 +173,9 @@
                         $count = 1;
                         for (var key in data) {
                             $obj = data[key];
+                            if ($obj.SOLUONG > 10) {
+                                continue;
+                            }
                             $isSearchElement = false;
 
                             if (convertStringToEnglish($obj.MASP).includes($valueSearch)) {
@@ -290,13 +209,13 @@
                                 '<td>' + $obj.MASP + '</td>' +
                                 '<td>' + $obj.TENSP + '</td>' +
                                 '<td>' + $obj.MALOAI + '</td>' +
-                                '<td>' + formatter.format($obj.GIA) + '</td>' +
+                                '<td>' + $obj.GIA + '</td>' +
                                 '<td>' + $obj.SOLUONG + '</td>' +
                                 '<td><img src="../public/image/HINHANH/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
                                 '<td>' + ($obj.TRANGTHAI == 1 ? 'Còn Trong Cửa Hàng' : 'Đã Xóa') + '</td>' +
                                 '<td>' + $obj.PHANTRAMGIAM + '%</td>';
                             if ($obj.TRANGTHAI == 1) {
-                                $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/'+$obj.MASP+'"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\''+$obj.MASP+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
+                                $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/' + $obj.MASP + '"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\'' + $obj.MASP + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
                             }
                             $xhtml += '</tr>';
                         }
@@ -339,6 +258,18 @@
                 $statusDecrease = convertStringToEnglish($("#inputStatusDecreaseProduct").val());
             }
 
+
+            // console.log($idProduct);
+            // console.log($nameProduct);
+            // console.log($idTypeProduct);
+            // console.log($statusProduct);
+            // console.log($minPrice);
+            // console.log($maxPrice);
+            // console.log($statusDecrease);
+
+
+
+
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getAllProduct',
                 success: function(data) {
@@ -362,6 +293,9 @@
                     $count = 1;
                     for (var key in data) {
                         $obj = data[key];
+                        if($obj.SOLUONG > 10){
+                            continue;
+                        }
                         if ($idProduct != '!' && !convertStringToEnglish($obj.MASP).includes($idProduct)) {
                             continue;
                         }
@@ -374,10 +308,10 @@
                         if ($statusProduct != '!' && $obj.TRANGTHAI != $statusProduct) {
                             continue;
                         }
-                        if ($minPrice != '!' && $minPrice != '' && parseInt($minPrice) > parseInt($obj.GIA)) {
+                        if ($minPrice != '!' && $minPrice != '' && $minPrice > $obj.GIA) {
                             continue;
                         }
-                        if ($maxPrice != '!' && $maxPrice != '' && parseInt($maxPrice) < parseInt($obj.GIA)) {
+                        if ($maxPrice != '!' && $maxPrice != '' && $maxPrice < $obj.GIA) {
                             continue;
                         }
                         if ($statusDecrease != '!' &&
@@ -390,13 +324,13 @@
                             '<td>' + $obj.MASP + '</td>' +
                             '<td>' + $obj.TENSP + '</td>' +
                             '<td>' + $obj.MALOAI + '</td>' +
-                            '<td>' + formatter.format($obj.GIA) + '</td>' +
+                            '<td>' + $obj.GIA + '</td>' +
                             '<td>' + $obj.SOLUONG + '</td>' +
                             '<td><img src="../public/image/HINHANH/' + $obj.HINHANH + '" alt="empty_Image" style="width: 10rem;height:8rem;"></td>' +
                             '<td>' + ($obj.TRANGTHAI == 1 ? 'Còn Trong Cửa Hàng' : 'Đã Xóa') + '</td>' +
                             '<td>' + $obj.PHANTRAMGIAM + '%</td>';
                         if ($obj.TRANGTHAI == 1) {
-                            $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/'+$obj.MASP+'"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\''+$obj.MASP+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
+                            $xhtml += '<td><a href="/CuaHangNoiThat/Admin/SuaSanPham/' + $obj.MASP + '"><button class="btn btn-primary btnControl" type="submit" style="background-color: green;">Sửa sản phẩm</button></a><button onclick="deleteElement(\'' + $obj.MASP + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;margin-top: 1rem;">Xóa Sản phẩm</button></td>';
                         }
                         $xhtml += '</tr>';
                     }
@@ -407,54 +341,27 @@
             });
         }
 
-        function deleteElement($idProduct){
-            
-
-            if(!confirm("Bạn có chắc chắn muốn xóa sản phẩm này không ? Sản phẩm sẽ bị vô hiệu vĩnh viễn khi XÓA")){
+        function deleteElement($idProduct) {
+            if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này không ? Sản phẩm sẽ bị vô hiệu vĩnh viễn khi XÓA")) {
                 return;
             }
 
             $.ajax({
-                url:'/CuaHangNoiThat/Admin/disableProductStatus',
-                data :{id:$idProduct},
-                method:'post',
-                success : function(result){
+                url: '/CuaHangNoiThat/Admin/disableProductStatus',
+                data: {
+                    id: $idProduct
+                },
+                method: 'post',
+                success: function(result) {
                     console.log(result);
-                    if(result == 0){
+                    if (result == 0) {
                         alert("Xóa Sản Phẩm thành công");
                         loadTable();
-                    }
-                    else{
+                    } else {
                         alert("Lỗi khi xóa !!!");
                     }
                 }
             });
-        }
-
-        $('#openExportBill').hide();
-        function exportExcel() {
-            $.ajax({
-                url: '/CuaHangNoiThat/Admin/exportProductToExcel',
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    console.log(data);
-                    if (data.ERROR == 0) {
-                        $xhtml = 'Xuất hóa đơn thành công file được lưu tại (' + data.NAME + '). Bạn có muốn mở file không ?' +
-                            '<div>' +
-                            '<button class="btn btn-primary btnControl" style="background-color: white;color: #007bff;float: right;" onclick="openfile(\'' + data.NAME + '\');$(\'#openExportBill\').hide();">Mở File</button>' +
-                            '<button class="btn btn-primary btnControl" style="background-color: blue;color: white;float: right;" onclick="$(\'#openExportBill\').hide();">Đóng</button>' +
-                            '</div>';
-                        $('#openExportBill').html($xhtml);
-                        $('#openExportBill').show();
-                    } else {
-                        alert('Lỗi khi ghi file : ' + data.ERROR);
-                    }
-                }
-            });
-        }
-        //open file
-        function openfile(file) {
-            window.location = file;
         }
     </script>
 

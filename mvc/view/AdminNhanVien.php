@@ -94,19 +94,6 @@
                     <option value="Nữ">Nữ</option>
                 </select>
             </div>
-            <div class="form-group col-md-2">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="checkRightStaff">
-                    <label class="form-check-label" for="autoSizingCheck">Quyền Nhân Viên</label>
-                </div>
-                <select class="form-control" id="inputRightStaff">
-                    <?php
-                        foreach($data['Right'] as $key=>$value){
-                            echo "<option value='$value[MAQUYEN]'>$value[TENQUYEN]</option>";
-                        }
-                    ?>
-                </select>
-            </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-2">
@@ -146,17 +133,21 @@
     <table id="tableContent" class="table" style="width: 80%;margin-left: 10%;"></table>
     <!-- Thong bao xuat excel thanh cong -->
     <div id="openExportSupplier" style="width: 60%;background-color: #007bff; position: absolute; top: 25%; height: auto; padding: 2rem; border-radius: 1rem; color: white;left:20%;font-size: 1.3rem;border: 2px solid black;"></div>
-    
+
     <script>
         $("#openExportSupplier").hide();
         loadTable();
+
+        function isExistValueInString(string, value) {
+            return string.includes(value);
+        }
 
         function loadTable() {
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getAllStaff',
                 success: function(data) {
                     var data = JSON.parse(data);
-                    
+
                     $xhtml = '<thead>' +
                         '<tr>' +
                         '<th scope="col">#</th>' +
@@ -166,9 +157,7 @@
                         '<th scope="col">Giới Tính</th>' +
                         '<th scope="col">Địa Chỉ</th>' +
                         '<th scope="col">SĐT</th>' +
-                        '<th scope="col">Quyền</th>' +
                         '<th scope="col">Tên Đăng Nhập</th>' +
-                        '<th scope="col">Mật Khẩu</th>' +
                         '<th scope="col">Trạng Thái</th>' +
                         '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                         '</tr>' +
@@ -183,19 +172,22 @@
                             '<td>' + data[$i].GIOITINH + '</td>' +
                             '<td>' + data[$i].DIACHI + '</td>' +
                             '<td>' + data[$i].SDT + '</td>' +
-                            '<td>' + data[$i].RIGHT.TENQUYEN + '</td>' +
                             '<td>' + data[$i].TENDN + '</td>' +
-                            '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
-                            if(data[$i].TRANGTHAI == 1 && data[$i].MAQUYEN != 1 && data[$i].STAFF_LOGIN != data[$i].MANV){
-                            $xhtml+= '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
-                            '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
-                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Nhân Viên</button>' +
-                            '</a>'
-                            }
+                        $rightStaff = data[$i].QUYEN;
+                        if (data[$i].TRANGTHAI == 1 && data[$i].STAFF_LOGIN != data[$i].MANV && !isExistValueInString($rightStaff,'e_right')) {
+                            $xhtml += '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
+                                '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
+                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Thông Tin</button></a>';
 
-                            $xhtml+='</td></tr>';
+
+                            $xhtml += '<a href="/CuaHangNoiThat/Admin/PhanQuyen/' + data[$i].MANV + '"><button class="btn btn-primary btnControl" type="submit" style="background-color: #f09605;margin-top: 0.3rem;">Sửa Phân Quyền</button></a>';
+
+
+                        }
+
+                        $xhtml += '</td></tr>';
                     }
                     $xhtml += '</tbody>';
                     $("#tableContent").html($xhtml);
@@ -204,14 +196,16 @@
         }
 
         function blockStaff($id) {
-            if(!confirm('Bạn có muốn xóa nhân viên này ra khỏi hệ thống hay không ? Việc xóa sẽ không thể hoàn tác khi thực hiện')){
+            if (!confirm('Bạn có muốn xóa nhân viên này ra khỏi hệ thống hay không ? Việc xóa sẽ không thể hoàn tác khi thực hiện')) {
                 return;
             }
             $.ajax({
-                url:'/CuaHangNoiThat/Admin/updateStatusStaff',
-                method:'post',
-                data:{data:$id},
-                success:function(data){
+                url: '/CuaHangNoiThat/Admin/updateStatusStaff',
+                method: 'post',
+                data: {
+                    data: $id
+                },
+                success: function(data) {
                     alert(data);
                     loadTable();
                 }
@@ -235,9 +229,7 @@
                             '<th scope="col">Giới Tính</th>' +
                             '<th scope="col">Địa Chỉ</th>' +
                             '<th scope="col">SĐT</th>' +
-                            '<th scope="col">Quyền</th>' +
                             '<th scope="col">Tên Đăng Nhập</th>' +
-                            '<th scope="col">Mật Khẩu</th>' +
                             '<th scope="col">Trạng Thái</th>' +
                             '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                             '</tr>' +
@@ -263,9 +255,6 @@
                             if (convertStringToEnglish(data[$i].DIACHI).includes($searchValue)) {
                                 $check = true;
                             }
-                            if (convertStringToEnglish(data[$i].RIGHT.TENQUYEN).includes($searchValue)) {
-                                $check = true;
-                            }
                             if (convertStringToEnglish(data[$i].TENDN).includes($searchValue)) {
                                 $check = true;
                             }
@@ -277,26 +266,28 @@
                                 continue;
                             }
                             $xhtml += '<tr>' +
-                            '<th scope="row">' + ($i + 1) + '</th>' +
-                            '<td>' + data[$i].MANV + '</td>' +
-                            '<td>' + data[$i].TENNV + '</td>' +
-                            '<td>' + (data[$i].NGAYSINH) + '</td>' +
-                            '<td>' + data[$i].GIOITINH + '</td>' +
-                            '<td>' + data[$i].DIACHI + '</td>' +
-                            '<td>' + data[$i].SDT + '</td>' +
-                            '<td>' + data[$i].RIGHT.TENQUYEN + '</td>' +
-                            '<td>' + data[$i].TENDN + '</td>' +
-                            '<td>' + (data[$i].MATKHAU) + '</td>' +
-                            '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
-                            '<td>';
-                            if(data[$i].TRANGTHAI == 1 && data[$i].MAQUYEN != 1 && data[$i].STAFF_LOGIN != data[$i].MANV){
-                            $xhtml+= '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
-                            '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
-                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Nhân Viên</button>' +
-                            '</a>'
+                                '<th scope="row">' + ($i + 1) + '</th>' +
+                                '<td>' + data[$i].MANV + '</td>' +
+                                '<td>' + data[$i].TENNV + '</td>' +
+                                '<td>' + (data[$i].NGAYSINH) + '</td>' +
+                                '<td>' + data[$i].GIOITINH + '</td>' +
+                                '<td>' + data[$i].DIACHI + '</td>' +
+                                '<td>' + data[$i].SDT + '</td>' +
+                                '<td>' + data[$i].TENDN + '</td>' +
+                                '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
+                                '<td>';
+
+                            $rightStaff = data[$i].QUYEN;
+                            if (data[$i].TRANGTHAI == 1 && data[$i].STAFF_LOGIN != data[$i].MANV && !isExistValueInString($rightStaff,'e_right')) {
+                                $xhtml += '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
+                                    '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
+                                    '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Thông Tin</button></a>';
+
+
+                                $xhtml += '<a href="/CuaHangNoiThat/Admin/PhanQuyen/' + data[$i].MANV + '"><button class="btn btn-primary btnControl" type="submit" style="background-color: #f09605;margin-top: 0.3rem;">Sửa Phân Quyền</button></a>';
                             }
 
-                            $xhtml+='</td></tr>';
+                            $xhtml += '</td></tr>';
                         }
                         $xhtml += '</tbody>';
                         $("#tableContent").html($xhtml);
@@ -318,7 +309,7 @@
             $phoneStaff = "#";
             $usernameStaff = "#";
             $statusStaff = "#";
-            
+
 
             if ($("#checkIdStaff").is(":checked")) {
                 $idStaff = convertStringToEnglish($("#inputIdStaff").val());
@@ -337,9 +328,6 @@
             }
             if ($("#checkSexStaff").is(":checked")) {
                 $sexStaff = convertStringToEnglish($("#inputSexStaff").val());
-            }
-            if ($("#checkRightStaff").is(":checked")) {
-                $rightStaff = convertStringToEnglish($("#inputRightStaff").val());
             }
             if ($("#checkAddressStaff").is(":checked")) {
                 $addressStaff = convertStringToEnglish($("#inputAddressStaff").val());
@@ -366,7 +354,7 @@
             // console.log($usernameStaff);
             // console.log($statusStaff);
             // console.log("");
-            
+
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getAllStaff',
                 success: function(data) {
@@ -381,9 +369,7 @@
                         '<th scope="col">Giới Tính</th>' +
                         '<th scope="col">Địa Chỉ</th>' +
                         '<th scope="col">SĐT</th>' +
-                        '<th scope="col">Quyền</th>' +
                         '<th scope="col">Tên Đăng Nhập</th>' +
-                        '<th scope="col">Mật Khẩu</th>' +
                         '<th scope="col">Trạng Thái</th>' +
                         '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                         '</tr>' +
@@ -412,9 +398,6 @@
                         if ($sexStaff != '#' && !convertStringToEnglish(data[$i].GIOITINH).includes($sexStaff)) {
                             continue;
                         }
-                        if ($rightStaff != '#' && parseInt($rightStaff) != parseInt(data[$i].MAQUYEN)) {
-                            continue;
-                        }
                         if ($addressStaff != '#' && !convertStringToEnglish(data[$i].DIACHI).includes($addressStaff)) {
                             continue;
                         }
@@ -427,7 +410,7 @@
                         if ($usernameStaff != '#' && !convertStringToEnglish(data[$i].TENDN).includes($usernameStaff)) {
                             continue;
                         }
-                                             
+
                         $xhtml += '<tr>' +
                             '<th scope="row">' + ($i + 1) + '</th>' +
                             '<td>' + data[$i].MANV + '</td>' +
@@ -436,19 +419,22 @@
                             '<td>' + data[$i].GIOITINH + '</td>' +
                             '<td>' + data[$i].DIACHI + '</td>' +
                             '<td>' + data[$i].SDT + '</td>' +
-                            '<td>' + data[$i].RIGHT.TENQUYEN + '</td>' +
                             '<td>' + data[$i].TENDN + '</td>' +
-                            '<td>' + (data[$i].MATKHAU) + '</td>' +
                             '<td>' + (data[$i].TRANGTHAI == 1 ? 'Đang hoạt động' : 'Đã khóa') + '</td>' +
                             '<td>';
-                            if(data[$i].TRANGTHAI == 1 && data[$i].MAQUYEN != 1 && data[$i].STAFF_LOGIN != data[$i].MANV){
-                            $xhtml+= '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
-                            '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
-                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Nhân Viên</button>' +
-                            '</a>'
-                            }
+                        $rightStaff = data[$i].QUYEN;
+                        if (data[$i].TRANGTHAI == 1 && data[$i].STAFF_LOGIN != data[$i].MANV && !isExistValueInString($rightStaff,'e_right')) {
+                            $xhtml += '<button onclick="blockStaff(\'' + data[$i].MANV + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Khóa Nhân Viên</button>' +
+                                '<a href="/CuaHangNoiThat/Admin/SuaNhanVien/' + data[$i].MANV + '">' +
+                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Sửa Thông Tin</button></a>';
 
-                            $xhtml+='</td></tr>';                 
+
+                            $xhtml += '<a href="/CuaHangNoiThat/Admin/PhanQuyen/' + data[$i].MANV + '"><button class="btn btn-primary btnControl" type="submit" style="background-color: #f09605;margin-top: 0.3rem;">Sửa Phân Quyền</button></a>';
+
+
+                        }
+
+                        $xhtml += '</td></tr>';
                     }
 
 
@@ -458,7 +444,7 @@
             });
         }
 
-        function exportExcel(){
+        function exportExcel() {
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/exportStaffToExcel',
                 success: function(data) {

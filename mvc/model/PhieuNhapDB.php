@@ -54,12 +54,24 @@ class PhieuNhapDB extends ConnectionDB
     function getAllReceipt()
     {
         $data = array();
-        $query = "SELECT * FROM phieunhap";
+        $query = "SELECT * FROM `phieunhap`";
         $rs = mysqli_query($this->conn, $query);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;
         }
         return $data;
+    }
+
+    function getAllReceiptFT($from,$to)
+    {
+        $data = $this->getAllReceipt();
+        $result = array();
+        foreach($data as $value){
+            if(strtotime($from) <= strtotime($value['NGAYLAP']) && strtotime($to) >= strtotime($value['NGAYLAP'])){
+                $result[] = $value;
+            }
+        }
+        return $result;
     }
     //Tao maphieunhap tiep theo
     function createNextReceiptId()
