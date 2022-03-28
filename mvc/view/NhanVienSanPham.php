@@ -26,8 +26,8 @@
     <?php 
         if (isset($_SESSION['staff'])) {
             echo '<div style="width: 80%;margin-left: 10%;">
-            <a href="/CuaHangNoiThat/NhanVien/GoiYThemSP"><button type="button" class="btn btn-primary btn-lg optionButton">Gợi ý thêm sản phẩm</button></a>
-            <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
+            <button type="button" class="btn btn-primary" onclick="requestAddProduct();">Yêu Cầu Nhập Hàng</button>
+            <button onclick="exportExcel();" type="button" class="btn btn-primary ">Xuất Excel</button>
         </div>  ';
         }
     ?>
@@ -386,6 +386,13 @@
         //open file
         function openfile(file) {
             window.location = file;
+        }
+
+        function requestAddProduct(){
+            if(!checkRight('request_add_product')){
+                return;
+            }
+            window.location.href="/CuaHangNoiThat/NhanVien/BaoCaoYeuCauThemSanPham"
         }
     </script>
 

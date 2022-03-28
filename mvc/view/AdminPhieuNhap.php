@@ -24,8 +24,9 @@
 <body>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <a href="/CuaHangNoiThat/Admin/ThemPhieuNhap"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm Phiếu Nhập</button></a>
-        <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
+        <a href="/CuaHangNoiThat/Admin/ThemPhieuNhap"><button type="button" class="btn btn-primary">Thêm Phiếu Nhập Kho</button></a>
+        <a href="/CuaHangNoiThat/Admin/PhieuXuatKho"><button type="button" class="btn btn-primary">Phiếu Xuất Kho</button></a>
+        <button onclick="exportExcel();" type="button" class="btn btn-primary">Xuất Excel</button>
         <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
             <input type="email" class="form-control" id="searchReceipt" placeholder="Nhập vào thông tin cần tìm..." style="float: right;width: 20rem;">
         </div>
@@ -117,7 +118,7 @@
                         $xhtml = '<thead>' +
                             '<tr>' +
                             '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Hóa Đơn</th>' +
+                            '<th scope="col">Mã Phiếu Nhập</th>' +
                             '<th scope="col">Tên Nhân Viên</th>' +
                             '<th scope="col">Tên Nhà Cung Cấp</th>' +
                             '<th scope="col">Ngày Lập</th>' +
@@ -164,7 +165,7 @@
                         $xhtml = '<thead>' +
                             '<tr>' +
                             '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Hóa Đơn</th>' +
+                            '<th scope="col">Mã Phiếu Nhập</th>' +
                             '<th scope="col">Tên Nhân Viên</th>' +
                             '<th scope="col">Tên Nhà Cung Cấp</th>' +
                             '<th scope="col">Ngày Lập</th>' +
@@ -252,7 +253,7 @@
                     $xhtml = '<thead>' +
                         '<tr>' +
                         '<th scope="col">#</th>' +
-                        '<th scope="col">Mã Hóa Đơn</th>' +
+                        '<th scope="col">Mã Phiếu Nhập</th>' +
                         '<th scope="col">Tên Nhân Viên</th>' +
                         '<th scope="col">Tên Nhà Cung Cấp</th>' +
                         '<th scope="col">Ngày Lập</th>' +

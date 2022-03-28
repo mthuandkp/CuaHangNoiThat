@@ -1,14 +1,15 @@
 <?php
-// echo '<pre>';
-// print_r($data);
-// echo '</pre>';
+//  echo '<pre>';
+//  print_r($_SESSION);
+//  print_r($data);
+//  echo '</pre>';
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>Thống kê theo thời gian</title>
+    <title><?php echo $title;?></title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,8 +20,8 @@
 
 <body>
     <div>
-        <button class="btn btn-warning" onclick="window.location.href='/CuaHangNoiThat/Admin/ThongKe'">Trở về</button>
-        <button class="btn btn-primary" onclick="printToImage('#statisticExport','ThongKeNhapHang_<?php echo $data['time'];?>');">Xuất Hình Ảnh</button>
+        <button class="btn btn-warning" onclick="window.location.href='/CuaHangNoiThat/NhanVien/SanPham'">Trở về</button>
+        <button class="btn btn-primary" onclick="printToImage('#statisticExport','YeuCauNhapHang');">Xuất Hình Ảnh</button>
     </div>
     <div style="width: 900px;" id="statisticExport">
         <div style="width: 100%;background-color: lightgray;">
@@ -33,7 +34,7 @@
             </div>
             <div>
                 <p style="text-align: center;">------------------------------------------------------------------------------------------</p>
-                <h3 style="width: 90%;margin-left: 5%;">THỐNG KÊ NHẬP HÀNG <?php echo $data['time']; ?> </h3>
+                <h3 style="width: 90%;margin-left: 5%;">BÁO CÁO YÊU CẦU NHẬP HÀNG </h3>
                 <div style="background-color: white;width: 90%;margin-left: 5%;padding: 1rem;">
                     <table style="font-size:1.2rem;">
                         <tbody>
@@ -43,66 +44,19 @@
 
                             </tr>
                             <tr>
-                                <td style="font-weight:800;padding-right:3rem;">Người lập : </td>
-                                <td>Quản trị viên</td>
+                                <td style="font-weight:800;padding-right:3rem;">Nhân Viên Lập : </td>
+                                <td><?php echo $_SESSION['staff']['TENNV']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:800;padding-right:3rem;">Mã Nhân Viên: </td>
+                                <td><?php echo $_SESSION['staff']['MANV']; ?></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <h3 style="width: 90%;margin-left: 5%;">CHI TIẾT</h3>
-                <table class="table" style="width: 90%;margin-left: 5%;background-color: white;">
-                    <tbody>
-                        <tr>
-                            <th scope="col">Tổng số lượng phiếu nhập: </th>
-                            <td><?php echo count($data['receipt']); ?></td>
-                            <th scope="col">Tổng tiền phiếu nhập: </th>
-                            <td>
-                                <?php
-                                $sumB = 0;
-                                foreach ($data['receipt'] as $value) {
-                                    $sumB += $value['TONG'];
-                                }
-
-                                echo number_format($sumB, 0, '', ',');
-                                ?>
-                                VNĐ
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-                <?php
-
-                function isExistId($list, $id)
-                {
-                    foreach ($list as $key => $value) {
-                        if ($key == $id) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                function getNameTypeProduct($list,$id){
-                    foreach ($list as $value) {
-                        if ($value['MALOAI'] == $id) {
-                            return $value;
-                        }
-                    }
-                    return NULL;
-                }
-                $count_product_list = array();
-                foreach ($data['receipt'] as $value) {
-                    foreach ($value['DETAIL'] as $subvalue) {
-                        if (!isExistId($count_product_list, $subvalue['MASP'])) {
-                            $count_product_list[$subvalue['MASP']] = $subvalue['SOLUONG'];
-                        } else {
-                            $count_product_list[$subvalue['MASP']] += $subvalue['SOLUONG'];
-                        }
-                    }
-                }
-                ?>
-                <h3 style="width: 90%;margin-left: 5%;">Sản Phẩm Đã Nhập</h3>
+                
+                
+                <h3 style="width: 90%;margin-left: 5%;">Danh Sách Sản Phẩm Cần Nhập</h3>
                 <table class="table" style="width: 90%;margin-left: 5%;background-color: white;">
                     <thead>
                         <tr>
@@ -111,26 +65,24 @@
                             <th scope="col">Loại Sản Phẩm </th>
                             <th scope="col">Giá Bán </th>
                             <th scope="col">Hình Ảnh </th>
-                            <th scope="col">Số Lượng Nhập Vào </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-
-                        function getProductFromList($list, $id)
-                        {
+                        function getNameTypeProduct($list,$id){
                             foreach ($list as $value) {
-                                if ($value['MASP'] == $id) {
+                                if ($value['MALOAI'] == $id) {
                                     return $value;
                                 }
                             }
                             return NULL;
                         }
+                        
 
-                        foreach ($count_product_list as $key => $value) {
+                        foreach ($data['product'] as $key => $value) {
                            
-                                $product = getProductFromList($data['product'], $key);
-                                if ($product == NULL) continue;
+                               if($value['SOLUONG'] != 0) continue;
+                               $product = $value;
                                
                                 echo '<tr>' .
                                     '<td>'.$product['MASP'].'</td>'.
@@ -140,14 +92,15 @@
                                     '<td>'.
                                     '<img src="/CuaHangNoiThat/public/image/HINHANH/'.$product['HINHANH'].'" alt="No Image" style="width: 5rem;">'.
                                     '</td>'.
-                                    '<td>'.$count_product_list[$product['MASP']].'</td>'.
                                     '</tr>';
                             
                         }
                         ?>
                     </tbody>
                 </table>
+                
                 <hr>
+
             </div>
         </div>
     </div>

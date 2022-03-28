@@ -33,41 +33,19 @@
 <body>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <button type="button" class="btn btn-primary btn-lg optionButton" onclick="exportExcel();">Xuất Excel</button>
+        <a href="/CuaHangNoiThat/NhanVien/PhieuNhap"><button type="button" class="btn btn-primary">Trở Về</button></a>
     </div>
     <div style="width: 80%;margin-left: 10%;margin-top: 1rem;">
 
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="checkIdBill">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã hóa đơn</label>
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo mã</label>
                 </div>
                 <input type="text" class="form-control" id="inputIdBil">
             </div>
-            <div class="form-group col-md-4">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="checkNameCus">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo tên khách hàng</label>
-                </div>
-                <input type="text" class="form-control" id="inputNameCus">
-            </div>
-            <div class="form-group col-md-2">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="checkBillStatus">
-                    <label class="form-check-label" for="autoSizingCheck">Tìm theo trạng thái hóa đơn</label>
-                </div>
-                <select class="form-control" id="inputBillStatus">
-                    <option value="TT01">CHỜ XÁC NHẬN</option>
-                    <option value="TT02">ĐÃ XÁC NHẬN - ĐANG GIAO</option>
-                    <option value="TT03">ĐÃ NHẬN</option>
-                    <option value="TT04">KHÁCH HÀNG HỦY</option>
-                    <option value="TT05">NHÂN VIÊN HỦY</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="checkbox" id="checkNameStaff">
                     <label class="form-check-label" for="autoSizingCheck">Tìm theo tên nhân viên</label>
@@ -110,6 +88,20 @@
                 </div>
                 <input type="text" class="form-control" id="inputYear">
             </div>
+            <div class="form-group col-md-2">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="checkBillStatus">
+                    <label class="form-check-label" for="autoSizingCheck">Tìm theo trạng thái</label>
+                </div>
+                <select class="form-control" id="inputBillStatus">
+                    <option value="TT01">CHỜ XÁC NHẬN</option>
+                    <option value="TT06">CHỜ XUẤT KHO</option>
+                    <option value="TT02">ĐÃ XUẤT KHO - ĐANG GIAO</option>
+                    <option value="TT03">ĐÃ NHẬN</option>
+                    <option value="TT04">KHÁCH HÀNG HỦY</option>
+                    <option value="TT05">CỬA HÀNG HỦY</option>
+                </select>
+            </div>
             <button type="submit" onclick="searchBill();" class="btn btn-primary">Tìm kiếm </button>
         </div>
     </div>
@@ -135,16 +127,11 @@
                         var xhtml = '<thead>' +
                             '<tr>' +
                             '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Hóa Đơn</th>' +
-                            '<th scope="col">Tên Nhân Viên</th>' +
-                            '<th scope="col">Tên Khách Hàng</th>' +
+                            '<th scope="col">Mã Phiếu Xuất</th>' +
+                            '<th scope="col">Tên Nhân Viên Xuất</th>' +
                             '<th scope="col">Ngày Lập</th>' +
                             '<th scope="col">Giờ Lập</th>' +
-                            '<th scope="col" style="width: 5rem;">Tổng</th>' +
-                            '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
-                            '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
                             '<th scope="col">Trạng Thái</th>' +
-                            '<th scope="col">Thanh toán online</th>' +
                             '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                             '</tr>' +
                             '</thead><tbody>';
@@ -152,26 +139,21 @@
                             xhtml += '<tr>' +
                                 '<th scope="row">' + (i + 1) + '</th>' +
                                 '<td>' + data[i]['MAHD'] + '</td>' +
-                                '<td>('+data[i]['MANV']+')' + data[i]['TENNV'] + '</td>' +
-                                '<td>' + data[i]['TENKH'] + '</td>' +
+                                '<td>(' + data[i]['MANV_XUAT'] + ')' + data[i]['TENNV_XUAT'] + '</td>' +
                                 '<td>' + (data[i]['NGAYLAP']) + '</td>' +
                                 '<td>' + data[i]['GIOLAP'] + '</td>' +
-                                '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
-                                '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
-                                '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
                                 '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
-                                '<td>' + (data[i]['PAYPAL']==1 ? 'Có':'Không') + '</td>' +
                                 '<td>';
-                            if (data[i].MATRANGTHAI == 'TT01') {
-                                xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Xác nhận hóa đơn</button>';
+                            if (data[i].MATRANGTHAI == 'TT06') {
+                                xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Lập phiếu xuất kho</button>';
                                 xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
                             }
-                            else if(data[i].MATRANGTHAI == 'TT02'){
-                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';                               
+                            if (data[i].MATRANGTHAI == 'TT02'){
+                                xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu xuất</button>';
                             }
 
-                            xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
-                                '<a href="/CuaHangNoiThat/NhanVien/XemChiTietHD/' + data[i].MAHD + '">' +
+                            xhtml += 
+                                '<a href="/CuaHangNoiThat/NhanVien/XemChiTietPX/' + data[i].MAHD + '">' +
                                 '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
                                 '</a>' +
                                 '</td>' +
@@ -187,14 +169,11 @@
         
         // Bat su kien xac nhan hoa don
         function confirmBill($id) {
-            if(!checkRight('c_bill')){
-                return;
-            }
-            if(!confirm("Bạn có chăc chắn xác nhận hóa đơn này không ?")){
+            if (!confirm("Bạn có chăc chắn muốn lập phiếu xuất kho ?")) {
                 return;
             }
             $.ajax({
-                url: '/CuaHangNoiThat/Admin/updateBillStatus/TT06',
+                url: '/CuaHangNoiThat/Admin/updateBillStatus/TT02',
                 data: {
                     'id': $id
                 },
@@ -202,18 +181,17 @@
                 success: function(result) {
                     console.log(result);
                     if (result == 0) {
-                        alert("Cập nhật trạng thái Hóa Đơn thành công");
+                        alert("Xuát kho thành công");
                         loadTable();
                     }
                 }
             });
+
+            
         }
 
-        function destroyBill($id){
-            if(!checkRight('c_bill')){
-                return;
-            }
-            if(!confirm("Bạn có chắc chắn hủy hóa đơn này không ?")){
+        function destroyBill($id) {
+            if (!confirm("Bạn có chắc chắn hủy hóa đơn này không ?")) {
                 return;
             }
             $.ajax({
@@ -233,9 +211,6 @@
         }
         //Xem chi tiet hoa don
         function viewBillDetail($id) {
-            if(!checkRight('p_bill')){
-                return;
-            }
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getBillAndDetail',
                 data: {
@@ -264,20 +239,16 @@
                         '</div>' +
                         '<div>' +
                         '<p style="text-align: center;">------------------------------------------------------------------------------------------</p>' +
-                        '<h3 style="width: 90%;margin-left: 5%;">THÔNG TIN HÓA ĐƠN</h3>' +
+                        '<h3 style="width: 90%;margin-left: 5%;">THÔNG TIN PHIẾU XUẤT KHO</h3>' +
                         '<div style="background-color: white;width: 90%;margin-left: 5%;padding: 1rem;">' +
                         '<table style="font-size:1.2rem;">' +
                         '<tr>' +
-                        '<td style="font-weight:800;padding-right:3rem;">Mã Hóa Đơn: </td>' +
+                        '<td style="font-weight:800;padding-right:3rem;">Mã Phiếu Xuất: </td>' +
                         '<td>' + bill.MAHD + '</td>' +
                         '</tr>' +
                         '<tr>' +
-                        '<td style="font-weight:800;padding-right:3rem;">Tên Nhân Viên: </td>' +
-                        '<td>('+bill.MANV+') ' + bill.TENNV + '</td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<td style="font-weight:800;padding-right:3rem;">Tên Khách Hàng: </td>' +
-                        '<td>' + bill.TENKH + '</td>' +
+                        '<td style="font-weight:800;padding-right:3rem;">Tên Nhân Viên Xuất Kho: </td>' +
+                        '<td>(' + bill.MANV_XUAT + ') ' + bill.TENNV_XUAT + '</td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td style="font-weight:800;padding-right:3rem;">Thời gian lập : </td>' +
@@ -285,56 +256,28 @@
                         '</tr>' +
                         '</table>' +
                         '</div>' +
-                        '<h3 style="width: 90%;margin-left: 5%;">CHI TIẾT HÓA ĐƠN</h3>' +
+                        '<h3 style="width: 90%;margin-left: 5%;">CHI TIẾT</h3>' +
                         '<table class="table" style="width: 90%;margin-left: 5%;background-color: white;">' +
                         '<thead>';
                     $xhtml += '<tr>' +
                         '<th scope="col">#</th>' +
+                        '<th scope="col">Mã SP</th>' +
                         '<th scope="col">Tên Sản Phẩm</th>' +
                         '<th scope="col">Số Lượng</th>' +
-                        '<th scope="col">% Giảm</th>' +
-                        '<th scope="col">Đơn Giá</th>' +
-                        '<th scope="col">Thành Tiền</th>' +
                         '</tr>';
-                    $sumPrice = 0;
-                    $sumNumber = 0;
-                    $sum = 0;
+                   
                     for ($i = 0; $i < detail.length; $i++) {
-                        $sum += parseInt(detail[$i].GIA) * parseInt(detail[$i].SOLUONG);
-                        $sumNumber += parseInt(detail[$i].SOLUONG);
-                        $sumPrice += parseInt(detail[$i].GIA) * parseInt(detail[$i].SOLUONG) * (1 - (detail[$i].PHANTRAMGIAM / 100));
                         $xhtml += '<tr>' +
                             '<th scope="col">' + ($i + 1) + '</th>' +
+                            '<td>' + detail[$i].MASP + '</td>' +
                             '<td>' + detail[$i].TENSP + '</td>' +
                             '<td>' + detail[$i].SOLUONG + '</td>' +
-                            '<td>' + detail[$i].PHANTRAMGIAM + '%</td>' +
-                            '<th scope="col">' + formatter.format(detail[$i].GIA) + '</th>' +
-                            '<th scope="col">' + formatter.format(detail[$i].GIA * detail[$i].SOLUONG * (1 - (detail[$i].PHANTRAMGIAM / 100))) + '</th>' +
                             '</tr>';
                     }
-                    $xhtml += '<tr>' +
-                        '<th scope="col" colspan="6"></th>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<th scope="col">Tổng</th>' +
-                        '<td></td>'+
-                        '<td>'+formatter.format($sumNumber)+'</td>'+
-                        '<td></td>'+
-                        '<td>'+formatter.format($sum)+'</td>'+
-                        '<th scope="col">'+formatter.format($sumPrice)+'</th>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<th scope="col" colspan="1">Giảm giá</th>' +
-                        '<td></td>' +
-                        '<td></td>' +
-                        '<td>' + bill.SALE.MAKM +'</td>' +
-                        '<td>' + bill.SALE.PHANTRAMGIAM + '%</td>' +
-                        '<td> - ' + formatter.format(((bill.SALE.PHANTRAMGIAM / 100)) * $sumPrice) + '</td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<th scope="col" colspan="5">Thành Tiền</th>' +
-                        '<th scope="col" colspan="2">' + formatter.format((1 - (bill.SALE.PHANTRAMGIAM / 100)) * $sumPrice) + '<th>' +
-                        '</tr>' +
+                    $xhtml += 
+                        
+                        
+                        
                         '</thead>' +
                         '<tbody>' +
                         '</tbody>' +
@@ -352,18 +295,14 @@
         function printBillTOImage() {
             html2canvas(document.querySelector("#exportBillToImage")).then(canvas => {
                 canvas.toBlob(function(blob) {
-                    saveAs(blob, "Bill.png");
+                    saveAs(blob, "PhieuXuatKho.png");
                 });
             });
         }
 
         //TIm kiem hoa don
         function searchBill() {
-            if(!checkRight('s_bill')){
-                return;
-            }
             $billId = "@";
-            $nameCus = "@";
             $nameStaff = "@";
             $day = "@";
             $month = "@";
@@ -372,9 +311,6 @@
 
             if ($("#checkIdBill").is(":checked")) {
                 $billId = convertStringToEnglish($("#inputIdBil").val());
-            }
-            if ($("#checkNameCus").is(":checked")) {
-                $nameCus = convertStringToEnglish($("#inputNameCus").val());
             }
             if ($("#checkNameStaff").is(":checked")) {
                 $nameStaff = convertStringToEnglish($("#inputNameStaff").val());
@@ -398,20 +334,16 @@
                 success: function(data) {
                     var data = JSON.parse(data);
                     var xhtml = '<thead>' +
-                        '<tr>' +
-                        '<th scope="col">#</th>' +
-                        '<th scope="col">Mã Hóa Đơn</th>' +
-                        '<th scope="col">Tên Nhân Viên</th>' +
-                        '<th scope="col">Tên Khách Hàng</th>' +
-                        '<th scope="col">Ngày Lập</th>' +
-                        '<th scope="col">Giờ Lập</th>' +
-                        '<th scope="col" style="width: 5rem;">Tổng</th>' +
-                        '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
-                        '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
-                        '<th scope="col">Trạng Thái</th>' +
-                        '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
-                        '</tr>' +
-                        '</thead><tbody>';
+                            '<tr>' +
+                            '<th scope="col">#</th>' +
+                            '<th scope="col">Mã Phiếu Xuất</th>' +
+                            '<th scope="col">Tên Nhân Viên Xuất</th>' +
+                            '<th scope="col">Ngày Lập</th>' +
+                            '<th scope="col">Giờ Lập</th>' +
+                            '<th scope="col">Trạng Thái</th>' +
+                            '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                            '</tr>' +
+                            '</thead><tbody>';
 
                     for (var i = 0; i < data.length; i++) {
                         $dayBill = parseInt(data[i].NGAYLAP.substring(8));
@@ -425,9 +357,7 @@
                         if ($nameStaff != '@' && !convertStringToEnglish(data[i].TENNV).includes($nameStaff)) {
                             continue;
                         }
-                        if ($nameCus != '@' && !convertStringToEnglish(data[i].TENKH).includes($nameCus)) {
-                            continue;
-                        }
+                        
                         if ($day != '@' && $day != $dayBill) {
                             continue;
                         }
@@ -442,28 +372,24 @@
                         }
 
                         xhtml += '<tr>' +
-                            '<th scope="row">' + (i + 1) + '</th>' +
-                            '<td>' + data[i]['MAHD'] + '</td>' +
-                            '<td>('+data[i]['MANV']+')' + data[i]['TENNV'] + '</td>' +
-                            '<td>' + data[i]['TENKH'] + '</td>' +
-                            '<td>' + (data[i]['NGAYLAP']) + '</td>' +
-                            '<td>' + data[i]['GIOLAP'] + '</td>' +
-                            '<th scope="row">' + formatter.format(data[i]['TONG']) + '</th>' +
-                            '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
-                            '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
-                            '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
-                            '<td>';
-                        if (data[i].MATRANGTHAI == 'TT01') {
-                            xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
-                            xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
-                        }
+                                '<th scope="row">' + (i + 1) + '</th>' +
+                                '<td>' + data[i]['MAHD'] + '</td>' +
+                                '<td>(' + data[i]['MANV_XUAT'] + ')' + data[i]['TENNV_XUAT'] + '</td>' +
+                                '<td>' + (data[i]['NGAYLAP']) + '</td>' +
+                                '<td>' + data[i]['GIOLAP'] + '</td>' +
+                                '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
+                                '<td>';
+                            if (data[i].MATRANGTHAI == 'TT06') {
+                                xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;">Lập phiếu xuất kho</button>';
+                                xhtml += '<button onclick="destroyBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: black;color:white;" onclick="">Hủy hóa đơn</button>';
+                            }
 
-                        xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In hóa đơn</button>' +
-                            '<a href="/CuaHangNoiThat/Admin/XemChiTietHD/' + data[i].MAHD + '">' +
-                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
-                            '</a>' +
-                            '</td>' +
-                            '</tr>';
+                            xhtml += '<button  onclick="viewBillDetail(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu xuất</button>' +
+                                '<a href="/CuaHangNoiThat/NhanVien/XemChiTietPX/' + data[i].MAHD + '">' +
+                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
+                                '</a>' +
+                                '</td>' +
+                                '</tr>';
 
                     }
                     xhtml += '</tbody>';
@@ -474,9 +400,7 @@
         }
 
         function exportExcel() {
-            if(!checkRight('ex_bill')){
-                return;
-            }
+            //<a href="">
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/ExportBillToExcel',
                 success: function(data) {

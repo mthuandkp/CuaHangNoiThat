@@ -130,19 +130,19 @@
             <td></td>
         </tr>
         <tr>
-            <th>Tổng:</th>
+            <th>Tổng</th>
             <td colspan="4"></td>
             <td><?php echo number_format($sum) ?> VNĐ</td>
             <th><?php echo number_format($sumSale) ?> VNĐ</th>
         </tr>
         <tr>
-            <th>Giảm Khuyến Mãi :</th>
+            <th>Khuyến Mãi</th>
             <td colspan="4"></td>
             <td>-<?php echo $data['sale']['PHANTRAMGIAM'] . '% (' . $data['sale']['MAKM'] . ')'; ?></td>
             <th> - <?php echo number_format($sumSale * ($data['sale']['PHANTRAMGIAM'] / 100)) ?> VNĐ</th>
         </tr>
         <tr>
-            <th>Thành Tiền :</th>
+            <th>Thành Tiền</th>
             <td colspan="5"></td>
             <th><?php echo number_format($sumSale * (1 - $data['sale']['PHANTRAMGIAM'] / 100)) ?> VNĐ</th>
         </tr>

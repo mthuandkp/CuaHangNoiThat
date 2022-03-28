@@ -62,7 +62,8 @@
                 </div>
                 <select class="form-control" id="inputBillStatus">
                     <option value="TT01">CHỜ XÁC NHẬN</option>
-                    <option value="TT02">ĐÃ XÁC NHẬN - ĐANG GIAO</option>
+                    <option value="TT06">CHỜ XUẤT KHO</option>
+                    <option value="TT02">ĐÃ XUẤT KHO - ĐANG GIAO</option>
                     <option value="TT03">ĐÃ NHẬN</option>
                     <option value="TT04">KHÁCH HÀNG HỦY</option>
                     <option value="TT05">NHÂN VIÊN HỦY</option>
@@ -207,6 +208,7 @@
                             '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
                             '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
                             '<th scope="col">Trạng Thái</th>' +
+                            '<th scope="col">Thanh toán online</th>' +
                             '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                             '</tr>' +
                             '</thead><tbody>';
@@ -236,6 +238,7 @@
                                 '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
                                 '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
                                 '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
+                                '<td>' + (data[i]['PAYPAL']==1 ? 'Có':'Không') + '</td>' +
                                 '<td>';
                             if (data[i].MATRANGTHAI == 'TT01') {
                                 xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';
@@ -264,7 +267,7 @@
                 return;
             }
             $.ajax({
-                url: '/CuaHangNoiThat/Admin/updateBillStatus',
+                url: '/CuaHangNoiThat/Admin/updateBillStatus/TT06',
                 data: {
                     'id': $id
                 },
@@ -470,6 +473,7 @@
                         '<th scope="col" style="width: 8rem;">Mã K.Mãi</th>' +
                         '<th scope="col" style="width: 8rem;">Thành Tiền</th>' +
                         '<th scope="col">Trạng Thái</th>' +
+                        '<th scope="col">Thanh toán online</th>' +
                         '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
                         '</tr>' +
                         '</thead><tbody>';
@@ -513,6 +517,7 @@
                             '<td>' + data[i]['MAKM'] + ' (' + data[i]['PHANTRAMGIAM'] + '%)</td>' +
                             '<th scope="row">' + formatter.format(data[i]['TONG'] * (1 - (data[i]['PHANTRAMGIAM'] / 100))) + '</th>' +
                             '<td>' + data[i]['MOTATRANGTHAI'] + '</td>' +
+                            '<td>' + (data[i]['PAYPAL']==1 ? 'Có':'Không') + '</td>' +
                             '<td>';
                         if (data[i].MATRANGTHAI == 'TT01') {
                             xhtml += '<button onclick="confirmBill(\'' + data[i]['MAHD'] + '\');" class="btn btn-primary btnControl" type="submit" style="background-color: red;" onclick="">Xác nhận hóa đơn</button>';

@@ -31,6 +31,17 @@ class KhachHangDB extends ConnectionDB
     {
         $data = array();
         $query = "SELECT * FROM khachhang;";
+        $query = "CALL `getAllCustomer`();";
+        $rs = mysqli_query($this->conn, $query);
+        while ($row = mysqli_fetch_assoc($rs)) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    function getAllCustomer_Stored(){
+        $data = array();
+        $query = "CALL `getAllCustomer`();";
         $rs = mysqli_query($this->conn, $query);
         while ($row = mysqli_fetch_assoc($rs)) {
             $data[] = $row;

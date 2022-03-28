@@ -15,7 +15,8 @@ class SanPhamDB extends ConnectionDB
     //Lay tat ca sanpham
     function getAllProduct($isDisable = false)
     {
-        $qry = "SELECT * FROM `noithat`;";
+        //$qry = "SELECT * FROM `noithat`;";
+        $qry = "CALL `getAllProduct`();";
         $data = array();
         $rs = mysqli_query($this->conn, $qry);
         while ($row = mysqli_fetch_assoc($rs)) {
@@ -93,6 +94,9 @@ class SanPhamDB extends ConnectionDB
         }
         return false;
     }
+
+    
+
     //Cap nhat so luong san pham
     function updateNumberListProduct($productArr)
     {

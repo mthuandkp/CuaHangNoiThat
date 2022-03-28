@@ -1,3 +1,11 @@
+<?php
+    // echo '<pre>';
+    // print_r($_SESSION);
+    // echo '</pre>';
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -214,6 +222,13 @@
                             }
                             case 'TT05': {
                                 $xhtml += '<td style="color:red;">Đơn hàng đã bị admin hủy</td>' +
+                                    '<td>' +
+                                    '<button style="border-radius:0.5rem;margin: 0.2rem;width: 10rem;background-color: white;color: #2478ff;font-family: "Times New Roman", Times, serif;" onclick="viewDetail(\'' + $obj.MAHD + '\');">Xem Chi Tiết</button>' +
+                                    '</td>';
+                                break;
+                            }
+                            case 'TT06': {
+                                $xhtml += '<td style="color:red;">Đã xác nhận, đang chờ xuất kho</td>' +
                                     '<td>' +
                                     '<button style="border-radius:0.5rem;margin: 0.2rem;width: 10rem;background-color: white;color: #2478ff;font-family: "Times New Roman", Times, serif;" onclick="viewDetail(\'' + $obj.MAHD + '\');">Xem Chi Tiết</button>' +
                                     '</td>';

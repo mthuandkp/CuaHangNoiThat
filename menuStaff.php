@@ -67,6 +67,14 @@
             }
             return true;
         }
+
+        function printToImage(id,name) {
+        html2canvas(document.querySelector(id)).then(canvas => {
+          canvas.toBlob(function(blob) {
+            saveAs(blob, name+".png");
+          });
+        });
+      }
     </script>
 
 </body>

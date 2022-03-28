@@ -103,7 +103,11 @@
             }, {
                 'name': "Xuất Excel Sản Phẩm",
                 'cmd': 'ex_product'
-            }]
+            } , {
+                'name': "Yêu cầu nhập hàng",
+                'cmd': 'request_add_product'
+            }
+        ]
         }, {
             'key': 'Hóa Đơn',
             'id': 'bill',
@@ -129,6 +133,9 @@
             }, {
                 'name': "Xem danh sách Hóa Đơn",
                 'cmd': 'v_bill'
+            }, {
+                'name': "Thống Kê Bán Hàng",
+                'cmd': 'sta_bill'
             }]
         }, {
             'key': 'Phiếu Nhập',

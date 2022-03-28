@@ -66,7 +66,19 @@
         <div class="admin-item">
             <a href="/CuaHangNoiThat/NhanVien/PhieuNhap" style="color: white;">
                 <div style="text-align: center;width: 100%;font-size: 128px;"><i class="fa fa-address-card-o" aria-hidden="true"></i></div>
-                <div style="text-align: center;width: 100%;font-size: 32px;">Phiếu Nhập</div>
+                <div style="text-align: center;width: 100%;font-size: 32px;">Quản Kho</div>
+            </a>
+        </div>
+        <div class="admin-item">
+            <a href="/CuaHangNoiThat/NhanVien/ThongKeBanHang" style="color: white;">
+                <div style="text-align: center;width: 100%;font-size: 128px;"><i class="fa fa-bar-chart" aria-hidden="true"></i></div>
+                <div style="text-align: center;width: 100%;font-size: 32px;">Thống Kê Bán Hàng</div>
+            </a>
+        </div>
+        <div class="admin-item">
+            <a href="/CuaHangNoiThat/NhanVien/ThongKeKho" style="color: white;">
+                <div style="text-align: center;width: 100%;font-size: 128px;"><i class="fa fa-bar-chart" aria-hidden="true"></i></div>
+                <div style="text-align: center;width: 100%;font-size: 32px;">Thống Kê Kho</div>
             </a>
         </div>
     </div>

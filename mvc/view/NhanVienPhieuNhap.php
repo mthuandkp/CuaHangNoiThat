@@ -24,8 +24,12 @@
 <body>
     <h1 style="margin-top: 5rem;margin-left: 10%;"><?php echo $title; ?></h1>
     <div style="width: 80%;margin-left: 10%;">
-        <a href="/CuaHangNoiThat/NhanVien/ThemPhieuNhap"><button type="button" class="btn btn-primary btn-lg optionButton">Thêm Phiếu Nhập</button></a>
-        <button onclick="exportExcel();" type="button" class="btn btn-primary btn-lg optionButton">Xuất Excel</button>
+        <a href="/CuaHangNoiThat/NhanVien/ThemPhieuNhap"><button type="button" class="btn btn-primary">Thêm Phiếu Nhập Kho</button></a>
+        <a href="/CuaHangNoiThat/NhanVien/PhieuXuatKho"><button type="button" class="btn btn-primary">Phiếu Xuất Kho</button></a>
+        <button onclick="exportExcel();" type="button" class="btn btn-primary">Xuất Excel</button>
+        <div class="form-group" style="width: 50%;float: right;margin-left: 2rem;">
+            <input type="email" class="form-control" id="searchReceipt" placeholder="Nhập vào thông tin cần tìm..." style="float: right;width: 20rem;">
+        </div>
     </div>
     <div style="width: 80%;margin-left: 10%;margin-top: 1rem;">
         <div class="form-row">
@@ -114,7 +118,7 @@
                         $xhtml = '<thead>' +
                             '<tr>' +
                             '<th scope="col">#</th>' +
-                            '<th scope="col">Mã Hóa Đơn</th>' +
+                            '<th scope="col">Mã Phiếu Nhập</th>' +
                             '<th scope="col">Tên Nhân Viên</th>' +
                             '<th scope="col">Tên Nhà Cung Cấp</th>' +
                             '<th scope="col">Ngày Lập</th>' +
@@ -134,7 +138,7 @@
                                 '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                                 '<td>' +
                                 '<button onclick="viewBillDetail(\''+data[$i].MAPN+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
-                                '<a href="/CuaHangNoiThat/NhanVien/XemChiTietPhieuNhap/'+data[$i].MAPN+'">' +
+                                '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/'+data[$i].MAPN+'">' +
                                 '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
                                 '</a>' +
                                 '</td></tr>';
@@ -148,12 +152,73 @@
             });
         }
 
-        
+        //Bat su kien nhap vao o tim kiem
+        $(document).ready(function() {
+            $("#searchReceipt").keyup(function() {
+                $value = convertStringToEnglish(this.value);
+
+                $.ajax({
+                    url: '/CuaHangNoiThat/Admin/getAllReceipt',
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        //console.log(data);
+                        $xhtml = '<thead>' +
+                            '<tr>' +
+                            '<th scope="col">#</th>' +
+                            '<th scope="col">Mã Phiếu Nhập</th>' +
+                            '<th scope="col">Tên Nhân Viên</th>' +
+                            '<th scope="col">Tên Nhà Cung Cấp</th>' +
+                            '<th scope="col">Ngày Lập</th>' +
+                            '<th scope="col">Giờ Lập</th>' +
+                            '<th scope="col" style="width: 10rem;">Tổng</th>' +
+                            '<th scope="col" style="width: 15rem;">Chức Năng</th>' +
+                            '</tr>' +
+                            '</thead>' +
+                            '<tbody>';
+                        for ($i = 0; $i < data.length; $i++) {
+                            $check = false;
+                            if (convertStringToEnglish(data[$i].MAPN).includes($value)) {
+                                $check = true;
+                            }
+                            if (convertStringToEnglish(data[$i].TENNV).includes($value)) {
+                                $check = true;
+                            }
+
+                            if (convertStringToEnglish(data[$i].TENNCC).includes($value)) {
+                                $check = true;
+                            }
+                            if (convertStringToEnglish(data[$i].NGAYLAP).includes($value)) {
+                                $check = true;
+                            }
+
+                            if (!$check) {
+                                continue;
+                            }
+                            $xhtml += '<tr><th scope="row">' + ($i + 1) + '</th>' +
+                                '<td>' + data[$i].MAPN + '</td>' +
+                                '<td>' + data[$i].TENNV + '</td>' +
+                                '<td>' + data[$i].TENNCC + '</td>' +
+                                '<td>' + (data[$i].NGAYLAP) + '</td>' +
+                                '<td>' + data[$i].GIOLAP + '</td>' +
+                                '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
+                                '<td>' +
+                                '<button onclick="viewBillDetail(\''+data[$i].MAPN+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
+                                '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
+                                '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
+                                '</a>' +
+                                '</td></tr>';
+                        }
+
+
+                        $xhtml += '</tbody></table>';
+                        $('#tableContent').html($xhtml);
+                    }
+                });
+
+            });
+        });
 
         function searchReceipt() {
-            if(!checkRight('s_receipt')){
-                return;
-            }
             $receiptId = "@";
             $nameSupplier = "@";
             $nameStaff = "@";
@@ -188,7 +253,7 @@
                     $xhtml = '<thead>' +
                         '<tr>' +
                         '<th scope="col">#</th>' +
-                        '<th scope="col">Mã Hóa Đơn</th>' +
+                        '<th scope="col">Mã Phiếu Nhập</th>' +
                         '<th scope="col">Tên Nhân Viên</th>' +
                         '<th scope="col">Tên Nhà Cung Cấp</th>' +
                         '<th scope="col">Ngày Lập</th>' +
@@ -227,14 +292,14 @@
 
                         $xhtml += '<tr><th scope="row">' + ($i + 1) + '</th>' +
                             '<td>' + data[$i].MAPN + '</td>' +
-                            '<td>('+data[$i].MANV+')' + data[$i].TENNV + '</td>' +
+                            '<td>' + data[$i].TENNV + '</td>' +
                             '<td>' + data[$i].TENNCC + '</td>' +
                             '<td>' + (data[$i].NGAYLAP) + '</td>' +
                             '<td>' + data[$i].GIOLAP + '</td>' +
                             '<th scope="col">' + formatter.format(data[$i].TONG) + '</th>' +
                             '<td>' +
-                            '<button onclick="viewBillDetail(\''+data[$i].MAPN+'\');" class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
-                            '<a href="/CuaHangNoiThat/NhanVien/XemChiTietPhieuNhap/'+data[$i].MAPN+'">' +
+                            '<button class="btn btn-primary btnControl" type="submit" style="background-color: #007bff;margin-top: 0.3rem;">In phiếu nhập</button>' +
+                            '<a href="/CuaHangNoiThat/Admin/XemChiTietPhieuNhap/1">' +
                             '<button class="btn btn-primary btnControl" type="submit" style="background-color: green;margin-top: 0.3rem;">Xem chi tiết</button>' +
                             '</a>' +
                             '</td></tr>';
@@ -250,9 +315,6 @@
 
         //Xem chi tiet Phieu Nhap
         function viewBillDetail($id) {
-            if(!checkRight('p_receipt')){
-                return;
-            }
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/getReceiptAndDetail',
                 data: {
@@ -357,9 +419,7 @@
 
         $('#openExportReceipt').hide();
         function exportExcel() {
-            if(!checkRight('ex_receipt')){
-                return;
-            }
+            //<a href="">
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/exportReceiptToExcel',
                 success: function(data) {

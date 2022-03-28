@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-    <title>Thống kê theo thời gian</title>
+    <title>Thống kê doanh thu</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,35 +15,28 @@
     <script type="text/javascript">
 
         var billData = JSON.parse('<?php echo json_encode($data['bill']);?>');
-        var receiptData = JSON.parse('<?php echo json_encode($data['receipt']);?>');
         var timeData = JSON.parse('<?php echo json_encode($data['time']);?>');
-        var statisticArrayData = createTimeline(timeData['from'],timeData['to']);
+        var statisticArrayData = createTimeline(timeData);
+
 
         for(var i = 1;i < statisticArrayData.length;i++){
             var item = statisticArrayData[i];
             var labelTime = item[0]
             
             var sumB = 0;
-            var sumR = 0;
+            
 
             //Loop bill list
             for(var item of billData){
-                if(item['NGAYLAP'].includes(labelTime)){
+                if(parseInt(item['NGAYLAP'].split('-')[2]) == parseInt(labelTime)){
                     sumB+= parseInt(item['TONG']);
                 }
                 
             }
 
-            //Loop receipt list
-            for(var item of receiptData){
-                if(item['NGAYLAP'].includes(labelTime)){
-                    sumR+= parseInt(item['TONG']);
-                }
-                
-            }
-            statisticArrayData[i][0] = compactYearMonth(labelTime);
+            
+            statisticArrayData[i][0] = (labelTime);
             statisticArrayData[i][1] = sumB;
-            statisticArrayData[i][2] = sumR;
             
 
         }
@@ -56,8 +49,8 @@
         var data = google.visualization.arrayToDataTable(statisticArrayData);
 
         var options = {
-          title: 'Thống kê Hóa Đơn và Phiếu Nhập theo thời gian',
-          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+          title: 'Thống kê Doanh thu theo tháng '+timeData,
+          hAxis: {title: 'Ngày',  titleTextStyle: {color: '#333'}},
           vAxis: {minValue: 0}
         };
 
@@ -66,34 +59,39 @@
       }
 
 
-        function createTimeline(from,to){
-            var fromArr = from.split('-')
-            var toArr = to.split('-')
+        function createTimeline(time){
+            var timeArr = time.split('-')
+            
 
-            var monthF = parseInt(fromArr[1]);
-            var yearF = parseInt(fromArr[0]);
-
-            var monthT = parseInt(toArr[1]);
-            var yearT = parseInt(toArr[0]);
+            var month = parseInt(timeArr[1]);
+            var year = parseInt(timeArr[0]);
 
             var result = new Array();
-            result.push(['Tháng', 'Hóa Đơn', 'Phiếu Nhập']);
-            while(monthF != monthT || yearF != yearT){
-                var label = yearF + '-' + (monthF < 10 ? '0'+monthF : monthF);
-                var tmp =[label,0,0];
-                result.push(tmp)
-
-                if(monthF == 12 && yearF != yearT){
-                    monthF = 1;
-                    yearF++;
+            result.push(['Ngày', 'Hóa Đơn',]);
+            var lastDay = 0;
+            switch(month){
+                case 1: case 3: case 5: case 7: case 8: case 10: case 12:{
+                    lastDay = 31;
+                    break;
                 }
-                else{
-                    monthF ++;
+                case 4: case 6: case 9: case 11:{
+                    lastDay = 30;
+                    break;
+                }
+                case 2:{
+                    lastDay = (checkLeepYear(year)== true ? 29:28);
+                    break;
                 }
             }
-            var label = yearF + '-' + (monthF < 10 ? '0'+monthF : monthF)
-            result.push([label,0,0])
+            for(var i = 1;i <= lastDay;i++){
+                result.push([i,0]);
+            }
             return result;
+        }
+
+        function checkLeepYear(year){
+            return (((year % 4 == 0) && (year % 100 != 0)) ||
+             (year % 400 == 0));
         }
 
         function compactYearMonth(str){
@@ -108,8 +106,8 @@
 
 <body>
     <div>
-    <button class="btn btn-warning" onclick="window.location.href='/CuaHangNoiThat/Admin/ThongKe'">Trở về</button>
-        <button class="btn btn-primary" onclick="printToImage('#statisticExport','ThongKeTheoThoiGianTu_<?php echo $data['time']['from'];?>_den_<?php echo $data['time']['to'];?>')">Xuất Hình Ảnh</button>
+    <button class="btn btn-warning" onclick="window.location.href='/CuaHangNoiThat/NhanVien/ThongKeBanHang'">Trở về</button>
+        <button class="btn btn-primary" onclick="printToImage('#statisticExport','ThongKeDoanhThu_<?php echo $data['time'];?>')">Xuất Hình Ảnh</button>
     </div>
     <div style="width: 1200px;" id="statisticExport">
         <div style="width: 100%;background-color: lightgray;">
@@ -122,7 +120,7 @@
             </div>
             <div>
                 <p style="text-align: center;">------------------------------------------------------------------------------------------</p>
-                <h3 style="width: 90%;margin-left: 5%;">THỐNG KÊ THEO THỜI GIAN TỪ <?php echo $data['time']['from'];?> ĐẾN <?php echo $data['time']['to'];?></h3>
+                <h3 style="width: 90%;margin-left: 5%;">THỐNG KÊ DOANH THU CỦA NHÂN VIÊN [<?php echo $_SESSION['staff']['TENNV'];?>] TẠI <?php echo $data['time'];?></h3>
                 <div style="background-color: white;width: 90%;margin-left: 5%;padding: 1rem;">
                     <table style="font-size:1.2rem;">
                         <tbody>
@@ -130,10 +128,6 @@
                                 <td style="font-weight:800;padding-right:3rem;">Thời gian lập : </td>
                                 <td><?php echo date('H:i:s d-m-Y');?></td>
 
-                            </tr>
-                            <tr>
-                                <td style="font-weight:800;padding-right:3rem;">Người lập : </td>
-                                <td>Quản trị viên</td>
                             </tr>
                         </tbody>
                     </table>
@@ -144,8 +138,6 @@
                         <tr>
                             <th scope="col">Tổng số lượng hóa đơn: </th>
                             <td><?php echo count($data['bill']); ?></td>
-                            <th scope="col">Tổng số lượng phiếu nhập: </th>
-                            <td><?php echo count($data['receipt']); ?></td>
                         </tr>
                         <tr>
                             <th scope="col">Tổng tiền hóa đơn: </th>
@@ -160,21 +152,6 @@
                                 ?>
                                 VNĐ
                             </td>
-                            <th scope="col">Tổng tiền phiếu nhập: </th>
-                            <td>
-                                <?php
-                                    $sumR = 0;
-                                    foreach($data['receipt'] as $value){
-                                        $sumR += $value['TONG'];
-                                    }
-                                    
-                                    echo number_format($sumR,0,'',',');
-                                ?>
-                                VNĐ</td>
-                        </tr>
-                        <tr>
-                            <th scope="col" colspan="3">Lợi nhuận: </th>
-                            <th scope="col"><?php echo number_format($sumB-$sumR,0,'',','); ?> VNĐ</th>
                         </tr>
                     </thead>
 

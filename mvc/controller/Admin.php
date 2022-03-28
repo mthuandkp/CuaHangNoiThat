@@ -16,7 +16,7 @@ class Admin extends Controller
         $result = array(
             'countProduct' => count($objProduct->getAllProduct()),
             'countBill' => count($objBill->getAllBill()),
-            'countCustomer' => count($objCustomer->getAllCustomer()),
+            'countCustomer' => count($objCustomer->getAllCustomer_Stored()),
             'countStaff' => count($objStaff->getAllStaff())
         );
 
@@ -64,10 +64,12 @@ class Admin extends Controller
         $data = $obj->getAllBIll();
         foreach ($data as $key => $value) {
             $staff = $objStaff->getStaffById($value['MANV']);
+            $exStaff = $objStaff->getStaffById($value['MANV_XUAT']);
             $status = $value['MATRANGTHAI'];
             $customer = $objCustomer->getCutomerById($value['MAKH']);
             $data[$key]['MOTATRANGTHAI'] = $objStatus->getStatusNameById($status)['MOTATRANGTHAI'];
             $data[$key]['TENNV'] = $staff['TENNV'];
+            $data[$key]['TENNV_XUAT'] = $exStaff['TENNV'];
             $data[$key]['TENKH'] = $customer['TENKH'];
             $data[$key]['PHANTRAMGIAM'] = $objSale->getSaleById($value['MAKM'])['PHANTRAMGIAM'];
         }
@@ -92,12 +94,14 @@ class Admin extends Controller
         $data = array();
         $data['bill'] = $objBill->getBillById($id)[0];
         $data['bill']['TENNV'] = $objStaff->getStaffById($data['bill']['MANV'])['TENNV'];
+        $data['bill']['TENNV_XUAT'] = $objStaff->getStaffById($data['bill']['MANV_XUAT'])['TENNV'];
         $data['bill']['TENKH'] = $objCustomer->getCutomerById($data['bill']['MAKH'])['TENKH'];
         $data['bill']['SALE'] = $objSale->getSaleById($data['bill']['MAKM']);
         $data['detail'] = $objBill->getBillDetailById($id);
         foreach ($data['detail'] as $key => $value) {
             $product = $objProduct->getProductById($value['MASP']);
             $data['detail'][$key]['TENSP'] = $product['TENSP'];
+            $data['detail'][$key]['MASP'] = $product['MASP'];
         }
         echo json_encode($data);
     }
@@ -129,6 +133,7 @@ class Admin extends Controller
         echo json_encode($data);
     }
 
+    
     function updateBillStatus($status = 'TT02')
     {
 
@@ -139,8 +144,18 @@ class Admin extends Controller
         $id = $_POST['id'];
         $idStaff = $_SESSION['staff']['MANV'];
         $objBill = $this->getModel("HoaDonDB");
-        if ($objBill->updateBillStatus($id, $idStaff, $status)) {
+        $objProduct = $this->getModel('SanPhamDB');
+        if ($objBill->updateBillStatus_Ex($id, $idStaff, $status)) {
             echo 0;
+            if($status == 'TT02'){
+                $billDetail = $objBill->getBillDetailById($id);
+                foreach($billDetail as $key=>$value){
+                    $billDetail[$key]['amount'] = $value['SOLUONG'];
+                    if($objProduct->updateNumberListProduct($billDetail)){
+                        echo 0;
+                    }
+                }
+            }
             return;
         }
         echo -1;
@@ -186,7 +201,7 @@ class Admin extends Controller
         $obj = $this->getModel('HoaDonDB');
         $objSale = $this->getModel("KhuyenMaiDB");
 
-        $data = $obj->getBillByCusId("KH01");
+        $data = $obj->getBillByCusId($_SESSION['account']['MAKH']);
         foreach ($data as $key => $value) {
             $sumBill = 0;
             foreach ($obj->getBillDetailById($value['MAHD']) as $subvalue) {
@@ -228,7 +243,7 @@ class Admin extends Controller
     {
         $objCus = $this->getModel('KhachHangDB');
 
-        echo json_encode($objCus->getAllCustomer());
+        echo json_encode($objCus->getAllCustomer_Stored());
     }
 
     function block_unblockCutomer($id)
@@ -469,7 +484,7 @@ class Admin extends Controller
     /*============================== NHA CUNG CAP ============================ */
     function NhaCungCap()
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff'])) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
             return;
         }
@@ -727,12 +742,12 @@ class Admin extends Controller
     /* ========================== PHIEU NHAP==================================*/
     function PhieuNhap()
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff'])) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
             return;
         }
         require_once('./menuadmin.php');
-        $this->View('AdminPhieuNhap', 'Admin Phiếu Nhập');
+        $this->View('AdminPhieuNhap', 'Admin Quản Kho');
     }
     function ThemPhieuNhap()
     {
@@ -978,6 +993,29 @@ class Admin extends Controller
         $objBill = $this->getModel('PhieuNhapDB');
         $data = $objBill->exportExcel();
         echo json_encode($data);
+    }
+
+
+    function PhieuXuatKho(){
+        require_once('./menuadmin.php');
+        $this->View('AdminPhieuXuatKho', 'Phiếu Xuất Kho');
+    }
+
+    function XemChiTietPX($id){
+        $objBillDetail = $this->getModel('HoaDonDB');
+        $bill = $objBillDetail->getBillById($id)[0];
+        $objProduct = $this->getModel('SanPhamDB');
+        $objSale = $this->getModel('KhuyenMaiDB');
+        $data = $objBillDetail->getBillDetailById($id);
+        foreach ($data as $key => $value) {
+            $product = $objProduct->getProductById($value['MASP']);
+            $data[$key]['TENSP'] = $product['TENSP'];
+            $data[$key]['HINHANH'] = $product['HINHANH'];
+        }
+        $data['data'] = $data;
+        $data['sale'] = $objSale->getSaleById($bill['MAKM']);
+        require_once('./menuadmin.php');
+        $this->View('AdminChiTietPhieuXuat', 'Admin Chi Tiết Phiếu Xuất Kho', $data);
     }
     /* ============================================================*/
     /* =========================SAN PHAM===================================*/
@@ -1296,10 +1334,10 @@ class Admin extends Controller
                 $result['SMS'] = 'Đặt hàng thành công';
                 //tru so luong san pham trong kho
                 $objProduct = $this->getModel('SanPhamDB');
-                if ($objProduct->updateNumberListProduct($cart)) {
+                //if ($objProduct->updateNumberListProduct($cart)) {
                     //Xoa gio hang
                     unset($_SESSION['cart']);
-                }
+                //}
             } else {
                 $result['SMS'] = 'Thêm hóa đơn thất bại';
                 $result['Error'] = $billQry . '\n' . $detailQry;

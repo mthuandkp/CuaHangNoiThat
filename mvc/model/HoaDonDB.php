@@ -224,6 +224,15 @@ class HoaDonDB extends ConnectionDB
         return false;
     }
 
+    function updateBillStatus_Ex($id,$staffId,$status)
+    {
+        $qry = "UPDATE `hoadon` SET `MATRANGTHAI`='$status',`MANV_XUAT`='$staffId' WHERE `MAHD`='$id';";
+        if (mysqli_query($this->conn, $qry)) {
+            return true;
+        }
+        return false;
+    }
+
     function updateBillStatus_Cus($id,$statusId)
     {
         $qry = "UPDATE `hoadon` SET `MATRANGTHAI`='$statusId' WHERE `MAHD`='$id';";
@@ -303,5 +312,10 @@ class HoaDonDB extends ConnectionDB
             $result['ERROR'] = $e->getMessage();
         }
         return $result;
+    }
+
+
+    function updateStaffExport($id){
+
     }
 }
