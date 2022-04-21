@@ -64,7 +64,7 @@ class NhanVienDB extends ConnectionDB
     function addNewStaff($staff){
         $id = $this->createNextStaffId();
         $hashPassword = md5($staff['MATKHAU']);
-        $sql = "INSERT INTO `nhanvien`(`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES ('$id','$staff[TENNV]','$staff[NGAYSINH]','$staff[GIOITINH]','$staff[DIACHI]','$staff[SDT]','$staff[MAQUYEN]','$staff[TENDN]','$hashPassword',true);";
+        $sql = "INSERT INTO `nhanvien`(`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES ('$id','$staff[TENNV]','$staff[NGAYSINH]','$staff[GIOITINH]','$staff[DIACHI]','$staff[SDT]','','$staff[TENDN]','$hashPassword',true);";
 
         if(mysqli_query($this->conn, $sql)){
             return true;
@@ -75,7 +75,7 @@ class NhanVienDB extends ConnectionDB
     function addNewStaffWithId($staff){
         $id = $staff['MANV'];
         $hashPassword = md5($staff['MATKHAU']);
-        $sql = "INSERT INTO `nhanvien`(`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES ('$id','$staff[TENNV]','$staff[NGAYSINH]','$staff[GIOITINH]','$staff[DIACHI]','$staff[SDT]','$staff[MAQUYEN]','$staff[TENDN]','$hashPassword',true);";
+        $sql = "INSERT INTO `nhanvien`(`MANV`, `TENNV`, `NGAYSINH`, `GIOITINH`, `DIACHI`, `SDT`, `MAQUYEN`, `TENDN`, `MATKHAU`, `TRANGTHAI`) VALUES ('$id','$staff[TENNV]','$staff[NGAYSINH]','$staff[GIOITINH]','$staff[DIACHI]','$staff[SDT]','','$staff[TENDN]','$hashPassword',true);";
 
         if(mysqli_query($this->conn, $sql)){
             return true;
@@ -85,8 +85,6 @@ class NhanVienDB extends ConnectionDB
 
     function updateRightOfStaff($id,$right){
         $qry = "UPDATE `nhanvien` SET `QUYEN`='$right' WHERE `MANV`='$id';";
-        
-        
         if(mysqli_query($this->conn,$qry)){
             return true;
         }

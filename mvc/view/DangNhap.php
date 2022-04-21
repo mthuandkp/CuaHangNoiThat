@@ -99,7 +99,7 @@
         <p style="font-size: 18px;text-align: left;color: red;margin-left: 20%;" id="errorPass">Mật khẩu không hợp lệ</p>
         <p id="errorMessage" style="margin-top: 0;padding-top: 0;"></p>
         <input type="submit" id="submitbtn" value="ĐĂNG NHẬP" class="btn-log">
-        <div class="reg">Bạn chưa có tài khoản? <a href="/CuaHangNoiThatDangKy">Đăng ký</a></div>
+        <div class="reg">Bạn chưa có tài khoản? <a href="/CuaHangNoiThat/DangKy">Đăng ký</a></div>
     </fieldset>
 
 </body>

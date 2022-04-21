@@ -39,18 +39,7 @@
       <label for="exampleInputEmail1">SĐT</label>
       <input type="text" class="form-control" id="phoneStaff" value="">
     </div>
-    <div class="form-group">
-      <label for="exampleInputEmail1">Quyền</label>
-      <select class="form-control" id="rightStaff">
-        <?php
-        foreach ($data['Right'] as $value) {
-          if ($value['MAQUYEN'] != '1') {
-            echo "<option value='$value[MAQUYEN]'>$value[TENQUYEN]</option>";
-          }
-        }
-        ?>
-      </select>
-    </div>
+    
     <div class="form-group">
       <label for="exampleInputEmail1">Tên đăng nhập</label>
       <input type="text" class="form-control" id="usernameStaff" value="">
@@ -72,7 +61,7 @@
       $sexStaff = $("#sexStaff").val();
       $addressStaff = $("#addressStaff").val();
       $phoneStaff = $("#phoneStaff").val();
-      $rightStaff = $("#rightStaff").val();
+      
       $usernameStaff = $("#usernameStaff").val();
       $passwordStaff = $("#passwordStaff").val();
 
@@ -120,7 +109,6 @@
         'GIOITINH': $sexStaff,
         'DIACHI': $addressStaff,
         'SDT': $phoneStaff,
-        'MAQUYEN': $rightStaff,
         'TENDN': $usernameStaff,
         'MATKHAU': $passwordStaff
       }
@@ -139,7 +127,6 @@
             $("#sexStaff").val('Nam');
             $("#addressStaff").val("");
             $("#phoneStaff").val("");
-            $("#rightStaff").val(1);
             $("#usernameStaff").val("");
             $("#passwordStaff").val("");
           } else {

@@ -50,7 +50,7 @@
                         ?>                        
                     </div>
                 </div>
-                <a href="./GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
+                <a href="/CuaHangNoiThat/GioHang" style="cursor: pointer;"><i class="fa fa-shopping-cart"></i></a>
                 <span id="counter">
                     <?php
                     if (isset($_SESSION['cart'])) {

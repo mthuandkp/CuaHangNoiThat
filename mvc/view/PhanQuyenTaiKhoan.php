@@ -66,7 +66,8 @@
 
     <script>
         var listRightStaff = '<?php echo $data['QUYEN'] ?>';
-        console.log(listRightStaff)
+     
+        
         var control = [{
             'key': 'Thống Kê',
             'id': 'statistic',
@@ -78,7 +79,7 @@
                 'name': "Thống kê Hóa Đơn",
                 'cmd': 'sta_bill'
             }, {
-                'name': "Thống kê Phiếu Nhập",
+                'name': "Thống kê Kho",
                 'cmd': 'sta_receipt'
             }]
         }, {
@@ -133,9 +134,6 @@
             }, {
                 'name': "Xem danh sách Hóa Đơn",
                 'cmd': 'v_bill'
-            }, {
-                'name': "Thống Kê Bán Hàng",
-                'cmd': 'sta_bill'
             }]
         }, {
             'key': 'Phiếu Nhập',
@@ -245,9 +243,9 @@
             }]
         }];
 
-        var saler = ['v_product', 's_product', 'a_bill', 'c_bill', 'v_bill', 'p_bill', 's_bill', 'ex_bill', 'v_bill', 's_customer', 'v_customer', 's_sale', 'v_product'];
+        var saler = ['v_product', 's_product', 'a_bill', 'c_bill', 'v_bill', 'p_bill', 's_bill', 'ex_bill', 'v_bill', 's_customer', 'v_customer', 's_sale', 'v_product','request_add_product','sta_bill'];
 
-        var warehouseManager = ['s_product', 'v_product', 'a_receipt', 'v_receipt', 'p_receipt', 's_receipt', 'ex_receipt', 'v_receipt', 's_supplier', 'v_supplier'];
+        var warehouseManager = ['s_product', 'v_product', 'a_receipt', 'v_receipt', 'p_receipt', 's_receipt', 'ex_receipt', 'v_receipt', 's_supplier', 'v_supplier','request_add_product','sta_receipt'];
 
         var listClassId = ['statistic', 'product', 'bill', 'receipt', 'staff', 'customer', 'sale', 'supplier'];
 
@@ -262,7 +260,11 @@
             var subItem = item.value;
             for (var j = 0; j < subItem.length; j++) {
                 var subItemValue = subItem[j];
-                xhtml += '<input type="checkbox" id="' + subItemValue.cmd + '" ' + (listRightStaff.includes(subItemValue.cmd) ? "checked" : "") + '/>' + subItemValue.name + '<br/>';
+                /*console.log(listRightStaff)
+                console.log(subItemValue)
+                console.log(isExistRightInList(listRightStaff,subItemValue.cmd))
+                console.log("=======================")*/
+                xhtml += '<input type="checkbox" id="' + subItemValue.cmd + '" ' + (isExistRightInList(listRightStaff,subItemValue.cmd) ? "checked" : "") + '/>' + subItemValue.name + '<br/>';
             }
             xhtml += '</form></div></div>';
 
@@ -270,6 +272,16 @@
 
         document.getElementById("controlForm").innerHTML = xhtml;
 
+
+        function isExistRightInList(list,right){
+            var arr = list.split(" ");
+            for(var item of arr){
+                if(item.localeCompare(right) == 0){
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
         function adminSelect() {
@@ -354,7 +366,11 @@
             list.forEach(function (item){
                 strList += item + ' ';
             })
+
+
             var idEditStaff = '<?php echo $data['MANV']?>';
+
+            
             $.ajax({
                 url: '/CuaHangNoiThat/Admin/updateRightOfStaff',
                 data: {
@@ -366,6 +382,11 @@
                     if(data == 0){
                         window.location.href = '/CuaHangNoiThat/Admin/NhanVien';
                     }
+                    else{
+
+                    }
+
+                    
                 }
             });
         }

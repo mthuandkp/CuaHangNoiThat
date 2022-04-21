@@ -171,7 +171,7 @@ class NhanVien extends Controller
             $this->returnHome();
         }
         require_once('./menuStaff.php');
-        $this->View('NhanVienPhieuNhap', 'Phiếu Nhập Nhân Viên');
+        $this->View('NhanVienPhieuNhap', 'Quản Kho Nhân Viên');
     }
 
     function ThemPhieuNhap()

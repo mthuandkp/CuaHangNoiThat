@@ -248,7 +248,7 @@ class Admin extends Controller
 
     function block_unblockCutomer($id)
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
             return;
         }
@@ -322,7 +322,7 @@ class Admin extends Controller
     }
     function ThemKhuyenMai()
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./KhuyenMai";</script>';
             return;
         }
@@ -336,7 +336,7 @@ class Admin extends Controller
     }
     function SuaKhuyenMai($id)
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../KhuyenMai";</script>';
             return;
         }
@@ -396,7 +396,7 @@ class Admin extends Controller
     }
     function ThemLoaiSanPham()
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./LoaiSanPham";</script>';
             return;
         }
@@ -405,7 +405,7 @@ class Admin extends Controller
     }
     function SuaLoaiSanPham($id)
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../LoaiSanPham";</script>';
             return;
         }
@@ -578,7 +578,7 @@ class Admin extends Controller
     /* =========================NHAN VIEN===================================*/
     function NhanVien()
     {
-        /*if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        /*if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="./";</script>';
             return;
         }
@@ -592,7 +592,6 @@ class Admin extends Controller
     {
         $data = array();
         $obj = $this->getModel('QuyenDB');
-        $data['Right'] = $obj->getAllRight();
         require_once('./menuadmin.php');
         $this->View('AdminThemNhanVien', 'Admin Thêm Nhân Viên', $data);
     }
@@ -1039,7 +1038,7 @@ class Admin extends Controller
     }
     function SuaSanPham($id)
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff'])) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../SanPham";</script>';
         }
         $data = array();
@@ -1096,7 +1095,7 @@ class Admin extends Controller
 
     function disableProductStatus()
     {
-        if (!isset($_SESSION['staff']) || $_SESSION['staff']['MAQUYEN'] != 1) {
+        if (!isset($_SESSION['staff']) ) {
             echo '<script>alert("Bạn không có quyền thực hiên chức năng này !!!");window.location.href="../SanPham";</script>';
             return;
         }
